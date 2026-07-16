@@ -17,6 +17,7 @@ import type {
   DisplayContent,
   HomeFeature,
   LocalizedText,
+  PanjPyaraProfile,
   QuizQuestion,
   TakhtProfile,
   View,
@@ -159,6 +160,63 @@ function renderFeatureCard(feature: HomeFeature): string {
   `;
 }
 
+function renderArtworkPanel(imagePath: string, title: string, eyebrow: string): string {
+  const imageStyle = imagePath ? `style="--art-image:url('${imagePath}');"` : '';
+
+  return `
+    <div class="art-panel mb-6" data-has-image="${String(Boolean(imagePath))}" ${imageStyle}>
+      <div class="art-panel__glow"></div>
+      <div class="relative z-10">
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300">${eyebrow}</p>
+        <h4 class="mt-3 text-2xl font-semibold text-white ${classForLanguage()}">${title}</h4>
+      </div>
+    </div>
+  `;
+}
+
+function renderSubcontinentBackdrop(): string {
+  return `
+    <svg class="geo-map__svg" viewBox="0 0 760 560" role="img" aria-hidden="true" focusable="false">
+      <path
+        class="geo-map__coastline"
+        d="M169 119l57-36 52 16 47-17 31 19 30-6 20 21 47-3 18 24-19 25 5 31 21 22-6 24 16 30-12 27 18 27-11 40-26 26 3 26-31 15-22 24-41 11-20 22-20-11-25 15-20-25-25-8-26-24-31-4-13-26 6-39-18-25 17-30-16-25 21-22-5-28 24-28-3-39 23-26z"
+      />
+      <path class="geo-map__terrain" d="M281 176l45-17 39 27 36-9 17 37 28 15 5 34-26 24-37 3-43 19-40 37-49-5-37-30-8-41 23-35 17-29z" />
+      <path class="geo-map__terrain" d="M505 307l39 3 29 24-8 31-37 10-35-23z" />
+    </svg>
+  `;
+}
+
+function renderPyareMap(selected: PanjPyaraProfile): string {
+  return `
+    <div class="glass-panel geo-map-panel relative min-h-[22rem] overflow-hidden p-5">
+      <div class="soft-grid absolute inset-0 opacity-15"></div>
+      ${renderSubcontinentBackdrop()}
+      ${content.panjPyare
+        .map(
+          (pyara, index) => `
+            <button
+              type="button"
+              class="pin-button"
+              data-pyara="${pyara.id}"
+              data-active="${pyara.id === selected.id}"
+              style="left:${pyara.mapPoint.x}; top:${pyara.mapPoint.y};"
+              aria-label="${text(pyara.name)}"
+            >
+              ${index + 1}
+            </button>
+          `,
+        )
+        .join('')}
+      <div class="absolute bottom-5 left-5 right-5 rounded-[22px] border border-white/10 bg-night-950/88 p-4 backdrop-blur-xl">
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.originMap)}</p>
+        <h4 class="mt-2 text-lg font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h4>
+        <p class="mt-1 text-sm text-cloud-400 ${classForLanguage()}">${text(selected.from)}</p>
+      </div>
+    </div>
+  `;
+}
+
 function renderHome(): string {
   const primaryFeatures = content.home.featureCards.filter((feature) => feature.id === 'pyare' || feature.id === 'takhts');
   const secondaryFeatures = content.home.featureCards.filter((feature) => feature.id !== 'pyare' && feature.id !== 'takhts');
@@ -234,11 +292,28 @@ function renderPyare(): string {
       <section class="glass-panel overflow-hidden p-8 md:p-10">
         <div class="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
           <div>
+            ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title))}
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
             <h3 class="mt-4 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h3>
             <p class="mt-5 text-lg leading-8 text-cloud-200 ${classForLanguage()}">${text(selected.details)}</p>
+            <div class="storyline-panel mt-8">
+              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
+              <div class="mt-4 grid gap-2">
+                ${content.panjPyare
+                  .map(
+                    (item, index) => `
+                      <button type="button" data-pyara="${item.id}" class="storyline-step" data-active="${item.id === selected.id}">
+                        <span class="storyline-step__index">${index + 1}</span>
+                        <span class="${classForLanguage()}">${text(item.name)} — ${text(item.from)}</span>
+                      </button>
+                    `,
+                  )
+                  .join('')}
+              </div>
+            </div>
           </div>
           <div class="grid gap-4">
+            ${renderPyareMap(selected)}
             ${[
               [content.ui.labels.birthName, text(selected.birthName)],
               [content.ui.labels.birthDeath, selected.years],
@@ -264,17 +339,12 @@ function renderPyare(): string {
 
 function renderTakhtMap(selected: TakhtProfile): string {
   return `
-    <div class="glass-panel relative min-h-[28rem] overflow-hidden p-6">
-      <div class="soft-grid absolute inset-0 opacity-20"></div>
-      <div class="absolute inset-[12%] rounded-[28px] border border-white/10 bg-gradient-to-br from-night-800 to-night-900"></div>
-      <div class="absolute inset-x-[21%] top-[14%] h-[58%] rounded-[45%_38%_42%_46%] border border-white/8 bg-white/[0.03]"></div>
-      <div class="absolute inset-x-[38%] bottom-[16%] h-[26%] rounded-[32%_45%_46%_30%] border border-white/8 bg-white/[0.03]"></div>
-      <div class="absolute inset-y-[18%] left-[30%] w-px bg-gradient-to-b from-transparent via-gold-300/40 to-transparent"></div>
-      <div class="absolute inset-y-[28%] left-[46%] w-px bg-gradient-to-b from-transparent via-gold-300/20 to-transparent"></div>
-      <div class="absolute left-[28%] top-[20%] h-[1px] w-[38%] bg-gradient-to-r from-transparent via-gold-300/30 to-transparent"></div>
+    <div class="glass-panel geo-map-panel relative min-h-[28rem] overflow-hidden p-6">
+      <div class="soft-grid absolute inset-0 opacity-15"></div>
+      ${renderSubcontinentBackdrop()}
       ${content.takhts
         .map(
-          (takht) => `
+          (takht, index) => `
             <button
               type="button"
               class="pin-button"
@@ -283,7 +353,7 @@ function renderTakhtMap(selected: TakhtProfile): string {
               style="left:${takht.mapPoint.x}; top:${takht.mapPoint.y};"
               aria-label="${text(takht.name)}"
             >
-              ${takht.id === selected.id ? '☬' : '•'}
+              ${takht.id === selected.id ? '☬' : index + 1}
             </button>
           `,
         )
@@ -320,9 +390,25 @@ function renderTakhts(): string {
       <section class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         ${renderTakhtMap(selected)}
         <article class="glass-panel p-8 md:p-10">
+          ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
           <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>
           <h3 class="mt-4 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h3>
           <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}</p>
+          <div class="storyline-panel mt-8">
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
+            <div class="mt-4 grid gap-2">
+              ${content.takhts
+                .map(
+                  (takht, index) => `
+                    <button type="button" data-takht="${takht.id}" class="storyline-step" data-active="${takht.id === selected.id}">
+                      <span class="storyline-step__index">${index + 1}</span>
+                      <span class="${classForLanguage()}">${text(takht.name)} — ${text(takht.location)}</span>
+                    </button>
+                  `,
+                )
+                .join('')}
+            </div>
+          </div>
           <div class="mt-8 grid gap-5">
             <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
               <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>

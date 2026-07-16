@@ -34,6 +34,11 @@ export interface PrincipleCard {
 
 export interface PanjPyaraProfile {
   id: number;
+  imagePath: string;
+  mapPoint: {
+    x: string;
+    y: string;
+  };
   name: LocalizedText;
   birthName: LocalizedText;
   years: string;
@@ -46,6 +51,7 @@ export interface PanjPyaraProfile {
 
 export interface TakhtProfile {
   id: string;
+  imagePath: string;
   name: LocalizedText;
   location: LocalizedText;
   establishedBy: LocalizedText;
@@ -91,6 +97,8 @@ export interface DisplayContent {
       significance: LocalizedText;
       establishedBy: LocalizedText;
       sacredGeography: LocalizedText;
+      originMap: LocalizedText;
+      storylineJourney: LocalizedText;
       quizProgress: LocalizedText;
       nextQuestion: LocalizedText;
       restartQuiz: LocalizedText;
