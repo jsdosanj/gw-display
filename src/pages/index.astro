@@ -1,0 +1,20 @@
+---
+import displayContent from '../data/display-content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const serializedContent = JSON.stringify(displayContent);
+---
+
+<BaseLayout title="Panj Pyare and Panj Takht Display">
+  <div id="app-root" class="h-screen overflow-hidden">
+    <section id="attract-screen"></section>
+    <main id="main-shell" class="hidden h-screen flex-col">
+      <header id="app-header" class="shrink-0"></header>
+      <section id="view-content" class="fade-mask flex-1 overflow-y-auto px-5 py-5 md:px-8 md:py-8"></section>
+      <nav id="bottom-nav" class="shrink-0"></nav>
+    </main>
+  </div>
+
+  <script type="application/json" id="display-data" set:html={serializedContent}></script>
+  <script type="module" src="../scripts/kiosk.ts"></script>
+</BaseLayout>

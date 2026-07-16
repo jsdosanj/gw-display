@@ -1,0 +1,31 @@
+{
+  "name": "gw-display",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Premium Astro kiosk display for Panj Pyare and Panj Takht",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lint": "eslint .",
+    "typecheck": "astro check",
+    "test": "vitest run",
+    "validate": "npm run lint && npm run typecheck && npm run test"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "astro": "7.1.0",
+    "tailwindcss": "4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.9",
+    "eslint": "10.7.0",
+    "eslint-plugin-astro": "3.0.1",
+    "globals": "17.7.0",
+    "jsdom": "29.1.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.64.0",
+    "vitest": "4.1.10"
+  }
+}
