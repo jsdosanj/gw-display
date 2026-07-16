@@ -1,0 +1,68 @@
+:root {
+    --bg-deep-navy: #0B192C;
+    --gold-accent: #E6B325;
+    --text-light: #F8F9FA;
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    
+    /* Fonts: Inter for English, Mukta for Gurmukhi */
+    --font-en: 'Inter', sans-serif;
+    --font-pa: 'Mukta Mahee', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
+
+body {
+    background-color: var(--bg-deep-navy);
+    color: var(--text-light);
+    font-family: var(--font-en);
+    overflow: hidden; /* Prevents swiping the whole page around */
+    user-select: none; /* Prevents text highlighting on double tap */
+}
+
+/* Glassmorphism Utilities */
+.glass-panel, .glass-header, .glass-nav {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+}
+
+/* Attract Screen */
+#attract-screen {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 100; display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.8s ease-in-out;
+}
+#attract-screen.hidden { opacity: 0; pointer-events: none; }
+.attract-overlay { padding: 4rem; border-radius: 24px; text-align: center; }
+
+/* Micro-interactions & Buttons */
+button {
+    font-family: inherit; font-size: 1.2rem; cursor: pointer;
+    border: none; border-radius: 12px; transition: transform 0.1s, background 0.3s;
+}
+button:active { transform: scale(0.95); /* Satisfying touch feedback */ }
+
+.pulse-btn {
+    background: var(--gold-accent); color: var(--bg-deep-navy);
+    padding: 20px 40px; margin-top: 30px; font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(230, 179, 37, 0.7); }
+    70% { box-shadow: 0 0 0 20px rgba(230, 179, 37, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(230, 179, 37, 0); }
+}
+
+/* Persistent Nav */
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 100px;
+    display: flex; justify-content: space-around; align-items: center;
+}
+.nav-btn {
+    background: transparent; color: var(--text-light); padding: 20px;
+    font-size: 1.5rem; flex: 1; height: 100%; border-radius: 0;
+}
+.nav-btn.active { background: var(--gold-accent); color: var(--bg-deep-navy); font-weight: bold; }
