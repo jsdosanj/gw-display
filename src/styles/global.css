@@ -106,23 +106,42 @@ button {
 
 .geo-map__svg {
   position: absolute;
-  inset: 10% 11% 23% 11%;
-  width: 78%;
-  height: 67%;
+  inset: 8% 8% 28% 8%;
+  width: 84%;
+  height: 64%;
   z-index: 0;
 }
 
 .geo-map__coastline {
-  fill: rgba(15, 37, 56, 0.78);
-  stroke: rgba(228, 187, 94, 0.5);
-  stroke-width: 6;
+  fill: rgba(12, 32, 52, 0.85);
+  stroke: rgba(228, 187, 94, 0.55);
+  stroke-width: 3;
+  stroke-linejoin: round;
 }
 
 .geo-map__terrain {
-  fill: rgba(255, 255, 255, 0.05);
-  stroke: rgba(255, 255, 255, 0.12);
-  stroke-width: 2;
+  fill: rgba(228, 187, 94, 0.06);
+  stroke: rgba(228, 187, 94, 0.18);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
 }
+
+.story-panel {
+  @apply rounded-[24px] border border-sky-300/15 bg-sky-400/5 p-5;
+}
+
+.fact-card {
+  @apply rounded-[24px] border border-gold-300/25 bg-gold-400/8 p-5;
+}
+
+.fact-card__icon {
+  @apply mb-3 text-2xl;
+}
+
+.info-grid {
+  @apply grid gap-4 sm:grid-cols-2;
+}
+
 
 .storyline-panel {
   @apply rounded-[24px] border border-gold-300/20 bg-gold-400/6 p-4;
