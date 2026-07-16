@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sikh History Interactive Display</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Mukta+Mahee:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="attract-screen" class="active">
+        <video autoplay muted loop id="bg-video">
+            <source src="assets/bg-loop.mp4" type="video/mp4">
+        </video>
+        <div class="attract-overlay glass-panel">
+            <h1>Discover the Legacy</h1>
+            <h2>5 Pyare & 5 Takhts</h2>
+            <button class="pulse-btn">Tap Anywhere to Begin</button>
+        </div>
+    </div>
+
+    <main id="main-content" class="hidden">
+        <header class="glass-header">
+            <h2 id="page-title">Home</h2>
+            <button id="lang-toggle" class="btn-secondary">A / ਅ</button>
+        </header>
+
+        <section id="content-container">
+            </section>
+
+        <nav class="bottom-nav glass-nav">
+            <button class="nav-btn active" data-target="home">Home</button>
+            <button class="nav-btn" data-target="pyare">5 Pyare</button>
+            <button class="nav-btn" data-target="takhts">5 Takhts</button>
+            <button class="nav-btn" data-target="quiz">Quiz</button>
+        </nav>
+    </main>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
