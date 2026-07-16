@@ -1,0 +1,26 @@
+{
+  "name": "Legacy of the Khalsa",
+  "short_name": "Khalsa Display",
+  "description": "Premium bilingual kiosk display for Panj Pyare and Panj Takht.",
+  "start_url": "/gw-display/",
+  "scope": "/gw-display/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#050b14",
+  "theme_color": "#091322",
+  "categories": ["education", "history", "reference"],
+  "icons": [
+    {
+      "src": "/gw-display/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/gw-display/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

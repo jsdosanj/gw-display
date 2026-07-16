@@ -101,13 +101,13 @@ function renderHeader(): void {
   const copy = content.sections[state.view];
 
   header.innerHTML = `
-    <div class="glass-header flex h-24 items-center justify-between px-5 md:px-8">
+    <div class="glass-header flex min-h-20 items-center justify-between px-4 py-2 md:min-h-24 md:px-8 md:py-0">
       <div class="flex min-w-0 items-center gap-4">
         <button type="button" data-nav="home" class="flex h-14 w-14 items-center justify-center rounded-full border border-gold-300/30 bg-white/5 text-2xl text-gold-300 transition active:scale-[0.98]">☬</button>
         <div class="min-w-0">
           <p class="truncate text-xs font-semibold uppercase tracking-[0.22em] text-cloud-400">${text(content.ui.experienceLabel)}</p>
-          <h2 class="truncate text-2xl font-semibold text-white ${classForLanguage()}">${text(copy.title)}</h2>
-          <p class="truncate text-sm text-cloud-400 ${classForLanguage()}">${text(copy.subtitle)}</p>
+          <h2 class="truncate text-xl font-semibold text-white md:text-2xl ${classForLanguage()}">${text(copy.title)}</h2>
+          <p class="truncate text-xs text-cloud-400 md:text-sm ${classForLanguage()}">${text(copy.subtitle)}</p>
         </div>
       </div>
       <div class="flex items-center gap-3">
@@ -122,7 +122,7 @@ function renderNav(): void {
   const views: View[] = ['home', 'pyare', 'takhts', 'quiz'];
 
   bottomNav.innerHTML = `
-    <div class="glass-header grid h-24 grid-cols-4 gap-2 px-3 py-2 md:px-5">
+    <div class="glass-header grid min-h-20 grid-cols-4 gap-2 px-2 pt-2 md:min-h-24 md:px-5 md:py-2">
       ${views
         .map(
           (view) => `
@@ -160,35 +160,40 @@ function renderFeatureCard(feature: HomeFeature): string {
 }
 
 function renderHome(): string {
+  const primaryFeatures = content.home.featureCards.filter((feature) => feature.id === 'pyare' || feature.id === 'takhts');
+  const secondaryFeatures = content.home.featureCards.filter((feature) => feature.id !== 'pyare' && feature.id !== 'takhts');
+
   return `
-    <div class="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
-      <section class="glass-panel overflow-hidden p-8 md:p-10">
+    <div class="grid gap-6">
+      <section class="glass-panel overflow-hidden p-7 md:p-10">
         <div class="soft-grid absolute inset-0 opacity-20"></div>
         <div class="relative">
           <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold-300">${text(content.sections.home.title)}</p>
           <h3 class="mt-4 max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl ${classForLanguage()}">${text(content.home.heroTitle)}</h3>
           <p class="mt-6 max-w-3xl text-lg leading-8 text-cloud-200 ${classForLanguage()}">${text(content.home.heroDescription)}</p>
-          <div class="mt-8 rounded-[24px] border border-gold-300/20 bg-gold-400/8 p-5">
-            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.reviewPanel)}</p>
-            <p class="mt-3 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.review.label)}</p>
-            <p class="mt-2 text-sm leading-6 text-cloud-400 ${classForLanguage()}">${text(content.ui.reviewAction)}</p>
-          </div>
         </div>
       </section>
-      <aside class="grid gap-6">
-        ${content.home.principles
-          .map(
-            (principle) => `
-              <article class="glass-panel p-6">
-                <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(principle.title)}</h4>
-                <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(principle.description)}</p>
-              </article>
-            `,
-          )
-          .join('')}
-      </aside>
-      <section class="xl:col-span-2 grid gap-6 lg:grid-cols-3">
-        ${content.home.featureCards.map(renderFeatureCard).join('')}
+
+      <section class="grid gap-6 lg:grid-cols-2">
+        ${primaryFeatures.map(renderFeatureCard).join('')}
+      </section>
+
+      <section class="grid gap-6 xl:grid-cols-[1fr_0.95fr]">
+        <aside class="grid gap-6">
+          ${content.home.principles
+            .map(
+              (principle) => `
+                <article class="glass-panel p-6">
+                  <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(principle.title)}</h4>
+                  <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(principle.description)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </aside>
+        <div class="grid gap-6">
+          ${secondaryFeatures.map(renderFeatureCard).join('')}
+        </div>
       </section>
     </div>
   `;
