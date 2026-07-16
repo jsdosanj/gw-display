@@ -63,6 +63,8 @@ const displayContent: DisplayContent = {
       significance: { en: 'Significance', pa: 'ਮਹੱਤਵ' },
       establishedBy: { en: 'Established by', pa: 'ਸਥਾਪਨਾ' },
       sacredGeography: { en: 'Sacred geography', pa: 'ਪਵਿੱਤਰ ਭੂਗੋਲ' },
+      originMap: { en: 'Origins across South Asia', pa: 'ਦੱਖਣੀ ਏਸ਼ੀਆ ਵਿੱਚ ਮੂਲ ਸਥਾਨ' },
+      storylineJourney: { en: 'Storyline journey', pa: 'ਕਥਾ ਯਾਤਰਾ' },
       quizProgress: { en: 'Question', pa: 'ਪ੍ਰਸ਼ਨ' },
       nextQuestion: { en: 'Next question', pa: 'ਅਗਲਾ ਪ੍ਰਸ਼ਨ' },
       restartQuiz: { en: 'Play again', pa: 'ਮੁੜ ਖੇਡੋ' },
@@ -127,6 +129,7 @@ const displayContent: DisplayContent = {
     {
       id: 1,
       imagePath: '/assets/images/pyara1.jpg',
+      mapPoint: { x: '27%', y: '24%' },
       name: { en: 'Bhai Daya Singh Ji', pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Daya Ram', pa: 'ਦਇਆ ਰਾਮ' },
       years: '1661 – 1708',
@@ -139,6 +142,7 @@ const displayContent: DisplayContent = {
     {
       id: 2,
       imagePath: '/assets/images/pyara2.jpg',
+      mapPoint: { x: '39%', y: '31%' },
       name: { en: 'Bhai Dharam Singh Ji', pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Dharam Das', pa: 'ਧਰਮ ਦਾਸ' },
       years: '1666 – 1708',
@@ -151,6 +155,7 @@ const displayContent: DisplayContent = {
     {
       id: 3,
       imagePath: '/assets/images/pyara3.jpg',
+      mapPoint: { x: '61%', y: '47%' },
       name: { en: 'Bhai Himmat Singh Ji', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Himmat Rai', pa: 'ਹਿੰਮਤ ਰਾਏ' },
       years: '1661 – 1705',
@@ -163,6 +168,7 @@ const displayContent: DisplayContent = {
     {
       id: 4,
       imagePath: '/assets/images/pyara4.jpg',
+      mapPoint: { x: '21%', y: '45%' },
       name: { en: 'Bhai Mohkam Singh Ji', pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Mohkam Chand', pa: 'ਮੋਹਕਮ ਚੰਦ' },
       years: '1663 – 1705',
@@ -175,6 +181,7 @@ const displayContent: DisplayContent = {
     {
       id: 5,
       imagePath: '/assets/images/pyara5.jpg',
+      mapPoint: { x: '42%', y: '62%' },
       name: { en: 'Bhai Sahib Singh Ji', pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Sahib Chand', pa: 'ਸਾਹਿਬ ਚੰਦ' },
       years: '1662 – 1708',
@@ -194,7 +201,7 @@ const displayContent: DisplayContent = {
       establishedBy: { en: 'Guru Hargobind Sahib Ji (1606)', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ (1606)' },
       significance: { en: 'The supreme seat of temporal authority, aligned with the Sikh vision of miri-piri beside Sri Harmandir Sahib.', pa: 'ਸੰਸਾਰਕ ਅਧਿਕਾਰ ਦਾ ਸਰਵੋੱਚ ਆਸਣ, ਜੋ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਦੇ ਸਾਹਮਣੇ ਮੀਰੀ-ਪੀਰੀ ਦੀ ਸਿੱਖ ਦਰਸ਼ਟੀ ਨੂੰ ਦਰਸਾਉਂਦਾ ਹੈ।' },
       details: { en: 'Akal Takht anchors Sikh institutional leadership and the public defense of justice, memory, and collective sovereignty.', pa: 'ਅਕਾਲ ਤਖ਼ਤ ਸਿੱਖ ਸੰਸਥਾਗਤ ਨੇਤ੍ਰਿਤਵ ਅਤੇ ਨਿਆਂ, ਯਾਦ ਅਤੇ ਸਾਂਝੀ ਪ੍ਰਭੂਸੱਤਾ ਦੀ ਲੋਕ-ਰੱਖਿਆ ਦਾ ਕੇਂਦਰ ਹੈ।' },
-      mapPoint: { x: '31%', y: '24%' },
+      mapPoint: { x: '30%', y: '25%' },
     },
     {
       id: 'kesgarh_sahib',
@@ -204,7 +211,7 @@ const displayContent: DisplayContent = {
       establishedBy: { en: 'Guru Gobind Singh Ji (1699)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (1699)' },
       significance: { en: 'The birthplace of the Khalsa Panth, where Amrit was prepared and the original Panj Pyare were initiated.', pa: 'ਖ਼ਾਲਸਾ ਪੰਥ ਦਾ ਜਨਮ ਅਸਥਾਨ, ਜਿੱਥੇ ਅੰਮ੍ਰਿਤ ਤਿਆਰ ਕੀਤਾ ਗਿਆ ਅਤੇ ਮੂਲ ਪੰਜ ਪਿਆਰਿਆਂ ਨੂੰ ਛਕਾਇਆ ਗਿਆ।' },
       details: { en: 'Keshgarh Sahib marks the public formation of a disciplined spiritual-political community.', pa: 'ਕੇਸਗੜ੍ਹ ਸਾਹਿਬ ਇੱਕ ਅਨੁਸ਼ਾਸਿਤ ਅਧਿਆਤਮਿਕ-ਰਾਜਨੀਤਿਕ ਸੰਗਤ ਦੀ ਜਨਤਕ ਰਚਨਾ ਨੂੰ ਦਰਸਾਉਂਦਾ ਹੈ।' },
-      mapPoint: { x: '34%', y: '28%' },
+      mapPoint: { x: '33%', y: '28%' },
     },
     {
       id: 'damdama_sahib',
@@ -214,7 +221,7 @@ const displayContent: DisplayContent = {
       establishedBy: { en: 'Guru Gobind Singh Ji (1705)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (1705)' },
       significance: { en: 'Often called Guru Ki Kashi, it is associated with learning and the recension of Guru Granth Sahib Ji.', pa: 'ਗੁਰੂ ਕੀ ਕਾਸ਼ੀ ਵਜੋਂ ਪ੍ਰਸਿੱਧ, ਇਹ ਵਿੱਦਿਆ ਅਤੇ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੀ ਸੰਪੂਰਨ ਬੀੜ ਨਾਲ ਜੁੜਿਆ ਹੋਇਆ ਹੈ।' },
       details: { en: 'Damdama Sahib represents study, transmission, and the disciplined preservation of sacred knowledge.', pa: 'ਦਮਦਮਾ ਸਾਹਿਬ ਅਧਿਐਨ, ਪਰੰਪਰਾ ਅਤੇ ਪਵਿੱਤਰ ਗਿਆਨ ਦੀ ਅਨੁਸ਼ਾਸਿਤ ਸੰਭਾਲ ਦਾ ਪ੍ਰਤੀਕ ਹੈ।' },
-      mapPoint: { x: '40%', y: '39%' },
+      mapPoint: { x: '35%', y: '35%' },
     },
     {
       id: 'patna_sahib',
@@ -224,7 +231,7 @@ const displayContent: DisplayContent = {
       establishedBy: { en: 'Birthplace of Guru Gobind Singh Ji (1666)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦਾ ਪ੍ਰਕਾਸ਼ ਅਸਥਾਨ (1666)' },
       significance: { en: 'This Takht honors the birthplace of Guru Gobind Singh Ji and preserves an important eastern center of Sikh remembrance.', pa: 'ਇਹ ਤਖ਼ਤ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਪ੍ਰਕਾਸ਼ ਅਸਥਾਨ ਦਾ ਸਨਮਾਨ ਕਰਦਾ ਹੈ ਅਤੇ ਪੂਰਬੀ ਸਿੱਖ ਸਮ੍ਰਿਤੀ ਦੇ ਮਹੱਤਵਪੂਰਨ ਕੇਂਦਰ ਨੂੰ ਸੰਭਾਲਦਾ ਹੈ।' },
       details: { en: 'Patna Sahib connects the Khalsa story to a broader geography of travel, memory, and community formation.', pa: 'ਪਟਨਾ ਸਾਹਿਬ ਖ਼ਾਲਸੇ ਦੀ ਕਥਾ ਨੂੰ ਯਾਤਰਾ, ਯਾਦ ਅਤੇ ਸੰਗਤ-ਰਚਨਾ ਦੇ ਵਿਸ਼ਾਲ ਭੂਗੋਲ ਨਾਲ ਜੋੜਦਾ ਹੈ।' },
-      mapPoint: { x: '66%', y: '39%' },
+      mapPoint: { x: '56%', y: '37%' },
     },
     {
       id: 'hazur_sahib',
@@ -234,7 +241,7 @@ const displayContent: DisplayContent = {
       establishedBy: { en: 'Guru Gobind Singh Ji (1708)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (1708)' },
       significance: { en: 'Associated with Guru Gobind Singh Ji’s final days and the affirmation of Sri Guru Granth Sahib Ji as the eternal Guru.', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਅੰਤਿਮ ਦਿਨਾਂ ਅਤੇ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਨੂੰ ਸਦੀਵੀ ਗੁਰੂ ਮੰਨਣ ਦੀ ਘੋਸ਼ਣਾ ਨਾਲ ਜੁੜਿਆ ਹੋਇਆ।' },
       details: { en: 'Hazur Sahib carries a profound sense of culmination, transmission, and living continuity.', pa: 'ਹਜ਼ੂਰ ਸਾਹਿਬ ਪੂਰਨਤਾ, ਪਰੰਪਰਾ ਅਤੇ ਜੀਵੰਤ ਨਿਰੰਤਰਤਾ ਦੀ ਗਹਿਰੀ ਭਾਵਨਾ ਨਾਲ ਜੁੜਿਆ ਹੈ।' },
-      mapPoint: { x: '50%', y: '64%' },
+      mapPoint: { x: '47%', y: '59%' },
     },
   ],
   quiz: {
