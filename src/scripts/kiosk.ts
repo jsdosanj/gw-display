@@ -175,14 +175,48 @@ function renderArtworkPanel(imagePath: string, title: string, eyebrow: string): 
 }
 
 function renderSubcontinentBackdrop(): string {
+  // Accurate South Asia SVG outline. Coordinate system:
+  //   x = (longitude - 60°E) × 20   →  spans 60°E–98°E in a 760-wide viewBox
+  //   y = (37°N - latitude) × 17.5  →  spans 37°N–5°N in a 560-tall viewBox
+  // Coastal trace goes clockwise from NW Pakistan corner.
   return `
     <svg class="geo-map__svg" viewBox="0 0 760 560" role="img" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="map-glow" cx="40%" cy="35%" r="55%">
+          <stop offset="0%" stop-color="rgba(228,187,94,0.22)" />
+          <stop offset="100%" stop-color="rgba(9,19,34,0)" />
+        </radialGradient>
+      </defs>
+      <!-- Background wash -->
+      <rect width="760" height="560" fill="url(#map-glow)" />
+      <!-- Main subcontinent outline (Pakistan + India + Bangladesh) -->
       <path
         class="geo-map__coastline"
-        d="M169 119l57-36 52 16 47-17 31 19 30-6 20 21 47-3 18 24-19 25 5 31 21 22-6 24 16 30-12 27 18 27-11 40-26 26 3 26-31 15-22 24-41 11-20 22-20-11-25 15-20-25-25-8-26-24-31-4-13-26 6-39-18-25 17-30-16-25 21-22-5-28 24-28-3-39 23-26z"
+        d="M 0,0
+           L 100,0 L 200,0 L 260,17 L 308,52 L 355,88
+           L 395,122 L 455,140 L 535,167 L 615,167
+           L 695,175 L 720,228
+           L 680,255 L 648,257 L 618,268 L 568,268
+           L 518,300 L 474,338
+           L 413,420 L 393,445
+           L 380,490 L 362,510 L 350,512
+           L 320,476 L 296,422
+           L 268,370 L 250,316
+           L 252,295 L 252,272 L 244,257 L 228,249 L 205,252
+           L 188,258 L 178,270 L 184,284
+           L 206,276 L 216,252 L 204,232 L 180,224
+           L 148,218 L 140,212
+           L 88,210 L 40,213 L 18,196 L 0,175
+           Z"
       />
-      <path class="geo-map__terrain" d="M281 176l45-17 39 27 36-9 17 37 28 15 5 34-26 24-37 3-43 19-40 37-49-5-37-30-8-41 23-35 17-29z" />
-      <path class="geo-map__terrain" d="M505 307l39 3 29 24-8 31-37 10-35-23z" />
+      <!-- Punjab / Northwest terrain (where most Takhts cluster) -->
+      <path class="geo-map__terrain" d="M 260,88 L 380,70 L 400,160 L 345,185 L 285,165 Z" />
+      <!-- Gangetic plain terrain -->
+      <path class="geo-map__terrain" d="M 370,130 L 545,155 L 580,268 L 510,305 L 380,285 L 330,198 Z" />
+      <!-- Deccan plateau -->
+      <path class="geo-map__terrain" d="M 326,270 L 446,256 L 476,338 L 418,394 L 352,382 L 316,330 Z" />
+      <!-- India-Pakistan border indicator -->
+      <line x1="145" y1="212" x2="268" y2="96" stroke="rgba(228,187,94,0.25)" stroke-width="1.5" stroke-dasharray="6 4"/>
     </svg>
   `;
 }
@@ -257,8 +291,46 @@ function renderHome(): string {
   `;
 }
 
+function renderInfoBox(labelObj: LocalizedText, value: string): string {
+  return `
+    <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(labelObj)}</p>
+      <p class="mt-3 text-lg font-medium text-white ${classForLanguage()}">${value}</p>
+    </article>
+  `;
+}
+
 function renderPyare(): string {
   const selected = content.panjPyare.find((item) => item.id === state.selectedPyaraId) ?? content.panjPyare[0];
+
+  const storyHtml = selected.story
+    ? `<div class="story-panel mt-6">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.story)}</p>
+       </div>`
+    : '';
+
+  const funFactHtml = selected.funFact
+    ? `<div class="fact-card mt-4">
+         <div class="fact-card__icon">✦</div>
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.funFact)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.funFact)}</p>
+       </div>`
+    : '';
+
+  const accomplishmentsHtml = selected.accomplishments
+    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-4">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.accomplishments)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.accomplishments)}</p>
+       </div>`
+    : '';
+
+  const shaheediHtml = selected.shaheedi
+    ? `<div class="rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5 mt-4">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-rose-300 ${classForLanguage()}">${text(content.ui.labels.shaheedi)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.shaheedi)}</p>
+       </div>`
+    : '';
 
   return `
     <div class="grid gap-6 xl:grid-cols-[23rem_1fr]">
@@ -281,7 +353,7 @@ function renderPyare(): string {
                       <p class="text-lg font-semibold ${classForLanguage()}">${text(item.name)}</p>
                       <p class="mt-1 text-sm text-cloud-400 ${classForLanguage()}">${text(item.from)}</p>
                     </div>
-                    <span class="rounded-full border border-current/20 px-3 py-1 text-xs uppercase tracking-[0.18em] ${classForLanguage()}">${text(item.representing)}</span>
+                    <span class="shrink-0 rounded-full border border-current/20 px-2 py-1 text-xs uppercase tracking-[0.14em] ${classForLanguage()}">${text(item.caste)}</span>
                   </div>
                 </button>
               `,
@@ -295,7 +367,12 @@ function renderPyare(): string {
             ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title))}
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
             <h3 class="mt-4 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h3>
-            <p class="mt-5 text-lg leading-8 text-cloud-200 ${classForLanguage()}">${text(selected.details)}</p>
+            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.birthName)} &middot; ${selected.years}</p>
+            <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.details)}</p>
+            ${storyHtml}
+            ${funFactHtml}
+            ${accomplishmentsHtml}
+            ${shaheediHtml}
             <div class="storyline-panel mt-8">
               <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
               <div class="mt-4 grid gap-2">
@@ -312,24 +389,17 @@ function renderPyare(): string {
               </div>
             </div>
           </div>
-          <div class="grid gap-4">
+          <div class="grid gap-4 content-start">
             ${renderPyareMap(selected)}
-            ${[
-              [content.ui.labels.birthName, text(selected.birthName)],
-              [content.ui.labels.birthDeath, selected.years],
-              [content.ui.labels.previousOccupation, text(selected.occupation)],
-              [content.ui.labels.fromRegion, text(selected.from)],
-              [content.ui.labels.representing, text(selected.representing)],
-            ]
-              .map(
-                ([label, value]) => `
-                  <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-                    <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${typeof label === 'string' ? label : text(label)}</p>
-                    <p class="mt-3 text-lg font-medium text-white ${classForLanguage()}">${value}</p>
-                  </article>
-                `,
-              )
-              .join('')}
+            ${renderInfoBox(content.ui.labels.birthName, text(selected.birthName))}
+            ${renderInfoBox(content.ui.labels.birthDeath, selected.years)}
+            ${renderInfoBox(content.ui.labels.previousOccupation, text(selected.occupation))}
+            ${renderInfoBox(content.ui.labels.fromRegion, text(selected.from))}
+            ${renderInfoBox(content.ui.labels.representing, text(selected.representing))}
+            ${selected.roles ? `<article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.roles)}</p>
+              <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.roles)}</p>
+            </article>` : ''}
           </div>
         </div>
       </section>
@@ -370,18 +440,52 @@ function renderTakhtMap(selected: TakhtProfile): string {
 function renderTakhts(): string {
   const selected = content.takhts.find((item) => item.id === state.selectedTakhtId) ?? content.takhts[0];
 
+  const storyHtml = selected.story
+    ? `<div class="story-panel mt-6">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.story)}</p>
+       </div>`
+    : '';
+
+  const funFactHtml = selected.funFact
+    ? `<div class="fact-card mt-4">
+         <div class="fact-card__icon">✦</div>
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.funFact)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.funFact)}</p>
+       </div>`
+    : '';
+
+  const jathedaarHtml = selected.jathedaar
+    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.jathedaar)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.jathedaar)}</p>
+       </div>`
+    : '';
+
+  const visitorsHtml = selected.visitorsInfo
+    ? `<div class="rounded-[24px] border border-emerald-300/15 bg-emerald-400/5 p-5">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300 ${classForLanguage()}">${text(content.ui.labels.visitorsInfo)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.visitorsInfo)}</p>
+       </div>`
+    : '';
+
   return `
     <div class="grid gap-6 2xl:grid-cols-[24rem_1fr]">
       <aside class="grid gap-4">
         ${content.takhts
           .map(
-            (takht) => `
+            (takht, index) => `
               <button type="button" data-takht="${takht.id}" class="glass-panel p-5 text-left transition ${
                 takht.id === selected.id ? 'border-gold-300/40 bg-gold-400/10' : 'active:scale-[0.99]'
               }">
-                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(takht.location)}</p>
-                <h3 class="mt-3 text-xl font-semibold text-white ${classForLanguage()}">${text(takht.name)}</h3>
-                <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(takht.significance)}</p>
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(takht.location)}</p>
+                    <h3 class="mt-2 text-lg font-semibold text-white ${classForLanguage()}">${text(takht.name)}</h3>
+                  </div>
+                  <span class="shrink-0 rounded-full border border-gold-300/25 px-2 py-1 text-xs font-semibold text-gold-300">${index + 1}</span>
+                </div>
+                <p class="mt-2 text-xs leading-6 text-cloud-400 ${classForLanguage()} line-clamp-2">${text(takht.significance)}</p>
               </button>
             `,
           )
@@ -393,8 +497,10 @@ function renderTakhts(): string {
           ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
           <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>
           <h3 class="mt-4 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h3>
-          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}</p>
-          <div class="storyline-panel mt-8">
+          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
+          ${storyHtml}
+          ${funFactHtml}
+          <div class="storyline-panel mt-6">
             <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
             <div class="mt-4 grid gap-2">
               ${content.takhts
@@ -409,19 +515,17 @@ function renderTakhts(): string {
                 .join('')}
             </div>
           </div>
-          <div class="mt-8 grid gap-5">
+          <div class="mt-6 grid gap-4">
             <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
               <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>
-              <p class="mt-3 text-lg font-medium text-white ${classForLanguage()}">${text(selected.establishedBy)}</p>
+              <p class="mt-3 text-base font-medium text-white ${classForLanguage()}">${text(selected.establishedBy)}</p>
             </div>
             <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
               <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.significance)}</p>
-              <p class="mt-3 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.significance)}</p>
+              <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.significance)}</p>
             </div>
-            <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.sections.takhts.subtitle)}</p>
-              <p class="mt-3 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.details)}</p>
-            </div>
+            ${jathedaarHtml}
+            ${visitorsHtml}
           </div>
         </article>
       </section>

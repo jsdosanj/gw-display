@@ -47,6 +47,11 @@ export interface PanjPyaraProfile {
   occupation: LocalizedText;
   details: LocalizedText;
   representing: LocalizedText;
+  story?: LocalizedText;
+  funFact?: LocalizedText;
+  roles?: LocalizedText;
+  accomplishments?: LocalizedText;
+  shaheedi?: LocalizedText;
 }
 
 export interface TakhtProfile {
@@ -61,6 +66,11 @@ export interface TakhtProfile {
     x: string;
     y: string;
   };
+  story?: LocalizedText;
+  funFact?: LocalizedText;
+  jathedaar?: LocalizedText;
+  visitorsInfo?: LocalizedText;
+  yearDeclared?: string;
 }
 
 export interface QuizQuestion {
@@ -107,6 +117,13 @@ export interface DisplayContent {
       replayPrompt: LocalizedText;
       correctAnswer: LocalizedText;
       reviewPanel: LocalizedText;
+      story: LocalizedText;
+      funFact: LocalizedText;
+      roles: LocalizedText;
+      accomplishments: LocalizedText;
+      shaheedi: LocalizedText;
+      jathedaar: LocalizedText;
+      visitorsInfo: LocalizedText;
     };
   };
   home: {
