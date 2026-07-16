@@ -159,6 +159,20 @@ function renderFeatureCard(feature: HomeFeature): string {
   `;
 }
 
+function renderArtworkPanel(imagePath: string, title: string, eyebrow: string): string {
+  const imageStyle = imagePath ? `style="--art-image:url('${imagePath}');"` : '';
+
+  return `
+    <div class="art-panel mb-6" data-has-image="${String(Boolean(imagePath))}" ${imageStyle}>
+      <div class="art-panel__glow"></div>
+      <div class="relative z-10">
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300">${eyebrow}</p>
+        <h4 class="mt-3 text-2xl font-semibold text-white ${classForLanguage()}">${title}</h4>
+      </div>
+    </div>
+  `;
+}
+
 function renderHome(): string {
   return `
     <div class="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
@@ -229,6 +243,7 @@ function renderPyare(): string {
       <section class="glass-panel overflow-hidden p-8 md:p-10">
         <div class="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
           <div>
+            ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title))}
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
             <h3 class="mt-4 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h3>
             <p class="mt-5 text-lg leading-8 text-cloud-200 ${classForLanguage()}">${text(selected.details)}</p>
@@ -315,6 +330,7 @@ function renderTakhts(): string {
       <section class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         ${renderTakhtMap(selected)}
         <article class="glass-panel p-8 md:p-10">
+          ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
           <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>
           <h3 class="mt-4 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h3>
           <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}</p>

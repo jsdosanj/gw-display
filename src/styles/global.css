@@ -99,6 +99,41 @@ button {
   box-shadow: 0 0 0 8px rgba(228, 187, 94, 0.12);
 }
 
+.art-panel {
+  @apply relative overflow-hidden rounded-[24px] border border-gold-300/20 bg-night-900/60 px-6 py-6;
+  min-height: 16rem;
+  isolation: isolate;
+}
+
+.art-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    var(--art-image),
+    linear-gradient(135deg, rgba(5, 11, 20, 0.95) 0%, rgba(9, 19, 34, 0.92) 52%, rgba(228, 187, 94, 0.4) 100%);
+  background-position: center;
+  background-size: cover;
+  opacity: 0.9;
+  z-index: 0;
+}
+
+.art-panel[data-has-image='false']::before {
+  background-image:
+    radial-gradient(circle at 78% 22%, rgba(228, 187, 94, 0.34), transparent 40%),
+    linear-gradient(135deg, rgba(5, 11, 20, 0.95) 0%, rgba(9, 19, 34, 0.92) 52%, rgba(228, 187, 94, 0.4) 100%);
+}
+
+.art-panel__glow {
+  position: absolute;
+  inset: auto -20% -56% -10%;
+  height: 62%;
+  border-radius: 100%;
+  background: radial-gradient(circle at center, rgba(228, 187, 94, 0.35), transparent 70%);
+  filter: blur(12px);
+  z-index: 1;
+}
+
 .soft-grid {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),

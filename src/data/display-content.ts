@@ -126,6 +126,7 @@ const displayContent: DisplayContent = {
   panjPyare: [
     {
       id: 1,
+      imagePath: '/assets/images/pyara1.jpg',
       name: { en: 'Bhai Daya Singh Ji', pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Daya Ram', pa: 'ਦਇਆ ਰਾਮ' },
       years: '1661 – 1708',
@@ -137,6 +138,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 2,
+      imagePath: '/assets/images/pyara2.jpg',
       name: { en: 'Bhai Dharam Singh Ji', pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Dharam Das', pa: 'ਧਰਮ ਦਾਸ' },
       years: '1666 – 1708',
@@ -148,6 +150,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 3,
+      imagePath: '/assets/images/pyara3.jpg',
       name: { en: 'Bhai Himmat Singh Ji', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Himmat Rai', pa: 'ਹਿੰਮਤ ਰਾਏ' },
       years: '1661 – 1705',
@@ -159,6 +162,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 4,
+      imagePath: '/assets/images/pyara4.jpg',
       name: { en: 'Bhai Mohkam Singh Ji', pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Mohkam Chand', pa: 'ਮੋਹਕਮ ਚੰਦ' },
       years: '1663 – 1705',
@@ -170,6 +174,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 5,
+      imagePath: '/assets/images/pyara5.jpg',
       name: { en: 'Bhai Sahib Singh Ji', pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Sahib Chand', pa: 'ਸਾਹਿਬ ਚੰਦ' },
       years: '1662 – 1708',
@@ -183,6 +188,7 @@ const displayContent: DisplayContent = {
   takhts: [
     {
       id: 'akal_takht',
+      imagePath: '/assets/images/takht1.jpg',
       name: { en: 'Sri Akal Takht Sahib', pa: 'ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ' },
       location: { en: 'Amritsar, Punjab', pa: 'ਅੰਮ੍ਰਿਤਸਰ, ਪੰਜਾਬ' },
       establishedBy: { en: 'Guru Hargobind Sahib Ji (1606)', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ (1606)' },
@@ -192,6 +198,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 'kesgarh_sahib',
+      imagePath: '/assets/images/takht2.jpg',
       name: { en: 'Takht Sri Keshgarh Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਕੇਸਗੜ੍ਹ ਸਾਹਿਬ' },
       location: { en: 'Anandpur Sahib, Punjab', pa: 'ਅਨੰਦਪੁਰ ਸਾਹਿਬ, ਪੰਜਾਬ' },
       establishedBy: { en: 'Guru Gobind Singh Ji (1699)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (1699)' },
@@ -201,6 +208,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 'damdama_sahib',
+      imagePath: '/assets/images/takht3.jpg',
       name: { en: 'Takht Sri Damdama Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਦਮਦਮਾ ਸਾਹਿਬ' },
       location: { en: 'Talwandi Sabo, Punjab', pa: 'ਤਲਵੰਡੀ ਸਾਬੋ, ਪੰਜਾਬ' },
       establishedBy: { en: 'Guru Gobind Singh Ji (1705)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (1705)' },
@@ -210,6 +218,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 'patna_sahib',
+      imagePath: '/assets/images/takht4.jpg',
       name: { en: 'Takht Sri Patna Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਪਟਨਾ ਸਾਹਿਬ' },
       location: { en: 'Patna, Bihar', pa: 'ਪਟਨਾ, ਬਿਹਾਰ' },
       establishedBy: { en: 'Birthplace of Guru Gobind Singh Ji (1666)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦਾ ਪ੍ਰਕਾਸ਼ ਅਸਥਾਨ (1666)' },
@@ -219,6 +228,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 'hazur_sahib',
+      imagePath: '/assets/images/takht5.jpg',
       name: { en: 'Takht Sri Hazur Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਹਜ਼ੂਰ ਸਾਹਿਬ' },
       location: { en: 'Nanded, Maharashtra', pa: 'ਨਾਂਦੇੜ, ਮਹਾਰਾਸ਼ਟਰ' },
       establishedBy: { en: 'Guru Gobind Singh Ji (1708)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (1708)' },
