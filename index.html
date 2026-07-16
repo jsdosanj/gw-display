@@ -4,39 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sikh History Interactive Display</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;600;700&family=Mukta+Mahee:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Mukta+Mahee:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="attract-screen" class="active">
-        <video autoplay muted loop id="bg-video">
-            <source src="assets/bg-loop.mp4" type="video/mp4">
-        </video>
-        <div class="attract-overlay glass-panel">
-            <h1>Discover the Legacy</h1>
-            <h2>5 Pyare & 5 Takhts</h2>
-            <button class="pulse-btn">Tap Anywhere to Begin</button>
+        <div class="particle-background"></div>
+        <div class="attract-content glass-card">
+            <div class="logo-circle">☬</div>
+            <h1 class="main-title serif-font">ਪੰਜ ਪਿਆਰੇ ਅਤੇ ਪੰਜ ਤਖ਼ਤ</h1>
+            <h2 class="sub-title">5 Pyare & 5 Takhts of Sikhi</h2>
+            <p id="attract-translation-prompt" class="instruction">Tap screen to begin | ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਸਕ੍ਰੀਨ ਨੂੰ ਛੂਹੋ</p>
+            <button class="pulse-start-btn">BEGIN EXPERIENCE</button>
         </div>
     </div>
 
     <main id="main-content" class="hidden">
         <header class="glass-header">
-            <h2 id="page-title">Home</h2>
-            <button id="lang-toggle" class="btn-secondary">A / ਅ</button>
+            <div class="header-logo" id="header-logo-btn">☬</div>
+            <div class="header-title-area">
+                <h2 id="page-title">Home</h2>
+                <p id="page-subtitle">Interactive Portal</p>
+            </div>
+            <button id="lang-switch" class="lang-toggle-btn" aria-label="Toggle Language">
+                <span id="lang-indicator">ENGLISH</span>
+            </button>
         </header>
 
-        <section id="content-container">
+        <section id="viewport-mount" class="fade-in">
             </section>
 
-        <nav class="bottom-nav glass-nav">
-            <button class="nav-btn active" data-target="home">Home</button>
-            <button class="nav-btn" data-target="pyare">5 Pyare</button>
-            <button class="nav-btn" data-target="takhts">5 Takhts</button>
-            <button class="nav-btn" data-target="quiz">Quiz</button>
+        <nav class="bottom-navbar glass-nav">
+            <button class="nav-item active" data-target="home">
+                <span class="nav-icon">🏛</span>
+                <span class="nav-label" data-key="home">Home</span>
+            </button>
+            <button class="nav-item" data-target="pyare">
+                <span class="nav-icon">⚔</span>
+                <span class="nav-label" data-key="pyare">5 Pyare</span>
+            </button>
+            <button class="nav-item" data-target="takhts">
+                <span class="nav-icon">🕌</span>
+                <span class="nav-label" data-key="takhts">5 Takhts</span>
+            </button>
+            <button class="nav-item" data-target="quiz">
+                <span class="nav-icon">📝</span>
+                <span class="nav-label" data-key="quiz">Quiz Game</span>
+            </button>
         </nav>
     </main>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <script src="data.js"></script>
     <script src="app.js"></script>
 </body>
