@@ -12,14 +12,11 @@ import {
   submitQuizAnswer,
   toggleLanguage,
   wakeKiosk,
-  type KioskState,
 } from '../lib/kiosk-state';
 import type {
   DisplayContent,
   HomeFeature,
-  Language,
   LocalizedText,
-  PanjPyaraProfile,
   QuizQuestion,
   TakhtProfile,
   View,
@@ -28,15 +25,21 @@ import type {
 const contentEl = document.getElementById('display-data');
 const content: DisplayContent = contentEl?.textContent ? JSON.parse(contentEl.textContent) : displayContent;
 
-const attractScreen = document.getElementById('attract-screen');
-const mainShell = document.getElementById('main-shell');
-const header = document.getElementById('app-header');
-const viewContent = document.getElementById('view-content');
-const bottomNav = document.getElementById('bottom-nav');
+function requireElement(id: string): HTMLElement {
+  const element = document.getElementById(id);
 
-if (!attractScreen || !mainShell || !header || !viewContent || !bottomNav) {
-  throw new Error('Kiosk shell failed to mount.');
+  if (!element) {
+    throw new Error(`Missing required kiosk element: ${id}`);
+  }
+
+  return element;
 }
+
+const attractScreen = requireElement('attract-screen');
+const mainShell = requireElement('main-shell');
+const header = requireElement('app-header');
+const viewContent = requireElement('view-content');
+const bottomNav = requireElement('bottom-nav');
 
 let state = createInitialState(content);
 let inactivityTimer = 0;
