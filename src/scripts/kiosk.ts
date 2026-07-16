@@ -22,8 +22,7 @@ import type {
   View,
 } from '../types/display';
 
-const contentEl = document.getElementById('display-data');
-const content: DisplayContent = contentEl?.textContent ? JSON.parse(contentEl.textContent) : displayContent;
+const content: DisplayContent = displayContent;
 
 function requireElement(id: string): HTMLElement {
   const element = document.getElementById(id);

@@ -1,8 +1,5 @@
 ---
-import displayContent from '../data/display-content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const serializedContent = JSON.stringify(displayContent);
 ---
 
 <BaseLayout title="Panj Pyare and Panj Takht Display">
@@ -15,7 +12,6 @@ const serializedContent = JSON.stringify(displayContent);
     </main>
   </div>
 
-  <script type="application/json" id="display-data" is:inline set:html={serializedContent}></script>
   <script>
   import "../scripts/kiosk.ts";
 </script>
