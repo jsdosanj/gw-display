@@ -241,6 +241,7 @@ export interface DisplayContent {
       embedUnavailable: LocalizedText;
       ttsListen: LocalizedText;
       ttsNoPunjabiVoice: LocalizedText;
+      journeyProgress: LocalizedText;
     };
   };
   home: {

@@ -65,6 +65,9 @@ let resourceCarouselIndex = 0;
 let resourceCarouselTimer = 0;
 const qrDataUrls: Record<string, string> = {};
 
+const journeyViews: View[] = ['pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
+const visitedViews = new Set<View>();
+
 async function initQrCodes(): Promise<void> {
   for (const site of content.resources.sites) {
     try {
@@ -175,7 +178,8 @@ function renderAttract(): void {
       <div class="float-slow absolute left-[12%] top-[18%] h-32 w-32 rounded-full bg-sky-400/12 blur-3xl"></div>
       <div class="float-delay absolute bottom-[18%] right-[10%] h-44 w-44 rounded-full bg-gold-300/10 blur-3xl"></div>
       <div class="soft-grid absolute inset-0 opacity-25"></div>
-      <div class="glass-panel relative z-10 flex w-full max-w-5xl flex-col gap-8 overflow-hidden px-8 py-10 md:px-14 md:py-14">
+      <p class="ik-onkar-motif absolute left-1/2 top-[8%] -translate-x-1/2 text-7xl text-gold-300/90 md:text-8xl" aria-hidden="true">ੴ</p>
+      <div class="glass-panel cinematic-fade relative z-10 flex w-full max-w-5xl flex-col gap-8 overflow-hidden px-8 py-10 md:px-14 md:py-14">
         <div class="flex items-center justify-between gap-6">
           <div>
             <p class="mb-3 text-sm font-semibold uppercase tracking-[0.28em] text-gold-300">${text(content.ui.attractEyebrow)}</p>
@@ -235,6 +239,24 @@ function renderLanguageMenu(): string {
   `;
 }
 
+function renderJourneyIndicator(): string {
+  const total = journeyViews.length;
+  const visited = journeyViews.filter((view) => visitedViews.has(view)).length;
+  const label = text(content.ui.labels.journeyProgress);
+
+  return `
+    <div class="journey-indicator hidden lg:flex" role="status" aria-label="${label}: ${visited} / ${total}">
+      <span class="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-cloud-400 ${classForLanguage()}">${label}</span>
+      <div class="journey-indicator__track">
+        ${journeyViews
+          .map((view) => `<span class="journey-indicator__dot" data-visited="${visitedViews.has(view)}"></span>`)
+          .join('')}
+      </div>
+      <span class="text-xs font-semibold text-gold-300">${visited}/${total}</span>
+    </div>
+  `;
+}
+
 function renderHeader(): void {
   const copy = content.sections[state.view];
 
@@ -249,6 +271,7 @@ function renderHeader(): void {
         </div>
       </div>
       <div class="flex items-center gap-3">
+        ${renderJourneyIndicator()}
         ${renderLanguageMenu()}
         <button type="button" data-action="reset" class="hidden rounded-full border border-white/10 px-4 py-3 text-sm font-semibold text-cloud-200 transition active:scale-[0.98] md:block ${classForLanguage()}">${text(content.ui.reset)}</button>
       </div>
@@ -1406,6 +1429,7 @@ function scheduleInactivityReset(): void {
     openFaqIndex = null;
     langMenuOpen = false;
     resourceCarouselIndex = 0;
+    visitedViews.clear();
     applyDocumentDirection(state.language);
     render();
   }, content.settings.timeoutSeconds * 1000);
@@ -1414,6 +1438,10 @@ function scheduleInactivityReset(): void {
 let lastAnnouncedView: View | null = null;
 
 function render(): void {
+  if (state.awake && journeyViews.includes(state.view)) {
+    visitedViews.add(state.view);
+  }
+
   renderAttract();
   renderHeader();
   renderNav();
@@ -1433,6 +1461,14 @@ function render(): void {
     lastAnnouncedView = state.view;
     viewAnnouncer.textContent = text(content.sections[state.view].title);
     viewContent.focus({ preventScroll: true });
+
+    // Restart the transition animation on real navigation only (not every
+    // in-view interaction) by removing and re-adding the class to force a
+    // reflow between the two — reduced-motion users get the same class but
+    // the global media query collapses its duration to ~0.
+    viewContent.classList.remove('view-transition-in');
+    void viewContent.offsetWidth;
+    viewContent.classList.add('view-transition-in');
   }
 }
 
@@ -1521,6 +1557,7 @@ document.addEventListener('click', (event) => {
     openFaqIndex = null;
     langMenuOpen = false;
     resourceCarouselIndex = 0;
+    visitedViews.clear();
     applyDocumentDirection(state.language);
     render();
     return;
