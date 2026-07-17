@@ -64,6 +64,15 @@ const bottomNav = requireElement('bottom-nav');
 const viewAnnouncer = requireElement('view-announcer');
 
 let state = createInitialState(content);
+
+// Honor the manifest's home-screen app shortcuts (long-press the installed
+// icon on Android/iOS to jump straight to Quiz or Learn Sikhi) by reading
+// the ?shortcut= query param the OS launches the app with.
+const shortcutTarget = new URLSearchParams(window.location.search).get('shortcut');
+if (shortcutTarget === 'quiz' || shortcutTarget === 'learn') {
+  state = navigate(wakeKiosk(state), shortcutTarget);
+  window.history.replaceState(null, '', window.location.pathname);
+}
 let inactivityTimer = 0;
 let langMenuOpen = false;
 let themeMenuOpen = false;
@@ -72,6 +81,39 @@ let hasCelebratedPerfect = false;
 let resourceCarouselIndex = 0;
 let resourceCarouselTimer = 0;
 const qrDataUrls: Record<string, string> = {};
+
+// "Add to home screen" nudge — a personal phone visitor gets a native app
+// icon and chrome-less standalone window; a gurdwara kiosk stays exactly as
+// installed once. Dismissal is remembered per-browser so it only asks once.
+const INSTALL_DISMISSED_KEY = 'khalsa-display-install-dismissed';
+let deferredInstallPrompt: Event | null = null;
+
+function isStandaloneDisplay(): boolean {
+  return (
+    window.matchMedia('(display-mode: standalone)').matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true
+  );
+}
+
+function isIosSafari(): boolean {
+  const ua = window.navigator.userAgent;
+  return /iPhone|iPad|iPod/.test(ua) && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+}
+
+function installBannerDismissed(): boolean {
+  try {
+    return window.localStorage.getItem(INSTALL_DISMISSED_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+function shouldShowInstallBanner(): boolean {
+  if (isStandaloneDisplay() || installBannerDismissed()) {
+    return false;
+  }
+  return deferredInstallPrompt !== null || isIosSafari();
+}
 
 const journeyViews: View[] = ['pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
 const visitedViews = new Set<View>();
@@ -241,6 +283,21 @@ function renderAttract(): void {
           </div>
         </div>
         <p class="text-sm uppercase tracking-[0.28em] text-cloud-400 ${classForLanguage()}">${text(content.ui.attractInstruction)}</p>
+      </div>
+      ${shouldShowInstallBanner() ? renderInstallBanner() : ''}
+    </div>
+  `;
+}
+
+function renderInstallBanner(): string {
+  const isIos = deferredInstallPrompt === null && isIosSafari();
+
+  return `
+    <div class="install-banner" role="status">
+      <span class="${classForLanguage()}">${isIos ? text(content.ui.labels.installBannerIos) : text(content.ui.labels.installBannerAndroid)}</span>
+      <div class="flex shrink-0 items-center gap-2">
+        ${isIos ? '' : `<button type="button" data-action="install-app" class="install-banner__cta">${text(content.ui.labels.installAction)}</button>`}
+        <button type="button" data-action="dismiss-install" aria-label="${text(content.ui.labels.dismissAction)}" class="install-banner__dismiss">✕</button>
       </div>
     </div>
   `;
@@ -1856,6 +1913,26 @@ document.addEventListener('click', (event) => {
     return;
   }
 
+  if (target.closest('[data-action="install-app"]')) {
+    const promptEvent = deferredInstallPrompt as (Event & { prompt: () => Promise<void> }) | null;
+    if (promptEvent) {
+      promptEvent.prompt();
+      deferredInstallPrompt = null;
+    }
+    renderAttract();
+    return;
+  }
+
+  if (target.closest('[data-action="dismiss-install"]')) {
+    try {
+      window.localStorage.setItem(INSTALL_DISMISSED_KEY, 'true');
+    } catch {
+      // Ignore storage failures — the banner simply may reappear next visit.
+    }
+    renderAttract();
+    return;
+  }
+
   const themeTarget = target.closest<HTMLElement>('[data-set-theme]');
   if (themeTarget?.dataset.setTheme) {
     state = setTheme(state, themeTarget.dataset.setTheme);
@@ -1988,3 +2065,21 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register(asset('/sw.js')).catch(() => {});
   });
 }
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  if (!state.awake) {
+    renderAttract();
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  try {
+    window.localStorage.setItem(INSTALL_DISMISSED_KEY, 'true');
+  } catch {
+    // Ignore storage failures (private browsing, quota) — worst case the
+    // banner logic re-evaluates next render and finds nothing to install.
+  }
+});

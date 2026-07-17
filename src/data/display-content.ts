@@ -129,6 +129,10 @@ const displayContent: DisplayContent = {
       ttsListen: { en: 'Listen', pa: 'ਸੁਣੋ' },
       ttsNoPunjabiVoice: { en: 'No Punjabi voice is available on this device — showing text only.', pa: 'ਇਸ ਡਿਵਾਈਸ ਤੇ ਪੰਜਾਬੀ ਆਵਾਜ਼ ਉਪਲਬਧ ਨਹੀਂ ਹੈ — ਸਿਰਫ਼ ਪਾਠ ਦਿਖਾਇਆ ਜਾ ਰਿਹਾ ਹੈ।' },
       journeyProgress: { en: 'Your journey', pa: 'ਤੁਹਾਡੀ ਯਾਤਰਾ' },
+      installBannerAndroid: { en: 'Add this display to your home screen for quick access.', pa: 'ਤੁਰੰਤ ਪਹੁੰਚ ਲਈ ਇਸ ਪ੍ਰਦਰਸ਼ਨੀ ਨੂੰ ਆਪਣੀ ਹੋਮ ਸਕ੍ਰੀਨ ਤੇ ਸ਼ਾਮਲ ਕਰੋ।' },
+      installBannerIos: { en: 'Tap Share, then "Add to Home Screen" for quick access.', pa: 'ਤੁਰੰਤ ਪਹੁੰਚ ਲਈ ਸ਼ੇਅਰ ਤੇ, ਫਿਰ "ਹੋਮ ਸਕ੍ਰੀਨ ਤੇ ਸ਼ਾਮਲ ਕਰੋ" ਤੇ ਟੈਪ ਕਰੋ।' },
+      installAction: { en: 'Install', pa: 'ਇੰਸਟਾਲ ਕਰੋ' },
+      dismissAction: { en: 'Dismiss', pa: 'ਖਾਰਜ ਕਰੋ' },
     },
   },
   home: {

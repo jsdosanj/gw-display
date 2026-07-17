@@ -260,6 +260,10 @@ export interface DisplayContent {
       ttsListen: LocalizedText;
       ttsNoPunjabiVoice: LocalizedText;
       journeyProgress: LocalizedText;
+      installBannerAndroid: LocalizedText;
+      installBannerIos: LocalizedText;
+      installAction: LocalizedText;
+      dismissAction: LocalizedText;
     };
   };
   home: {
