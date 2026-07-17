@@ -737,7 +737,7 @@ function renderPyare(): string {
   const selected = content.panjPyare.find((item) => item.id === state.selectedPyaraId) ?? content.panjPyare[0];
 
   const beforeKhalsaHtml = `
-    <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
       <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.beforeKhalsa)}</p>
       <div class="mt-3 grid gap-3 sm:grid-cols-3">
         ${renderInfoBox(content.ui.labels.previousOccupation, text(selected.occupation))}
@@ -748,7 +748,7 @@ function renderPyare(): string {
   `;
 
   const storyHtml = `
-    <div class="story-panel mt-6">
+    <div class="story-panel detail-card">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
         ${renderListenButton(selected.story ?? selected.details)}
@@ -758,7 +758,7 @@ function renderPyare(): string {
   `;
 
   const afterKhalsaHtml = selected.accomplishments || selected.roles
-    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.afterKhalsa)}</p>
          ${selected.accomplishments ? `<p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}"><strong class="${classForLanguage()}">${text(content.ui.labels.accomplishments)}:</strong> ${text(selected.accomplishments)}</p>` : ''}
          ${selected.roles ? `<p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}"><strong class="${classForLanguage()}">${text(content.ui.labels.roles)}:</strong> ${text(selected.roles)}</p>` : ''}
@@ -766,7 +766,7 @@ function renderPyare(): string {
     : '';
 
   const funFactHtml = selected.funFact
-    ? `<div class="fact-card mt-6">
+    ? `<div class="fact-card detail-card">
          <div class="fact-card__icon">✦</div>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.funFact)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.funFact)}</p>
@@ -774,25 +774,29 @@ function renderPyare(): string {
     : '';
 
   const shaheediHtml = selected.shaheedi
-    ? `<div class="rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5 mt-6">
+    ? `<div class="detail-card rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5">
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-rose-300 ${classForLanguage()}">${text(content.ui.labels.shaheedi)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.shaheedi)}</p>
        </div>`
     : '';
 
   const lessonsHtml = selected.lessons
-    ? `<div class="story-panel mt-6">
+    ? `<div class="story-panel detail-card">
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.lessons)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.lessons)}</p>
        </div>`
     : '';
 
   const languageQualitiesHtml = selected.language || selected.qualities
-    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
          ${selected.qualities ? `<p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.qualities)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.qualities)}</p>` : ''}
          ${selected.language ? `<p class="${selected.qualities ? 'mt-5' : ''} text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.language)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.language)}</p>` : ''}
        </div>`
     : '';
+
+  const pyareDetailCards = [beforeKhalsaHtml, storyHtml, afterKhalsaHtml, funFactHtml, shaheediHtml, lessonsHtml, languageQualitiesHtml]
+    .filter(Boolean)
+    .join('');
 
   return `
     <div class="grid gap-6">
@@ -822,17 +826,13 @@ function renderPyare(): string {
           <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.birthName)}: ${text(selected.birthName)} &middot; ${selected.years}</p>
         </div>
 
-        ${beforeKhalsaHtml}
-        ${storyHtml}
-        ${afterKhalsaHtml}
-        ${funFactHtml}
-        ${shaheediHtml}
-        ${lessonsHtml}
-        ${languageQualitiesHtml}
+        <div class="detail-grid mt-6">
+          ${pyareDetailCards}
+        </div>
 
         <div class="storyline-panel mt-8">
           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
-          <div class="mt-4 grid gap-2">
+          <div class="mt-4 grid gap-2 lg:grid-cols-2">
             ${content.panjPyare
               .map(
                 (item, index) => `
@@ -890,19 +890,22 @@ function renderTakhtMap(selected: TakhtProfile): string {
 function renderTakhts(): string {
   const selected = content.takhts.find((item) => item.id === state.selectedTakhtId) ?? content.takhts[0];
 
-  const locationHtml = `
-    <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+  const establishedByHtml = `
+    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
       <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>
       <p class="mt-3 text-base font-medium text-white ${classForLanguage()}">${text(selected.establishedBy)}</p>
     </div>
-    <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-4">
+  `;
+
+  const significanceHtml = `
+    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
       <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.significance)}</p>
       <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.significance)}</p>
     </div>
   `;
 
   const storyHtml = selected.story
-    ? `<div class="story-panel mt-6">
+    ? `<div class="story-panel detail-card">
          <div class="flex flex-wrap items-center justify-between gap-3">
            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
            ${renderListenButton(selected.story)}
@@ -912,7 +915,7 @@ function renderTakhts(): string {
     : '';
 
   const funFactHtml = selected.funFact
-    ? `<div class="fact-card mt-6">
+    ? `<div class="fact-card detail-card">
          <div class="fact-card__icon">✦</div>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.funFact)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.funFact)}</p>
@@ -920,32 +923,36 @@ function renderTakhts(): string {
     : '';
 
   const jathedaarHtml = selected.jathedaar
-    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.jathedaar)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.jathedaar)}</p>
        </div>`
     : '';
 
   const visitorsHtml = selected.visitorsInfo
-    ? `<div class="rounded-[24px] border border-emerald-300/15 bg-emerald-400/5 p-5 mt-4">
+    ? `<div class="detail-card rounded-[24px] border border-emerald-300/15 bg-emerald-400/5 p-5">
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300 ${classForLanguage()}">${text(content.ui.labels.visitorsInfo)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.visitorsInfo)}</p>
        </div>`
     : '';
 
   const gurusVisitedHtml = selected.gurusVisited
-    ? `<div class="story-panel mt-6">
+    ? `<div class="story-panel detail-card">
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.gurusVisited)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.gurusVisited)}</p>
        </div>`
     : '';
 
   const areaImpactHtml = selected.areaHistory || selected.localImpact
-    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
          ${selected.areaHistory ? `<p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.areaHistory)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.areaHistory)}</p>` : ''}
          ${selected.localImpact ? `<p class="${selected.areaHistory ? 'mt-5' : ''} text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.localImpact)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.localImpact)}</p>` : ''}
        </div>`
     : '';
+
+  const takhtDetailCards = [establishedByHtml, significanceHtml, storyHtml, funFactHtml, jathedaarHtml, visitorsHtml, gurusVisitedHtml, areaImpactHtml]
+    .filter(Boolean)
+    .join('');
 
   return `
     <div class="grid gap-6">
@@ -975,17 +982,13 @@ function renderTakhts(): string {
           <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
         </div>
 
-        ${locationHtml}
-        ${storyHtml}
-        ${funFactHtml}
-        ${jathedaarHtml}
-        ${visitorsHtml}
-        ${gurusVisitedHtml}
-        ${areaImpactHtml}
+        <div class="detail-grid mt-6">
+          ${takhtDetailCards}
+        </div>
 
         <div class="storyline-panel mt-8">
           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
-          <div class="mt-4 grid gap-2">
+          <div class="mt-4 grid gap-2 lg:grid-cols-2">
             ${content.takhts
               .map(
                 (takht, index) => `
@@ -1188,6 +1191,12 @@ function renderAbout(): string {
         </div>
         <div class="mt-6 rounded-[24px] border border-gold-300/25 bg-gold-400/8 p-6">
           <p class="text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.collaboration)}</p>
+          <p class="mt-5 text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.about.contributorsLabel)}</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            ${content.about.contributors
+              .map((name) => `<span class="rounded-full border border-gold-300/25 bg-white/[0.04] px-3 py-1.5 text-sm text-cloud-200">${name}</span>`)
+              .join('')}
+          </div>
         </div>
         <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.partnerships)}</p>
         <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.futureUpdates)}</p>

@@ -203,6 +203,20 @@ const displayContent: DisplayContent = {
       en: 'This display was collaborated on by the Mata Gujri Ji Group from the San Jose Gurmat Camp in July 2026.',
       pa: 'ਇਹ ਪ੍ਰਦਰਸ਼ਨੀ ਜੁਲਾਈ 2026 ਵਿੱਚ ਸੈਨ ਹੋਜੇ ਗੁਰਮਤ ਕੈਂਪ ਦੇ ਮਾਤਾ ਗੁਜਰੀ ਜੀ ਗਰੁੱਪ ਦੇ ਸਹਿਯੋਗ ਨਾਲ ਤਿਆਰ ਕੀਤੀ ਗਈ।',
     },
+    contributorsLabel: {
+      en: 'Mata Gujri Ji Group',
+      pa: 'ਮਾਤਾ ਗੁਜਰੀ ਜੀ ਗਰੁੱਪ',
+    },
+    contributors: [
+      'Evleen Kang',
+      'Mannat Kang',
+      'Harnoor Dehar',
+      'Arashdeep Kaur',
+      'Gurparleen Kaur',
+      'Mansimar Gill',
+      'Gurjot Kaur',
+      'Anglepreet Kaur',
+    ],
     partnerships: {
       en: 'Built in partnership with Sikhi.io and SikhiUni.com, with curated pathways to trusted Sikh education resources.',
       pa: 'Sikhi.io ਅਤੇ SikhiUni.com ਦੇ ਸਾਥ ਨਾਲ ਬਣਾਇਆ ਗਿਆ, ਭਰੋਸੇਯੋਗ ਸਿੱਖ ਸਿੱਖਿਆ ਸਰੋਤਾਂ ਵੱਲ ਮਾਰਗਦਰਸ਼ਨ ਸਮੇਤ।',
