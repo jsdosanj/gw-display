@@ -64,6 +64,10 @@ async function initQrCodes(): Promise<void> {
       qrDataUrls[site.id] = '';
     }
   }
+
+  if (state.awake && (state.view === 'resources' || state.view === 'leaflets')) {
+    renderView();
+  }
 }
 
 void initQrCodes().then(() => {
