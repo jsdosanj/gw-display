@@ -238,6 +238,7 @@ export interface DisplayContent {
       gurusVisited: LocalizedText;
       areaHistory: LocalizedText;
       localImpact: LocalizedText;
+      embedUnavailable: LocalizedText;
     };
   };
   home: {

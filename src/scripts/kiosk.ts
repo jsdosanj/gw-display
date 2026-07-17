@@ -966,8 +966,18 @@ function renderResources(): string {
                     loading="lazy"
                     sandbox="allow-scripts"
                     title="${site.title}"
+                    data-iframe-slot="${site.id}"
                   ></iframe>
-                  <div class="resource-card__overlay p-6 md:p-8">
+                  <div class="resource-fallback-panel" data-fallback-slot="${site.id}" hidden ${resourceBanners[site.id] ? `style="--art-image:url('${resourceBanners[site.id]}');"` : ''}>
+                    <div class="resource-fallback-panel__glow"></div>
+                    <div class="relative z-10 flex h-full flex-col items-start justify-end p-6 md:p-8">
+                      <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
+                      <p class="mt-2 max-w-xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(site.previewDescription)}</p>
+                      <p class="mt-2 text-xs uppercase tracking-[0.18em] text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.embedUnavailable)}</p>
+                      <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.openInBrowser)}</a>
+                    </div>
+                  </div>
+                  <div class="resource-card__overlay p-6 md:p-8" data-overlay-slot="${site.id}">
                     <div class="flex items-end justify-between gap-6 w-full">
                       <div>
                         <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
@@ -1165,6 +1175,55 @@ function updateResourceCarousel(): void {
   });
 }
 
+function activateResourceFallback(siteId: string): void {
+  const iframe = document.querySelector<HTMLIFrameElement>(`[data-iframe-slot="${siteId}"]`);
+  const overlay = document.querySelector<HTMLElement>(`[data-overlay-slot="${siteId}"]`);
+  const fallback = document.querySelector<HTMLElement>(`[data-fallback-slot="${siteId}"]`);
+  if (iframe) {
+    iframe.style.display = 'none';
+  }
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+  if (fallback) {
+    fallback.hidden = false;
+  }
+}
+
+function setupIframeFallbacks(): void {
+  const iframes = document.querySelectorAll<HTMLIFrameElement>('[data-iframe-slot]');
+
+  iframes.forEach((iframe) => {
+    const siteId = iframe.dataset.iframeSlot;
+    const url = iframe.src;
+    if (!siteId || !url) {
+      return;
+    }
+
+    // A cross-origin iframe's "load" event fires whether the embed actually
+    // rendered or the browser committed an internal error page in its place —
+    // both throw the same SecurityError on contentWindow.location access, so
+    // that alone can't tell success from failure. What a plain network-level
+    // failure (DNS, connection refused/reset — the case this sandbox hits
+    // against every external host) *can* tell us is whether the request ever
+    // reached the server at all, via a no-cors fetch racing a short timeout.
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 4000);
+
+    fetch(url, { mode: 'no-cors', signal: controller.signal })
+      .catch(() => {
+        activateResourceFallback(siteId);
+      })
+      .finally(() => {
+        window.clearTimeout(timeoutId);
+      });
+
+    iframe.addEventListener('error', () => {
+      activateResourceFallback(siteId);
+    });
+  });
+}
+
 function setupResourceCarousel(): void {
   clearResourceCarouselTimer();
   const liveSiteCount = content.resources.sites.filter((s) => s.id === 'sikhi-io' || s.id === 'sikhiuni').length;
@@ -1224,6 +1283,7 @@ function renderView(): void {
     case 'resources':
       viewContent.innerHTML = renderResources();
       setupResourceCarousel();
+      setupIframeFallbacks();
       break;
     case 'leaflets':
       viewContent.innerHTML = renderLeaflets();

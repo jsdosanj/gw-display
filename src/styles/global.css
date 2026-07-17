@@ -373,6 +373,30 @@ button {
   background: linear-gradient(to top, rgba(5, 11, 20, 0.95) 0%, rgba(5, 11, 20, 0.4) 50%, transparent 100%);
 }
 
+.resource-fallback-panel {
+  @apply absolute inset-0 overflow-hidden rounded-[24px] bg-night-900;
+}
+
+.resource-fallback-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    var(--art-image, none),
+    linear-gradient(180deg, rgba(5, 11, 20, 0.55) 0%, rgba(5, 11, 20, 0.96) 78%);
+  background-position: center;
+  background-size: cover;
+  opacity: 0.85;
+}
+
+.resource-fallback-panel__glow {
+  position: absolute;
+  inset: auto -10% -30% -10%;
+  height: 60%;
+  background: radial-gradient(circle at center, rgba(228, 187, 94, 0.2), transparent 70%);
+  filter: blur(20px);
+}
+
 /* Onboarding and FAQ */
 .onboarding-card {
   @apply rounded-[28px] border border-white/10 bg-white/[0.06] shadow-2xl shadow-black/30 backdrop-blur-2xl cursor-pointer p-7 text-center transition duration-200 hover:border-gold-300/40 active:scale-[0.98];

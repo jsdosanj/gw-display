@@ -129,6 +129,7 @@ const displayContent: DisplayContent = {
       gurusVisited: { en: 'Gurus associated with this site', pa: 'ਇਸ ਅਸਥਾਨ ਨਾਲ ਸੰਬੰਧਿਤ ਗੁਰੂ ਸਾਹਿਬਾਨ' },
       areaHistory: { en: 'History of the surrounding area', pa: 'ਆਲੇ-ਦੁਆਲੇ ਦੇ ਇਲਾਕੇ ਦਾ ਇਤਿਹਾਸ' },
       localImpact: { en: 'Impact on the local area', pa: 'ਸਥਾਨਕ ਇਲਾਕੇ ਤੇ ਪ੍ਰਭਾਵ' },
+      embedUnavailable: { en: 'This site cannot be embedded here — view it in your browser instead.', pa: 'ਇਹ ਸਾਈਟ ਇੱਥੇ ਏਮਬੈਡ ਨਹੀਂ ਹੋ ਸਕਦੀ — ਇਸਨੂੰ ਆਪਣੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਵੇਖੋ।' },
     },
   },
   home: {
