@@ -1,5 +1,6 @@
 export type Language = 'en' | 'pa' | 'hi' | 'es' | 'ar';
 export type View = 'home' | 'pyare' | 'takhts' | 'quiz' | 'learn' | 'about' | 'resources' | 'leaflets';
+export type ThemePalette = 'default' | 'vaisakhi' | 'diwali' | 'gurpurab';
 
 export interface LocalizedText {
   en: string;
@@ -7,6 +8,13 @@ export interface LocalizedText {
   hi?: string;
   es?: string;
   ar?: string;
+}
+
+export interface EventTheme {
+  id: string;
+  palette: ThemePalette;
+  icon: string;
+  label: LocalizedText;
 }
 
 export interface ViewCopy {
@@ -190,6 +198,7 @@ export interface DisplayContent {
     languageLabel: LocalizedText;
     languages: Record<Language, string>;
     reset: LocalizedText;
+    themeLabel: LocalizedText;
     labels: {
       birthName: LocalizedText;
       birthDeath: LocalizedText;
@@ -251,6 +260,10 @@ export interface DisplayContent {
       ttsListen: LocalizedText;
       ttsNoPunjabiVoice: LocalizedText;
       journeyProgress: LocalizedText;
+      installBannerAndroid: LocalizedText;
+      installBannerIos: LocalizedText;
+      installAction: LocalizedText;
+      dismissAction: LocalizedText;
     };
   };
   home: {
@@ -295,6 +308,7 @@ export interface DisplayContent {
   panjPyare: PanjPyaraProfile[];
   takhts: TakhtProfile[];
   learnSikhi: LearnSikhiContent;
+  themes: EventTheme[];
   quiz: {
     intro: LocalizedText;
     levelMeta: Record<QuizLevel, QuizLevelMeta>;

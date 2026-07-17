@@ -16,6 +16,7 @@ export interface KioskState {
   quizAnswers: number[];
   revealedAnswer: number | null;
   hasChosenMode: boolean;
+  themeId: string;
 }
 
 function shuffleIndices(length: number): number[] {
@@ -51,6 +52,7 @@ export function createInitialState(content: DisplayContent): KioskState {
     quizAnswers: [],
     revealedAnswer: null,
     hasChosenMode: false,
+    themeId: content.themes[0]?.id ?? 'default',
   };
 }
 
@@ -66,6 +68,13 @@ export function setLanguage(state: KioskState, language: Language): KioskState {
   return {
     ...state,
     language,
+  };
+}
+
+export function setTheme(state: KioskState, themeId: string): KioskState {
+  return {
+    ...state,
+    themeId,
   };
 }
 

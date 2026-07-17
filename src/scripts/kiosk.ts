@@ -14,10 +14,12 @@ import {
   selectQuizLevel,
   selectTakht,
   setLanguage,
+  setTheme,
   startQuiz,
   submitQuizAnswer,
   wakeKiosk,
 } from '../lib/kiosk-state';
+import type { KioskState } from '../lib/kiosk-state';
 import type {
   DisplayContent,
   HomeFeature,
@@ -62,13 +64,56 @@ const bottomNav = requireElement('bottom-nav');
 const viewAnnouncer = requireElement('view-announcer');
 
 let state = createInitialState(content);
+
+// Honor the manifest's home-screen app shortcuts (long-press the installed
+// icon on Android/iOS to jump straight to Quiz or Learn Sikhi) by reading
+// the ?shortcut= query param the OS launches the app with.
+const shortcutTarget = new URLSearchParams(window.location.search).get('shortcut');
+if (shortcutTarget === 'quiz' || shortcutTarget === 'learn') {
+  state = navigate(wakeKiosk(state), shortcutTarget);
+  window.history.replaceState(null, '', window.location.pathname);
+}
 let inactivityTimer = 0;
 let langMenuOpen = false;
+let themeMenuOpen = false;
 let openFaqIndex: number | null = null;
 let hasCelebratedPerfect = false;
 let resourceCarouselIndex = 0;
 let resourceCarouselTimer = 0;
 const qrDataUrls: Record<string, string> = {};
+
+// "Add to home screen" nudge — a personal phone visitor gets a native app
+// icon and chrome-less standalone window; a gurdwara kiosk stays exactly as
+// installed once. Dismissal is remembered per-browser so it only asks once.
+const INSTALL_DISMISSED_KEY = 'khalsa-display-install-dismissed';
+let deferredInstallPrompt: Event | null = null;
+
+function isStandaloneDisplay(): boolean {
+  return (
+    window.matchMedia('(display-mode: standalone)').matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true
+  );
+}
+
+function isIosSafari(): boolean {
+  const ua = window.navigator.userAgent;
+  return /iPhone|iPad|iPod/.test(ua) && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+}
+
+function installBannerDismissed(): boolean {
+  try {
+    return window.localStorage.getItem(INSTALL_DISMISSED_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+function shouldShowInstallBanner(): boolean {
+  if (isStandaloneDisplay() || installBannerDismissed()) {
+    return false;
+  }
+  return deferredInstallPrompt !== null || isIosSafari();
+}
 
 const journeyViews: View[] = ['pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
 const visitedViews = new Set<View>();
@@ -79,11 +124,17 @@ const visitedViews = new Set<View>();
 // blade) rather than literal photography — matches the site's line-icon
 // language elsewhere and stays respectful of the articles' sanctity.
 const kakaarIcons: string[] = [
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M8 8c-1 3-1 7 0 11M12 8c0 4 0 8 0 11M16 8c1 3 1 7 0 11"/></svg>',
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="5" rx="1.5"/><path d="M6 9v11M9.5 9v11M13 9v11M16.5 9v11"/></svg>',
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.2" opacity="0.4"/></svg>',
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v6l-2 10h-3.5l-1.5-8-1.5 8H8L6 10V4z"/><path d="M4 8h16"/></svg>',
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v14"/><path d="M9 6h6"/><path d="M9 16h6l-1.5 3h-3z"/></svg>',
+  // Kesh — the rishi/joora hair-knot: a coiled bun above the gathered hair
+  // beneath it, the standard abstract shorthand for uncut, gathered hair.
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="4.5"/><path d="M12 6.3a2.4 2.4 0 0 1 1.8 3.9"/><path d="M7.5 20c.6-3 2.2-4.7 4.5-4.7s3.9 1.7 4.5 4.7"/></svg>',
+  // Kangha — a wooden comb: rounded spine with five teeth.
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.2c0-.9.8-1.7 1.7-1.7h11.6c.9 0 1.7.8 1.7 1.7v3H4.5v-3z"/><path d="M6.2 8.2v10.6M9.1 8.2v10.6M12 8.2v10.6M14.9 8.2v10.6M17.8 8.2v10.6"/></svg>',
+  // Kara — a single plain iron bangle with a subtle metallic highlight arc.
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="7.5"/><path d="M6.8 8a7.4 7.4 0 0 1 3.3-2.4" stroke-width="1.1" opacity="0.55"/></svg>',
+  // Kachhera — a symmetric drawstring undergarment silhouette with a waistband.
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14v3.5c0 1-.3 2-.8 2.9L15.8 17.5h-2.2l-1.1-6-1.1 6H9.3L6.8 11.4c-.5-.9-.8-1.9-.8-2.9V5z"/><path d="M5 8.3h14"/></svg>',
+  // Kirpan — a slightly curved single-edged blade with crossguard and hilt.
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.4 3c1.1 4.2.9 9-1.4 13.2"/><path d="M9.3 6.3h4.4"/><path d="M10.4 16.2h2.3l-.6 3.8h-1.1z"/></svg>',
 ];
 
 async function initQrCodes(): Promise<void> {
@@ -188,6 +239,15 @@ function applyDocumentDirection(language: Language): void {
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
 }
 
+function applyDocumentTheme(current: KioskState): void {
+  const palette = content.themes.find((theme) => theme.id === current.themeId)?.palette ?? 'default';
+  if (palette === 'default') {
+    document.documentElement.removeAttribute('data-theme');
+  } else {
+    document.documentElement.dataset.theme = palette;
+  }
+}
+
 function renderAttract(): void {
   attractScreen.innerHTML = `
     <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12" style="background-image:url('${asset('/assets/images/IMG_3198.jpeg')}');background-size:cover;background-position:center;">
@@ -224,6 +284,21 @@ function renderAttract(): void {
         </div>
         <p class="text-sm uppercase tracking-[0.28em] text-cloud-400 ${classForLanguage()}">${text(content.ui.attractInstruction)}</p>
       </div>
+      ${shouldShowInstallBanner() ? renderInstallBanner() : ''}
+    </div>
+  `;
+}
+
+function renderInstallBanner(): string {
+  const isIos = deferredInstallPrompt === null && isIosSafari();
+
+  return `
+    <div class="install-banner" role="status">
+      <span class="${classForLanguage()}">${isIos ? text(content.ui.labels.installBannerIos) : text(content.ui.labels.installBannerAndroid)}</span>
+      <div class="flex shrink-0 items-center gap-2">
+        ${isIos ? '' : `<button type="button" data-action="install-app" class="install-banner__cta">${text(content.ui.labels.installAction)}</button>`}
+        <button type="button" data-action="dismiss-install" aria-label="${text(content.ui.labels.dismissAction)}" class="install-banner__dismiss">✕</button>
+      </div>
     </div>
   `;
 }
@@ -240,7 +315,7 @@ function renderLanguageMenu(): string {
         aria-controls="lang-menu"
         aria-label="${text(content.ui.languageLabel)}"
       >
-        ${content.ui.languages[state.language]} ▾
+        <span class="sm:hidden">${state.language.toUpperCase()}</span><span class="hidden sm:inline">${content.ui.languages[state.language]}</span> ▾
       </button>
       <div class="lang-menu" id="lang-menu" role="menu" ${langMenuOpen ? '' : 'hidden'}>
           ${Object.entries(content.ui.languages)
@@ -248,6 +323,41 @@ function renderLanguageMenu(): string {
             ([code, label]) => `
               <button type="button" data-set-language="${code}" class="lang-option ${code === state.language ? 'active' : ''}">
                 ${label}
+              </button>
+            `,
+          )
+          .join('')}
+      </div>
+    </div>
+  `;
+}
+
+function activeTheme() {
+  return content.themes.find((theme) => theme.id === state.themeId) ?? content.themes[0];
+}
+
+function renderThemeMenu(): string {
+  const current = activeTheme();
+
+  return `
+    <div class="relative" id="theme-dropdown-wrapper">
+      <button
+        type="button"
+        data-action="toggle-theme-menu"
+        class="lang-badge"
+        aria-haspopup="menu"
+        aria-expanded="${themeMenuOpen}"
+        aria-controls="theme-menu"
+        aria-label="${text(content.ui.themeLabel)}"
+      >
+        <span aria-hidden="true">${current?.icon ?? '☬'}</span><span class="hidden lg:inline">${current ? text(current.label) : ''}</span> ▾
+      </button>
+      <div class="lang-menu theme-menu" id="theme-menu" role="menu" ${themeMenuOpen ? '' : 'hidden'}>
+        ${content.themes
+          .map(
+            (themeOption) => `
+              <button type="button" data-set-theme="${themeOption.id}" class="lang-option ${classForLanguage()} ${themeOption.id === state.themeId ? 'active' : ''}">
+                <span aria-hidden="true">${themeOption.icon}</span> ${text(themeOption.label)}
               </button>
             `,
           )
@@ -275,24 +385,53 @@ function renderJourneyIndicator(): string {
   `;
 }
 
+// A full-width slim strip standing in for the detailed dot-track on phones
+// and small tablets, where the header row has no spare width to spend on a
+// second widget — it sits below the row instead of competing inside it.
+function renderJourneyProgressStrip(): string {
+  const total = journeyViews.length;
+  const visited = journeyViews.filter((view) => visitedViews.has(view)).length;
+  const label = text(content.ui.labels.journeyProgress);
+  const pct = total === 0 ? 0 : Math.round((visited / total) * 100);
+
+  return `
+    <div class="journey-progress-strip lg:hidden" role="status" aria-label="${label}: ${visited} / ${total}">
+      <div class="journey-progress-strip__fill" style="width:${pct}%"></div>
+    </div>
+  `;
+}
+
 function renderHeader(): void {
   const copy = content.sections[state.view];
 
   header.innerHTML = `
-    <div class="glass-header flex min-h-20 items-center justify-between px-4 py-2 md:min-h-24 md:px-8 md:py-0">
-      <div class="flex min-w-0 items-center gap-4">
-        <button type="button" data-nav="home" aria-label="${text(content.ui.nav.home)}" class="flex h-14 w-14 items-center justify-center rounded-full border border-gold-300/30 bg-white/5 text-2xl text-gold-300 transition active:scale-[0.98]">☬</button>
-        <div class="min-w-0">
-          <p class="truncate text-xs font-semibold uppercase tracking-[0.22em] text-cloud-400">${text(content.ui.experienceLabel)}</p>
-          <h2 class="truncate text-xl font-semibold text-white md:text-2xl ${classForLanguage()}">${text(copy.title)}</h2>
-          <p class="truncate text-xs text-cloud-400 md:text-sm ${classForLanguage()}">${text(copy.subtitle)}</p>
+    <div class="glass-header">
+      <div class="flex min-h-20 items-center justify-between px-4 py-2 md:min-h-24 md:px-8 md:py-0">
+        <div class="flex min-w-0 items-center gap-3 sm:gap-4">
+          <button type="button" data-nav="home" aria-label="${text(content.ui.nav.home)}" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold-300/30 bg-white/5 text-xl text-gold-300 transition active:scale-[0.98] sm:h-14 sm:w-14 sm:text-2xl">☬</button>
+          <div class="min-w-0">
+            <p class="hidden truncate text-xs font-semibold uppercase tracking-[0.22em] text-cloud-400 sm:block">${text(content.ui.experienceLabel)}</p>
+            <h2 class="truncate text-lg font-semibold text-white sm:text-xl md:text-2xl ${classForLanguage()}">${text(copy.title)}</h2>
+            <p class="hidden truncate text-xs text-cloud-400 sm:block md:text-sm ${classForLanguage()}">${text(copy.subtitle)}</p>
+          </div>
+        </div>
+        <div class="flex shrink-0 items-center gap-2 sm:gap-3">
+          ${renderJourneyIndicator()}
+          ${renderThemeMenu()}
+          ${renderLanguageMenu()}
+          <button
+            type="button"
+            data-action="reset"
+            aria-label="${text(content.ui.reset)}"
+            class="flex items-center justify-center gap-2 rounded-full border border-white/10 p-3 text-cloud-200 transition active:scale-[0.98] md:px-4 md:py-3"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 1 2.6 6.3"/><path d="M3 8v5h5"/></svg>
+            <span class="hidden text-sm font-semibold md:inline ${classForLanguage()}">${text(content.ui.reset)}</span>
+          </button>
         </div>
       </div>
-      <div class="flex items-center gap-3">
-        ${renderJourneyIndicator()}
-        ${renderLanguageMenu()}
-        <button type="button" data-action="reset" class="hidden rounded-full border border-white/10 px-4 py-3 text-sm font-semibold text-cloud-200 transition active:scale-[0.98] md:block ${classForLanguage()}">${text(content.ui.reset)}</button>
-      </div>
+      ${state.themeId !== 'default' ? `<div class="event-theme-banner ${classForLanguage()}"><span aria-hidden="true">${activeTheme()?.icon ?? ''}</span> ${activeTheme() ? text(activeTheme()!.label) : ''}</div>` : ''}
+      ${renderJourneyProgressStrip()}
     </div>
   `;
 }
@@ -301,7 +440,7 @@ function renderNav(): void {
   const views: View[] = ['home', 'pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
 
   bottomNav.innerHTML = `
-    <div class="glass-header flex min-h-20 gap-2 overflow-x-auto px-2 pt-2 md:grid md:min-h-24 md:grid-cols-8 md:gap-2 md:overflow-visible md:px-5 md:py-2">
+    <div class="nav-scroll glass-header flex min-h-20 gap-2 overflow-x-auto px-2 pt-2 md:grid md:min-h-24 md:grid-cols-8 md:gap-2 md:overflow-visible md:px-5 md:py-2">
       ${views
         .map(
           (view) => `
@@ -320,6 +459,15 @@ function renderNav(): void {
         .join('')}
     </div>
   `;
+
+  // On phones the row scrolls horizontally — bring the newly active tab into
+  // view so navigating (e.g. via a home feature card) doesn't leave it
+  // scrolled off-screen. No-op on the desktop grid layout (nothing to scroll).
+  const navRow = bottomNav.querySelector<HTMLElement>('.nav-scroll');
+  const activePill = bottomNav.querySelector<HTMLElement>('[data-active="true"]');
+  if (navRow && activePill && navRow.scrollWidth > navRow.clientWidth) {
+    activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
 }
 
 function renderFeatureCard(feature: HomeFeature): string {
@@ -902,7 +1050,7 @@ function renderLearn(): string {
               (guru) => `
                 <div class="guru-lineage__node">
                   <div class="guru-lineage__connector" aria-hidden="true"></div>
-                  <div class="guru-lineage__medallion">${guru.order}</div>
+                  <div class="guru-lineage__medallion"><span>${guru.order}</span></div>
                   <div class="guru-lineage__card">
                     <p class="text-base font-semibold text-white ${classForLanguage()}">${text(guru.name)}</p>
                     <p class="mt-1 text-xs uppercase tracking-[0.14em] text-cloud-400">${guru.years}</p>
@@ -1106,7 +1254,7 @@ function renderResources(): string {
                     <div class="relative z-10 flex h-full flex-col items-start justify-end p-6 md:p-8">
                       <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
                       <p class="mt-2 max-w-xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(site.previewDescription)}</p>
-                      <p class="mt-2 text-xs uppercase tracking-[0.18em] text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.embedUnavailable)}</p>
+                      <p class="mt-3 inline-flex items-center rounded-full border border-white/15 bg-night-950/85 px-3 py-1.5 text-xs uppercase tracking-[0.14em] text-cloud-200 backdrop-blur-sm ${classForLanguage()}">${text(content.ui.labels.embedUnavailable)}</p>
                       <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.openInBrowser)}</a>
                     </div>
                   </div>
@@ -1586,6 +1734,41 @@ function scheduleInactivityReset(): void {
 
 let lastAnnouncedView: View | null = null;
 
+// Aggregate-only multi-kiosk analytics: a random, non-identifying token
+// generated once per device (never tied to a visitor) lets a gurdwara with
+// several kiosks compare traffic across them via /api/analytics-summary.
+// Sends are best-effort — analytics/api/analytics.ts responds 204 even
+// with no KV binding provisioned, and any network failure here is silently
+// swallowed since this must never affect the visitor experience.
+const ANALYTICS_KIOSK_ID_KEY = 'khalsa-display-kiosk-id';
+
+function getKioskAnalyticsId(): string {
+  try {
+    const existing = window.localStorage.getItem(ANALYTICS_KIOSK_ID_KEY);
+    if (existing) {
+      return existing;
+    }
+    const generated = crypto.randomUUID();
+    window.localStorage.setItem(ANALYTICS_KIOSK_ID_KEY, generated);
+    return generated;
+  } catch {
+    return 'unknown';
+  }
+}
+
+function sendAnalyticsPing(view: View, event: 'view' | 'heartbeat'): void {
+  const payload = JSON.stringify({ kioskId: getKioskAnalyticsId(), view, event });
+  try {
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(asset('/api/analytics'), new Blob([payload], { type: 'application/json' }));
+    } else {
+      fetch(asset('/api/analytics'), { method: 'POST', body: payload, keepalive: true }).catch(() => {});
+    }
+  } catch {
+    // Analytics must never break the display — swallow any failure.
+  }
+}
+
 function render(): void {
   if (state.awake && journeyViews.includes(state.view)) {
     visitedViews.add(state.view);
@@ -1610,6 +1793,8 @@ function render(): void {
     lastAnnouncedView = state.view;
     viewAnnouncer.textContent = text(content.sections[state.view].title);
     viewContent.focus({ preventScroll: true });
+    viewContent.scrollTop = 0;
+    sendAnalyticsPing(state.view, 'view');
 
     // Restart the transition animation on real navigation only (not every
     // in-view interaction) by removing and re-adding the class to force a
@@ -1704,6 +1889,7 @@ document.addEventListener('click', (event) => {
 
   if (target.closest('[data-action="toggle-lang-menu"]')) {
     langMenuOpen = !langMenuOpen;
+    themeMenuOpen = false;
     renderHeader();
     scheduleInactivityReset();
     return;
@@ -1719,13 +1905,53 @@ document.addEventListener('click', (event) => {
     return;
   }
 
+  if (target.closest('[data-action="toggle-theme-menu"]')) {
+    themeMenuOpen = !themeMenuOpen;
+    langMenuOpen = false;
+    renderHeader();
+    scheduleInactivityReset();
+    return;
+  }
+
+  if (target.closest('[data-action="install-app"]')) {
+    const promptEvent = deferredInstallPrompt as (Event & { prompt: () => Promise<void> }) | null;
+    if (promptEvent) {
+      promptEvent.prompt();
+      deferredInstallPrompt = null;
+    }
+    renderAttract();
+    return;
+  }
+
+  if (target.closest('[data-action="dismiss-install"]')) {
+    try {
+      window.localStorage.setItem(INSTALL_DISMISSED_KEY, 'true');
+    } catch {
+      // Ignore storage failures — the banner simply may reappear next visit.
+    }
+    renderAttract();
+    return;
+  }
+
+  const themeTarget = target.closest<HTMLElement>('[data-set-theme]');
+  if (themeTarget?.dataset.setTheme) {
+    state = setTheme(state, themeTarget.dataset.setTheme);
+    themeMenuOpen = false;
+    applyDocumentTheme(state);
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
   if (target.closest('[data-action="reset"]')) {
     state = resetForInactivity(content);
     hasCelebratedPerfect = false;
     openFaqIndex = null;
     langMenuOpen = false;
+    themeMenuOpen = false;
     resourceCarouselIndex = 0;
     visitedViews.clear();
+    applyDocumentTheme(state);
     applyDocumentDirection(state.language);
     render();
     return;
@@ -1827,4 +2053,33 @@ document.addEventListener('click', (event) => {
 });
 
 applyDocumentDirection(state.language);
+applyDocumentTheme(state);
 render();
+
+if ('serviceWorker' in navigator) {
+  // Offline resilience is a progressive enhancement — a kiosk that loses
+  // venue wifi mid-visit should keep working, not go blank. Registration
+  // failure (e.g. a local file preview with no HTTPS origin) is silently
+  // ignored rather than surfaced, since the site works fine without it.
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(asset('/sw.js')).catch(() => {});
+  });
+}
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  if (!state.awake) {
+    renderAttract();
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  try {
+    window.localStorage.setItem(INSTALL_DISMISSED_KEY, 'true');
+  } catch {
+    // Ignore storage failures (private browsing, quota) — worst case the
+    // banner logic re-evaluates next render and finds nothing to install.
+  }
+});

@@ -35,12 +35,12 @@ const displayContent: DisplayContent = {
     },
     leaflets: {
       title: { en: 'Leaflets', pa: 'ਲੀਫਲੈਟ' },
-      subtitle: { en: 'Download and continue learning beyond the kiosk', pa: 'ਡਾਊਨਲੋਡ ਕਰੋ ਅਤੇ ਕਿਓਸਕ ਤੋਂ ਬਾਅਦ ਵੀ ਸਿੱਖਣਾ ਜਾਰੀ ਰੱਖੋ' },
+      subtitle: { en: 'Download and continue learning beyond this display', pa: 'ਡਾਊਨਲੋਡ ਕਰੋ ਅਤੇ ਇਸ ਪ੍ਰਦਰਸ਼ਨੀ ਤੋਂ ਬਾਅਦ ਵੀ ਸਿੱਖਣਾ ਜਾਰੀ ਰੱਖੋ' },
     },
   },
   ui: {
     experienceLabel: { en: 'Premium Interactive Display', pa: 'ਪ੍ਰੀਮੀਅਮ ਇੰਟਰਐਕਟਿਵ ਪ੍ਰਦਰਸ਼ਨੀ' },
-    attractEyebrow: { en: 'Immersive Kiosk Experience', pa: 'ਡੁੱਬਕੀਵਾਂ ਕਿਓਸਕ ਅਨੁਭਵ' },
+    attractEyebrow: { en: 'Immersive Interactive Experience', pa: 'ਡੁੱਬਕੀਵਾਂ ਇੰਟਰਐਕਟਿਵ ਅਨੁਭਵ' },
     attractTitle: { en: 'Panj Pyare & Panj Takht', pa: 'ਪੰਜ ਪਿਆਰੇ ਅਤੇ ਪੰਜ ਤਖ਼ਤ', hi: 'पंज प्यारे और पंज तख्त', es: 'Los Cinco Amados y los Cinco Tronos', ar: 'خمسة المحبوبين وخمسة العروش' },
     attractSubtitle: { en: 'A ceremonial digital doorway into memory, identity, and Sikh institutional history.', pa: 'ਸਮ੍ਰਿਤੀ, ਪਹਿਚਾਣ ਅਤੇ ਸਿੱਖ ਸੰਸਥਾਗਤ ਇਤਿਹਾਸ ਵੱਲ ਇਕ ਰਸਮੀ ਡਿਜ਼ਿਟਲ ਦਰਵਾਜ਼ਾ।', hi: 'स्मृति, पहचान और सिख संस्थागत इतिहास की ओर एक औपचारिक डिजिटल द्वार।', es: 'Una puerta digital ceremonial hacia la memoria, la identidad y la historia institucional sij.', ar: 'بوابة رقمية احتفالية إلى الذاكرة والهوية والتاريخ المؤسسي السيخي.' },
     attractInstruction: { en: 'Touch anywhere to begin the guided display.', pa: 'ਮਾਰਗਦਰਸ਼ਿਤ ਪ੍ਰਦਰਸ਼ਨੀ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਤੇ ਵੀ ਛੂਹੋ।', hi: 'निर्देशित प्रदर्शन शुरू करने के लिए कहीं भी स्पर्श करें।', es: 'Toca en cualquier lugar para comenzar la presentación guiada.', ar: 'المس في أي مكان لبدء العرض الموجّه.' },
@@ -67,6 +67,7 @@ const displayContent: DisplayContent = {
       ar: 'العربية',
     },
     reset: { en: 'Reset display', pa: 'ਪ੍ਰਦਰਸ਼ਨੀ ਰੀਸੈੱਟ ਕਰੋ' },
+    themeLabel: { en: 'Occasion theme', pa: 'ਮੌਕੇ ਦਾ ਥੀਮ' },
     labels: {
       birthName: { en: 'Birth name', pa: 'ਜਨਮ ਨਾਮ' },
       birthDeath: { en: 'Birth & shaheedi', pa: 'ਜਨਮ ਅਤੇ ਸ਼ਹੀਦੀ' },
@@ -128,6 +129,10 @@ const displayContent: DisplayContent = {
       ttsListen: { en: 'Listen', pa: 'ਸੁਣੋ' },
       ttsNoPunjabiVoice: { en: 'No Punjabi voice is available on this device — showing text only.', pa: 'ਇਸ ਡਿਵਾਈਸ ਤੇ ਪੰਜਾਬੀ ਆਵਾਜ਼ ਉਪਲਬਧ ਨਹੀਂ ਹੈ — ਸਿਰਫ਼ ਪਾਠ ਦਿਖਾਇਆ ਜਾ ਰਿਹਾ ਹੈ।' },
       journeyProgress: { en: 'Your journey', pa: 'ਤੁਹਾਡੀ ਯਾਤਰਾ' },
+      installBannerAndroid: { en: 'Add this display to your home screen for quick access.', pa: 'ਤੁਰੰਤ ਪਹੁੰਚ ਲਈ ਇਸ ਪ੍ਰਦਰਸ਼ਨੀ ਨੂੰ ਆਪਣੀ ਹੋਮ ਸਕ੍ਰੀਨ ਤੇ ਸ਼ਾਮਲ ਕਰੋ।' },
+      installBannerIos: { en: 'Tap Share, then "Add to Home Screen" for quick access.', pa: 'ਤੁਰੰਤ ਪਹੁੰਚ ਲਈ ਸ਼ੇਅਰ ਤੇ, ਫਿਰ "ਹੋਮ ਸਕ੍ਰੀਨ ਤੇ ਸ਼ਾਮਲ ਕਰੋ" ਤੇ ਟੈਪ ਕਰੋ।' },
+      installAction: { en: 'Install', pa: 'ਇੰਸਟਾਲ ਕਰੋ' },
+      dismissAction: { en: 'Dismiss', pa: 'ਖਾਰਜ ਕਰੋ' },
     },
   },
   home: {
@@ -136,8 +141,8 @@ const displayContent: DisplayContent = {
       pa: 'ਗੰਭੀਰ, ਟਚ-ਪਹਿਲਾਂ ਸਿੱਖ ਸਿੱਖਿਆ ਲਈ ਮਿਊਜ਼ੀਅਮ-ਪੱਧਰੀ ਡਿਜ਼ਿਟਲ ਪ੍ਰਦਰਸ਼ਨੀ।',
     },
     heroDescription: {
-      en: 'Explore the formation of the Khalsa, the lives of the Panj Pyare, and the sacred authority of the Panj Takht through a focused bilingual experience designed for kiosk screens.',
-      pa: 'ਖ਼ਾਲਸੇ ਦੀ ਰਚਨਾ, ਪੰਜ ਪਿਆਰਿਆਂ ਦੇ ਜੀਵਨ ਅਤੇ ਪੰਜ ਤਖ਼ਤਾਂ ਦੀ ਪਵਿੱਤਰ ਅਧਿਕਾਰਤਾ ਨੂੰ ਕਿਓਸਕ ਸਕ੍ਰੀਨਾਂ ਲਈ ਤਿਆਰ ਕੀਤੇ ਕੇਂਦ੍ਰਿਤ ਦੋਭਾਸ਼ੀ ਅਨੁਭਵ ਰਾਹੀਂ ਜਾਣੋ।',
+      en: 'Explore the formation of the Khalsa, the lives of the Panj Pyare, and the sacred authority of the Panj Takht through a focused bilingual experience — built for touch, whether you\'re at a gurdwara kiosk or on your own phone.',
+      pa: 'ਖ਼ਾਲਸੇ ਦੀ ਰਚਨਾ, ਪੰਜ ਪਿਆਰਿਆਂ ਦੇ ਜੀਵਨ ਅਤੇ ਪੰਜ ਤਖ਼ਤਾਂ ਦੀ ਪਵਿੱਤਰ ਅਧਿਕਾਰਤਾ ਨੂੰ ਇੱਕ ਕੇਂਦ੍ਰਿਤ ਦੋਭਾਸ਼ੀ ਅਨੁਭਵ ਰਾਹੀਂ ਜਾਣੋ — ਟਚ ਲਈ ਬਣਿਆ, ਭਾਵੇਂ ਤੁਸੀਂ ਗੁਰਦੁਆਰਾ ਕਿਓਸਕ ਤੇ ਹੋਵੋ ਜਾਂ ਆਪਣੇ ਫ਼ੋਨ ਤੇ।',
     },
     collaborationBanner: {
       en: 'Collaboratively created by the Mata Gujri Ji Group from San Jose Gurmat Camp (July 2026).',
@@ -212,8 +217,8 @@ const displayContent: DisplayContent = {
         description: { en: 'English framing with clear Punjabi Unicode support keeps the display welcoming and reverent.', pa: 'ਅੰਗਰੇਜ਼ੀ ਪ੍ਰਸਤੁਤੀ ਅਤੇ ਸਪਸ਼ਟ ਪੰਜਾਬੀ ਯੂਨੀਕੋਡ ਸਹਾਇਤਾ ਪ੍ਰਦਰਸ਼ਨੀ ਨੂੰ ਸਵਾਗਤੀ ਅਤੇ ਗੰਭੀਰ ਬਣਾਉਂਦੀ ਹੈ।' },
       },
       {
-        title: { en: 'Kiosk-first behavior', pa: 'ਕਿਓਸਕ-ਪਹਿਲਾਂ ਵਿਹਾਰ' },
-        description: { en: 'Idle reset, large touch targets, and consistent navigation protect the exhibit flow.', pa: 'ਨਿਸ਼ਕ੍ਰਿਯਤਾ ਰੀਸੈੱਟ, ਵੱਡੇ ਟਚ ਟਾਰਗਟ ਅਤੇ ਇੱਕਸਾਰ ਨੇਵੀਗੇਸ਼ਨ ਪ੍ਰਦਰਸ਼ਨੀ ਦੇ ਪ੍ਰਭਾਹ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਦੇ ਹਨ।' },
+        title: { en: 'Kiosk-first, mobile-ready', pa: 'ਕਿਓਸਕ-ਪਹਿਲਾਂ, ਮੋਬਾਈਲ-ਤਿਆਰ' },
+        description: { en: 'Idle reset and large touch targets protect the exhibit flow on-site, while the same experience adapts natively to phones and tablets at home.', pa: 'ਨਿਸ਼ਕ੍ਰਿਯਤਾ ਰੀਸੈੱਟ ਅਤੇ ਵੱਡੇ ਟਚ ਟਾਰਗਟ ਮੌਕੇ ਤੇ ਪ੍ਰਦਰਸ਼ਨੀ ਦੇ ਪ੍ਰਭਾਹ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਦੇ ਹਨ, ਜਦਕਿ ਇਹੀ ਅਨੁਭਵ ਘਰ ਵਿੱਚ ਫ਼ੋਨ ਅਤੇ ਟੈਬਲੈੱਟ ਤੇ ਵੀ ਸੁਭਾਵਿਕ ਢੰਗ ਨਾਲ ਢਲ਼ਦਾ ਹੈ।' },
       },
       {
         title: { en: 'Accuracy gates', pa: 'ਸ਼ੁੱਧਤਾ ਦਰਵਾਜ਼ੇ' },
@@ -791,7 +796,7 @@ const displayContent: DisplayContent = {
     kakaars: [
       { name: { en: 'ਕੇਸ', pa: 'ਕੇਸ' }, meaning: { en: 'Uncut hair', pa: 'ਬਿਨਾਂ ਕੱਟੇ ਵਾਲ' }, description: { en: 'Symbolizes acceptance of God\'s will and the Creator\'s natural design, and a life of spiritual devotion.', pa: 'ਪਰਮਾਤਮਾ ਦੀ ਰਜ਼ਾ ਅਤੇ ਕੁਦਰਤੀ ਸਿਰਜਣਾ ਨੂੰ ਸਵੀਕਾਰ ਕਰਨ ਦਾ ਪ੍ਰਤੀਕ।' } },
       { name: { en: 'ਕੰਘਾ', pa: 'ਕੰਘਾ' }, meaning: { en: 'Wooden comb', pa: 'ਲੱਕੜ ਦੀ ਕੰਘੀ' }, description: { en: 'Symbolizes cleanliness and discipline, used to keep the kesh tidy.', pa: 'ਸਫ਼ਾਈ ਅਤੇ ਅਨੁਸ਼ਾਸਨ ਦਾ ਪ੍ਰਤੀਕ, ਕੇਸਾਂ ਨੂੰ ਸੰਵਾਰਨ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।' } },
-      { name: { en: 'ਕੜਾ', pa: 'ਕੜਾ' }, meaning: { en: 'Steel bracelet', pa: 'ਸਟੀਲ ਦਾ ਕੜਾ' }, description: { en: 'Symbolizes restraint from wrongdoing and an unbroken bond with the Guru.', pa: 'ਗ਼ਲਤ ਕੰਮਾਂ ਤੋਂ ਸੰਜਮ ਅਤੇ ਗੁਰੂ ਨਾਲ ਅਟੁੱਟ ਸੰਬੰਧ ਦਾ ਪ੍ਰਤੀਕ।' } },
+      { name: { en: 'ਕੜਾ', pa: 'ਕੜਾ' }, meaning: { en: 'Iron bracelet', pa: 'ਲੋਹੇ ਦਾ ਕੜਾ' }, description: { en: 'Symbolizes restraint from wrongdoing and an unbroken bond with the Guru.', pa: 'ਗ਼ਲਤ ਕੰਮਾਂ ਤੋਂ ਸੰਜਮ ਅਤੇ ਗੁਰੂ ਨਾਲ ਅਟੁੱਟ ਸੰਬੰਧ ਦਾ ਪ੍ਰਤੀਕ।' } },
       { name: { en: 'ਕਛਹਿਰਾ', pa: 'ਕਛਹਿਰਾ' }, meaning: { en: 'Cotton undergarment', pa: 'ਸੂਤੀ ਅੰਦਰੂਨੀ ਵਸਤਰ' }, description: { en: 'Symbolizes self-control, moral character, and readiness for action.', pa: 'ਸੰਜਮ, ਨੈਤਿਕ ਕਿਰਦਾਰ ਅਤੇ ਕਾਰਵਾਈ ਲਈ ਤਿਆਰੀ ਦਾ ਪ੍ਰਤੀਕ।' } },
       { name: { en: 'ਕਿਰਪਾਨ', pa: 'ਕਿਰਪਾਨ' }, meaning: { en: 'Ceremonial sword', pa: 'ਰਸਮੀ ਤਲਵਾਰ' }, description: { en: 'Symbolizes the duty to defend justice, the oppressed, and righteousness (ਧਰਮ).', pa: 'ਨਿਆਂ, ਦੱਬੇ-ਕੁਚਲਿਆਂ ਅਤੇ ਧਰਮ ਦੀ ਰਾਖੀ ਦੇ ਫ਼ਰਜ਼ ਦਾ ਪ੍ਰਤੀਕ।' } },
     ],
@@ -875,6 +880,22 @@ const displayContent: DisplayContent = {
       },
     ],
   },
+  themes: [
+    { id: 'default', palette: 'default', icon: '☬', label: { en: 'Default display', pa: 'ਮੂਲ ਪ੍ਰਦਰਸ਼ਨੀ' } },
+    { id: 'vaisakhi', palette: 'vaisakhi', icon: '🌾', label: { en: 'Vaisakhi', pa: 'ਵਿਸਾਖੀ' } },
+    { id: 'bandi-chhor-divas', palette: 'diwali', icon: '🪔', label: { en: 'Bandi Chhor Divas', pa: 'ਬੰਦੀ ਛੋੜ ਦਿਵਸ' } },
+    { id: 'gurpurab-guru-nanak', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Nanak Dev Ji — Parkash Purab', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-angad', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Angad Dev Ji — Parkash Purab', pa: 'ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-amar-das', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Amar Das Ji — Parkash Purab', pa: 'ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-ram-das', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Ram Das Ji — Parkash Purab', pa: 'ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-arjan', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Arjan Dev Ji — Parkash Purab', pa: 'ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-hargobind', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Hargobind Sahib Ji — Parkash Purab', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-har-rai', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Har Rai Ji — Parkash Purab', pa: 'ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-har-krishan', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Har Krishan Ji — Parkash Purab', pa: 'ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-tegh-bahadur', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Tegh Bahadur Ji — Parkash Purab', pa: 'ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-gobind-singh', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Gobind Singh Ji — Parkash Purab', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurgaddi-guru-granth-sahib', palette: 'gurpurab', icon: '📖', label: { en: 'Guru Granth Sahib Ji — Gurgaddi Divas', pa: 'ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ — ਗੁਰਗੱਦੀ ਦਿਵਸ' } },
+  ],
   quiz: {
     intro: { en: 'Quick, polished recall rounds help visitors reinforce names, places, and significance before moving on.', pa: 'ਛੋਟੇ ਨਿੱਖਰੇ ਯਾਦਗਾਰੀ ਰਾਊਂਡ ਨਾਮਾਂ, ਥਾਵਾਂ ਅਤੇ ਮਹੱਤਵ ਨੂੰ ਅੱਗੇ ਵਧਣ ਤੋਂ ਪਹਿਲਾਂ ਮਜ਼ਬੂਤ ਕਰਦੇ ਹਨ।' },
     levelMeta: {
@@ -1019,7 +1040,7 @@ const displayContent: DisplayContent = {
           insight: { en: 'The Panj Pyare were five men from five different castes and regions of India who were the first to be initiated into the Khalsa.', pa: 'ਪੰਜ ਪਿਆਰੇ ਭਾਰਤ ਦੀਆਂ ਪੰਜ ਵੱਖ-ਵੱਖ ਜਾਤਾਂ ਅਤੇ ਖੇਤਰਾਂ ਤੋਂ ਪੰਜ ਵਿਅਕਤੀ ਸਨ ਜੋ ਖ਼ਾਲਸੇ ਵਿੱਚ ਦੀਖਿਆ ਲੈਣ ਵਾਲੇ ਪਹਿਲੇ ਸਨ।' },
         },
         {
-          prompt: { en: 'What steel bracelet do Sikhs wear as one of the Five Ks?', pa: 'ਪੰਜ ਕਕਾਰਾਂ ਵਿੱਚੋਂ ਸਿੱਖ ਕਿਹੜਾ ਸਟੀਲ ਦਾ ਕੜਾ ਪਹਿਨਦੇ ਹਨ?' },
+          prompt: { en: 'What iron bracelet do Sikhs wear as one of the Five Ks?', pa: 'ਪੰਜ ਕਕਾਰਾਂ ਵਿੱਚੋਂ ਸਿੱਖ ਕਿਹੜਾ ਲੋਹੇ ਦਾ ਕੜਾ ਪਹਿਨਦੇ ਹਨ?' },
           options: [
             { en: 'Kara', pa: 'ਕੜਾ' },
             { en: 'Kanga', pa: 'ਕੰਘਾ' },
@@ -1027,7 +1048,7 @@ const displayContent: DisplayContent = {
             { en: 'Kachera', pa: 'ਕਛਹਿਰਾ' },
           ],
           correctIndex: 0,
-          insight: { en: 'The kara is a steel bracelet symbolizing restraint from wrongdoing and an unbroken bond with the Guru.', pa: 'ਕੜਾ ਇੱਕ ਸਟੀਲ ਦਾ ਬਰੇਸਲੈਟ ਹੈ ਜੋ ਗ਼ਲਤ ਕੰਮਾਂ ਤੋਂ ਸੰਜਮ ਅਤੇ ਗੁਰੂ ਨਾਲ ਅਟੁੱਟ ਸੰਬੰਧ ਦਾ ਪ੍ਰਤੀਕ ਹੈ।' },
+          insight: { en: 'The kara is an iron bracelet symbolizing restraint from wrongdoing and an unbroken bond with the Guru.', pa: 'ਕੜਾ ਇੱਕ ਲੋਹੇ ਦਾ ਬਰੇਸਲੈਟ ਹੈ ਜੋ ਗ਼ਲਤ ਕੰਮਾਂ ਤੋਂ ਸੰਜਮ ਅਤੇ ਗੁਰੂ ਨਾਲ ਅਟੁੱਟ ਸੰਬੰਧ ਦਾ ਪ੍ਰਤੀਕ ਹੈ।' },
         },
         {
           prompt: { en: "What does the word 'Sikh' mean?", pa: "'ਸਿੱਖ' ਸ਼ਬਦ ਦਾ ਕੀ ਅਰਥ ਹੈ?" },
@@ -1468,7 +1489,7 @@ const displayContent: DisplayContent = {
   faq: [
     { question: { en: 'What is the Khalsa?', pa: 'ਖ਼ਾਲਸਾ ਕੀ ਹੈ?' }, answer: { en: 'The Khalsa is the initiated Sikh community created by Guru Gobind Singh Ji on Vaisakhi 1699. Members commit to a disciplined, egalitarian spiritual-warrior way of life, wearing five articles of faith (Panj Kakars).', pa: 'ਖ਼ਾਲਸਾ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੁਆਰਾ ਵਿਸਾਖੀ 1699 ਨੂੰ ਬਣਾਈ ਗਈ ਅੰਮ੍ਰਿਤਧਾਰੀ ਸਿੱਖ ਸੰਗਤ ਹੈ।' } },
     { question: { en: 'What is Amrit Sanchar?', pa: 'ਅੰਮ੍ਰਿਤ ਸੰਚਾਰ ਕੀ ਹੈ?' }, answer: { en: 'Amrit Sanchar (also called Khande-di-Pahul) is the Sikh initiation ceremony, where the initiate receives sacred Amrit prepared with the double-edged khanda and Panj Banis.', pa: 'ਅੰਮ੍ਰਿਤ ਸੰਚਾਰ (ਖੰਡੇ ਦੀ ਪਾਹੁਲ) ਸਿੱਖ ਦੀਖਿਆ ਸਮਾਰੋਹ ਹੈ।' } },
-    { question: { en: 'What are the Panj Kakars?', pa: 'ਪੰਜ ਕਕਾਰ ਕੀ ਹਨ?' }, answer: { en: 'The five articles of faith worn by initiated Sikhs: Kesh (uncut hair), Kara (steel bracelet), Kanga (wooden comb), Kachera (cotton undergarment), and Kirpan (steel sword).', pa: 'ਅੰਮ੍ਰਿਤਧਾਰੀ ਸਿੱਖਾਂ ਦੁਆਰਾ ਪਹਿਨੇ ਜਾਣ ਵਾਲੇ ਪੰਜ ਵਿਸ਼ਵਾਸ ਦੇ ਲੇਖ: ਕੇਸ, ਕੜਾ, ਕੰਘਾ, ਕਛਹਿਰਾ, ਕਿਰਪਾਨ।' } },
+    { question: { en: 'What are the Panj Kakars?', pa: 'ਪੰਜ ਕਕਾਰ ਕੀ ਹਨ?' }, answer: { en: 'The five articles of faith worn by initiated Sikhs: Kesh (uncut hair), Kara (iron bracelet), Kanga (wooden comb), Kachera (cotton undergarment), and Kirpan (steel sword).', pa: 'ਅੰਮ੍ਰਿਤਧਾਰੀ ਸਿੱਖਾਂ ਦੁਆਰਾ ਪਹਿਨੇ ਜਾਣ ਵਾਲੇ ਪੰਜ ਵਿਸ਼ਵਾਸ ਦੇ ਲੇਖ: ਕੇਸ, ਕੜਾ, ਕੰਘਾ, ਕਛਹਿਰਾ, ਕਿਰਪਾਨ।' } },
     { question: { en: 'What is a Hukamnama?', pa: 'ਹੁਕਮਨਾਮਾ ਕੀ ਹੈ?' }, answer: { en: 'A Hukamnama is an official edict or religious decree issued by the Jathedar of Sri Akal Takht Sahib, binding on all Sikhs worldwide.', pa: 'ਹੁਕਮਨਾਮਾ ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ ਦੇ ਜਥੇਦਾਰ ਦੁਆਰਾ ਜਾਰੀ ਕੀਤਾ ਅਧਿਕਾਰਕ ਧਾਰਮਿਕ ਫ਼ੈਸਲਾ ਹੈ।' } },
     { question: { en: 'Who is Guru Granth Sahib Ji?', pa: 'ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਕੌਣ ਹਨ?' }, answer: { en: 'Guru Granth Sahib Ji is the eternal, living Guru of the Sikhs — the sacred scripture declared as the permanent and undying Guru by Guru Gobind Singh Ji before his passing in 1708.', pa: 'ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਸਿੱਖਾਂ ਦੇ ਸਦੀਵੀ ਜੀਵੰਤ ਗੁਰੂ ਹਨ।' } },
     { question: { en: 'What is Miri-Piri?', pa: 'ਮੀਰੀ-ਪੀਰੀ ਕੀ ਹੈ?' }, answer: { en: 'Miri-Piri is the Sikh principle of dual sovereignty — Miri (temporal/worldly authority) and Piri (spiritual authority) held together, represented by the two swords worn by Guru Hargobind Sahib Ji.', pa: 'ਮੀਰੀ-ਪੀਰੀ ਦੋਹਰੀ ਪ੍ਰਭੂਸੱਤਾ ਦਾ ਸਿੱਖ ਸਿਧਾਂਤ ਹੈ।' } },
