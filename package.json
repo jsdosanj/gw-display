@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "typecheck": "astro check",
     "test": "vitest run",
-    "validate": "npm run lint && npm run typecheck && npm run test"
+    "validate": "npm run lint && npm run typecheck && npm run test",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "@tailwindcss/vite": "4.3.3",
@@ -28,6 +29,7 @@
     "jsdom": "29.1.1",
     "typescript": "5.9.3",
     "typescript-eslint": "8.64.0",
-    "vitest": "4.1.10"
+    "vitest": "4.1.10",
+    "wrangler": "4.111.0"
   }
 }
