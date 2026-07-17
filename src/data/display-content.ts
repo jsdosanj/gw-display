@@ -35,12 +35,12 @@ const displayContent: DisplayContent = {
     },
     leaflets: {
       title: { en: 'Leaflets', pa: 'ਲੀਫਲੈਟ' },
-      subtitle: { en: 'Download and continue learning beyond the kiosk', pa: 'ਡਾਊਨਲੋਡ ਕਰੋ ਅਤੇ ਕਿਓਸਕ ਤੋਂ ਬਾਅਦ ਵੀ ਸਿੱਖਣਾ ਜਾਰੀ ਰੱਖੋ' },
+      subtitle: { en: 'Download and continue learning beyond this display', pa: 'ਡਾਊਨਲੋਡ ਕਰੋ ਅਤੇ ਇਸ ਪ੍ਰਦਰਸ਼ਨੀ ਤੋਂ ਬਾਅਦ ਵੀ ਸਿੱਖਣਾ ਜਾਰੀ ਰੱਖੋ' },
     },
   },
   ui: {
     experienceLabel: { en: 'Premium Interactive Display', pa: 'ਪ੍ਰੀਮੀਅਮ ਇੰਟਰਐਕਟਿਵ ਪ੍ਰਦਰਸ਼ਨੀ' },
-    attractEyebrow: { en: 'Immersive Kiosk Experience', pa: 'ਡੁੱਬਕੀਵਾਂ ਕਿਓਸਕ ਅਨੁਭਵ' },
+    attractEyebrow: { en: 'Immersive Interactive Experience', pa: 'ਡੁੱਬਕੀਵਾਂ ਇੰਟਰਐਕਟਿਵ ਅਨੁਭਵ' },
     attractTitle: { en: 'Panj Pyare & Panj Takht', pa: 'ਪੰਜ ਪਿਆਰੇ ਅਤੇ ਪੰਜ ਤਖ਼ਤ', hi: 'पंज प्यारे और पंज तख्त', es: 'Los Cinco Amados y los Cinco Tronos', ar: 'خمسة المحبوبين وخمسة العروش' },
     attractSubtitle: { en: 'A ceremonial digital doorway into memory, identity, and Sikh institutional history.', pa: 'ਸਮ੍ਰਿਤੀ, ਪਹਿਚਾਣ ਅਤੇ ਸਿੱਖ ਸੰਸਥਾਗਤ ਇਤਿਹਾਸ ਵੱਲ ਇਕ ਰਸਮੀ ਡਿਜ਼ਿਟਲ ਦਰਵਾਜ਼ਾ।', hi: 'स्मृति, पहचान और सिख संस्थागत इतिहास की ओर एक औपचारिक डिजिटल द्वार।', es: 'Una puerta digital ceremonial hacia la memoria, la identidad y la historia institucional sij.', ar: 'بوابة رقمية احتفالية إلى الذاكرة والهوية والتاريخ المؤسسي السيخي.' },
     attractInstruction: { en: 'Touch anywhere to begin the guided display.', pa: 'ਮਾਰਗਦਰਸ਼ਿਤ ਪ੍ਰਦਰਸ਼ਨੀ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਤੇ ਵੀ ਛੂਹੋ।', hi: 'निर्देशित प्रदर्शन शुरू करने के लिए कहीं भी स्पर्श करें।', es: 'Toca en cualquier lugar para comenzar la presentación guiada.', ar: 'المس في أي مكان لبدء العرض الموجّه.' },
@@ -136,8 +136,8 @@ const displayContent: DisplayContent = {
       pa: 'ਗੰਭੀਰ, ਟਚ-ਪਹਿਲਾਂ ਸਿੱਖ ਸਿੱਖਿਆ ਲਈ ਮਿਊਜ਼ੀਅਮ-ਪੱਧਰੀ ਡਿਜ਼ਿਟਲ ਪ੍ਰਦਰਸ਼ਨੀ।',
     },
     heroDescription: {
-      en: 'Explore the formation of the Khalsa, the lives of the Panj Pyare, and the sacred authority of the Panj Takht through a focused bilingual experience designed for kiosk screens.',
-      pa: 'ਖ਼ਾਲਸੇ ਦੀ ਰਚਨਾ, ਪੰਜ ਪਿਆਰਿਆਂ ਦੇ ਜੀਵਨ ਅਤੇ ਪੰਜ ਤਖ਼ਤਾਂ ਦੀ ਪਵਿੱਤਰ ਅਧਿਕਾਰਤਾ ਨੂੰ ਕਿਓਸਕ ਸਕ੍ਰੀਨਾਂ ਲਈ ਤਿਆਰ ਕੀਤੇ ਕੇਂਦ੍ਰਿਤ ਦੋਭਾਸ਼ੀ ਅਨੁਭਵ ਰਾਹੀਂ ਜਾਣੋ।',
+      en: 'Explore the formation of the Khalsa, the lives of the Panj Pyare, and the sacred authority of the Panj Takht through a focused bilingual experience — built for touch, whether you\'re at a gurdwara kiosk or on your own phone.',
+      pa: 'ਖ਼ਾਲਸੇ ਦੀ ਰਚਨਾ, ਪੰਜ ਪਿਆਰਿਆਂ ਦੇ ਜੀਵਨ ਅਤੇ ਪੰਜ ਤਖ਼ਤਾਂ ਦੀ ਪਵਿੱਤਰ ਅਧਿਕਾਰਤਾ ਨੂੰ ਇੱਕ ਕੇਂਦ੍ਰਿਤ ਦੋਭਾਸ਼ੀ ਅਨੁਭਵ ਰਾਹੀਂ ਜਾਣੋ — ਟਚ ਲਈ ਬਣਿਆ, ਭਾਵੇਂ ਤੁਸੀਂ ਗੁਰਦੁਆਰਾ ਕਿਓਸਕ ਤੇ ਹੋਵੋ ਜਾਂ ਆਪਣੇ ਫ਼ੋਨ ਤੇ।',
     },
     collaborationBanner: {
       en: 'Collaboratively created by the Mata Gujri Ji Group from San Jose Gurmat Camp (July 2026).',
@@ -212,8 +212,8 @@ const displayContent: DisplayContent = {
         description: { en: 'English framing with clear Punjabi Unicode support keeps the display welcoming and reverent.', pa: 'ਅੰਗਰੇਜ਼ੀ ਪ੍ਰਸਤੁਤੀ ਅਤੇ ਸਪਸ਼ਟ ਪੰਜਾਬੀ ਯੂਨੀਕੋਡ ਸਹਾਇਤਾ ਪ੍ਰਦਰਸ਼ਨੀ ਨੂੰ ਸਵਾਗਤੀ ਅਤੇ ਗੰਭੀਰ ਬਣਾਉਂਦੀ ਹੈ।' },
       },
       {
-        title: { en: 'Kiosk-first behavior', pa: 'ਕਿਓਸਕ-ਪਹਿਲਾਂ ਵਿਹਾਰ' },
-        description: { en: 'Idle reset, large touch targets, and consistent navigation protect the exhibit flow.', pa: 'ਨਿਸ਼ਕ੍ਰਿਯਤਾ ਰੀਸੈੱਟ, ਵੱਡੇ ਟਚ ਟਾਰਗਟ ਅਤੇ ਇੱਕਸਾਰ ਨੇਵੀਗੇਸ਼ਨ ਪ੍ਰਦਰਸ਼ਨੀ ਦੇ ਪ੍ਰਭਾਹ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਦੇ ਹਨ।' },
+        title: { en: 'Kiosk-first, mobile-ready', pa: 'ਕਿਓਸਕ-ਪਹਿਲਾਂ, ਮੋਬਾਈਲ-ਤਿਆਰ' },
+        description: { en: 'Idle reset and large touch targets protect the exhibit flow on-site, while the same experience adapts natively to phones and tablets at home.', pa: 'ਨਿਸ਼ਕ੍ਰਿਯਤਾ ਰੀਸੈੱਟ ਅਤੇ ਵੱਡੇ ਟਚ ਟਾਰਗਟ ਮੌਕੇ ਤੇ ਪ੍ਰਦਰਸ਼ਨੀ ਦੇ ਪ੍ਰਭਾਹ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਦੇ ਹਨ, ਜਦਕਿ ਇਹੀ ਅਨੁਭਵ ਘਰ ਵਿੱਚ ਫ਼ੋਨ ਅਤੇ ਟੈਬਲੈੱਟ ਤੇ ਵੀ ਸੁਭਾਵਿਕ ਢੰਗ ਨਾਲ ਢਲ਼ਦਾ ਹੈ।' },
       },
       {
         title: { en: 'Accuracy gates', pa: 'ਸ਼ੁੱਧਤਾ ਦਰਵਾਜ਼ੇ' },

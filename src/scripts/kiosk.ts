@@ -246,7 +246,7 @@ function renderLanguageMenu(): string {
         aria-controls="lang-menu"
         aria-label="${text(content.ui.languageLabel)}"
       >
-        ${content.ui.languages[state.language]} ▾
+        <span class="sm:hidden">${state.language.toUpperCase()}</span><span class="hidden sm:inline">${content.ui.languages[state.language]}</span> ▾
       </button>
       <div class="lang-menu" id="lang-menu" role="menu" ${langMenuOpen ? '' : 'hidden'}>
           ${Object.entries(content.ui.languages)
@@ -281,24 +281,51 @@ function renderJourneyIndicator(): string {
   `;
 }
 
+// A full-width slim strip standing in for the detailed dot-track on phones
+// and small tablets, where the header row has no spare width to spend on a
+// second widget — it sits below the row instead of competing inside it.
+function renderJourneyProgressStrip(): string {
+  const total = journeyViews.length;
+  const visited = journeyViews.filter((view) => visitedViews.has(view)).length;
+  const label = text(content.ui.labels.journeyProgress);
+  const pct = total === 0 ? 0 : Math.round((visited / total) * 100);
+
+  return `
+    <div class="journey-progress-strip lg:hidden" role="status" aria-label="${label}: ${visited} / ${total}">
+      <div class="journey-progress-strip__fill" style="width:${pct}%"></div>
+    </div>
+  `;
+}
+
 function renderHeader(): void {
   const copy = content.sections[state.view];
 
   header.innerHTML = `
-    <div class="glass-header flex min-h-20 items-center justify-between px-4 py-2 md:min-h-24 md:px-8 md:py-0">
-      <div class="flex min-w-0 items-center gap-4">
-        <button type="button" data-nav="home" aria-label="${text(content.ui.nav.home)}" class="flex h-14 w-14 items-center justify-center rounded-full border border-gold-300/30 bg-white/5 text-2xl text-gold-300 transition active:scale-[0.98]">☬</button>
-        <div class="min-w-0">
-          <p class="truncate text-xs font-semibold uppercase tracking-[0.22em] text-cloud-400">${text(content.ui.experienceLabel)}</p>
-          <h2 class="truncate text-xl font-semibold text-white md:text-2xl ${classForLanguage()}">${text(copy.title)}</h2>
-          <p class="truncate text-xs text-cloud-400 md:text-sm ${classForLanguage()}">${text(copy.subtitle)}</p>
+    <div class="glass-header">
+      <div class="flex min-h-20 items-center justify-between px-4 py-2 md:min-h-24 md:px-8 md:py-0">
+        <div class="flex min-w-0 items-center gap-3 sm:gap-4">
+          <button type="button" data-nav="home" aria-label="${text(content.ui.nav.home)}" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold-300/30 bg-white/5 text-xl text-gold-300 transition active:scale-[0.98] sm:h-14 sm:w-14 sm:text-2xl">☬</button>
+          <div class="min-w-0">
+            <p class="hidden truncate text-xs font-semibold uppercase tracking-[0.22em] text-cloud-400 sm:block">${text(content.ui.experienceLabel)}</p>
+            <h2 class="truncate text-lg font-semibold text-white sm:text-xl md:text-2xl ${classForLanguage()}">${text(copy.title)}</h2>
+            <p class="hidden truncate text-xs text-cloud-400 sm:block md:text-sm ${classForLanguage()}">${text(copy.subtitle)}</p>
+          </div>
+        </div>
+        <div class="flex shrink-0 items-center gap-2 sm:gap-3">
+          ${renderJourneyIndicator()}
+          ${renderLanguageMenu()}
+          <button
+            type="button"
+            data-action="reset"
+            aria-label="${text(content.ui.reset)}"
+            class="flex items-center justify-center gap-2 rounded-full border border-white/10 p-3 text-cloud-200 transition active:scale-[0.98] md:px-4 md:py-3"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 1 2.6 6.3"/><path d="M3 8v5h5"/></svg>
+            <span class="hidden text-sm font-semibold md:inline ${classForLanguage()}">${text(content.ui.reset)}</span>
+          </button>
         </div>
       </div>
-      <div class="flex items-center gap-3">
-        ${renderJourneyIndicator()}
-        ${renderLanguageMenu()}
-        <button type="button" data-action="reset" class="hidden rounded-full border border-white/10 px-4 py-3 text-sm font-semibold text-cloud-200 transition active:scale-[0.98] md:block ${classForLanguage()}">${text(content.ui.reset)}</button>
-      </div>
+      ${renderJourneyProgressStrip()}
     </div>
   `;
 }
@@ -307,7 +334,7 @@ function renderNav(): void {
   const views: View[] = ['home', 'pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
 
   bottomNav.innerHTML = `
-    <div class="glass-header flex min-h-20 gap-2 overflow-x-auto px-2 pt-2 md:grid md:min-h-24 md:grid-cols-8 md:gap-2 md:overflow-visible md:px-5 md:py-2">
+    <div class="nav-scroll glass-header flex min-h-20 gap-2 overflow-x-auto px-2 pt-2 md:grid md:min-h-24 md:grid-cols-8 md:gap-2 md:overflow-visible md:px-5 md:py-2">
       ${views
         .map(
           (view) => `
@@ -326,6 +353,15 @@ function renderNav(): void {
         .join('')}
     </div>
   `;
+
+  // On phones the row scrolls horizontally — bring the newly active tab into
+  // view so navigating (e.g. via a home feature card) doesn't leave it
+  // scrolled off-screen. No-op on the desktop grid layout (nothing to scroll).
+  const navRow = bottomNav.querySelector<HTMLElement>('.nav-scroll');
+  const activePill = bottomNav.querySelector<HTMLElement>('[data-active="true"]');
+  if (navRow && activePill && navRow.scrollWidth > navRow.clientWidth) {
+    activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
 }
 
 function renderFeatureCard(feature: HomeFeature): string {

@@ -82,6 +82,7 @@ body {
   height: 100%;
   min-height: 100%;
   background: transparent;
+  overscroll-behavior: none;
 }
 
 body {
@@ -149,6 +150,23 @@ button {
 
 .nav-pill[data-active='true'] {
   @apply bg-white/8 text-gold-300 shadow-lg shadow-black/20;
+}
+
+.nav-scroll {
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav-scroll .nav-pill {
+  scroll-snap-align: center;
+}
+
+@media (max-width: 767px) {
+  .nav-scroll {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 20px, black calc(100% - 20px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, black 20px, black calc(100% - 20px), transparent 100%);
+  }
 }
 
 .option-card {
@@ -570,6 +588,19 @@ button {
 
 .journey-indicator__dot[data-visited='true'] {
   @apply bg-gold-400;
+}
+
+.journey-progress-strip {
+  height: 3px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.journey-progress-strip__fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(228, 187, 94, 0.55), rgba(247, 217, 137, 0.95));
+  transition: width 0.4s ease;
 }
 
 /* Text-to-speech "listen" control */
@@ -1026,6 +1057,13 @@ button {
 /* Silhouette art panel filter for visual richness */
 .art-panel[data-has-image='true']::before {
   filter: saturate(0.8) brightness(0.85);
+}
+
+/* Keep vertical scroll of the content area from bubbling into the page as a
+   pull-to-refresh / rubber-band bounce on mobile browsers. */
+#view-content {
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Premium scrollbar for content area */

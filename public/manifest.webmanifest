@@ -1,7 +1,7 @@
 {
   "name": "Legacy of the Khalsa",
   "short_name": "Khalsa Display",
-  "description": "Premium bilingual kiosk display for Panj Pyare and Panj Takht.",
+  "description": "A premium bilingual interactive experience for Panj Pyare and Panj Takht — on gurdwara kiosks, phones, and tablets.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
