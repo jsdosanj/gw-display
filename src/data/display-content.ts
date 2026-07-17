@@ -428,6 +428,7 @@ const displayContent: DisplayContent = {
     {
       id: 'akal_takht',
       imagePath: '/assets/images/takht1.jpg',
+      silhouettePath: '/assets/images/gurdwara-silhouette.svg',
       name: { en: 'Sri Akal Takht Sahib', pa: 'ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ' },
       location: { en: 'Amritsar, Punjab, India', pa: 'ਅੰਮ੍ਰਿਤਸਰ, ਪੰਜਾਬ, ਭਾਰਤ' },
       establishedBy: { en: 'Guru Hargobind Sahib Ji — 6th Guru (1606 CE)', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ — ਛੇਵੇਂ ਗੁਰੂ (1606 ਈ.)' },
@@ -455,6 +456,7 @@ const displayContent: DisplayContent = {
     {
       id: 'kesgarh_sahib',
       imagePath: '/assets/images/takht2.jpg',
+      silhouettePath: '/assets/images/gurdwara-silhouette.svg',
       name: { en: 'Takht Sri Keshgarh Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਕੇਸਗੜ੍ਹ ਸਾਹਿਬ' },
       location: { en: 'Anandpur Sahib, Punjab, India', pa: 'ਅਨੰਦਪੁਰ ਸਾਹਿਬ, ਪੰਜਾਬ, ਭਾਰਤ' },
       establishedBy: { en: 'Guru Gobind Singh Ji — 10th Guru (Vaisakhi 1699 CE)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ — ਦਸਵੇਂ ਗੁਰੂ (ਵਿਸਾਖੀ 1699 ਈ.)' },
@@ -482,6 +484,7 @@ const displayContent: DisplayContent = {
     {
       id: 'damdama_sahib',
       imagePath: '/assets/images/takht3.jpg',
+      silhouettePath: '/assets/images/gurdwara-silhouette.svg',
       name: { en: 'Takht Sri Damdama Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਦਮਦਮਾ ਸਾਹਿਬ' },
       location: { en: 'Talwandi Sabo, Bathinda, Punjab, India', pa: 'ਤਲਵੰਡੀ ਸਾਬੋ, ਬਠਿੰਡਾ, ਪੰਜਾਬ, ਭਾਰਤ' },
       establishedBy: { en: 'Guru Gobind Singh Ji — 10th Guru (1705–06 CE)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ — ਦਸਵੇਂ ਗੁਰੂ (1705–06 ਈ.)' },
@@ -509,6 +512,7 @@ const displayContent: DisplayContent = {
     {
       id: 'patna_sahib',
       imagePath: '/assets/images/takht4.jpg',
+      silhouettePath: '/assets/images/gurdwara-silhouette.svg',
       name: { en: 'Takht Sri Patna Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਪਟਨਾ ਸਾਹਿਬ' },
       location: { en: 'Patna, Bihar, India', pa: 'ਪਟਨਾ, ਬਿਹਾਰ, ਭਾਰਤ' },
       establishedBy: { en: 'Birthplace of Guru Gobind Singh Ji (December 22, 1666)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦਾ ਪ੍ਰਕਾਸ਼ ਅਸਥਾਨ (22 ਦਸੰਬਰ, 1666)' },
@@ -536,6 +540,7 @@ const displayContent: DisplayContent = {
     {
       id: 'hazur_sahib',
       imagePath: '/assets/images/takht5.jpg',
+      silhouettePath: '/assets/images/gurdwara-silhouette.svg',
       name: { en: 'Takht Sri Hazur Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਹਜ਼ੂਰ ਸਾਹਿਬ' },
       location: { en: 'Nanded, Maharashtra, India', pa: 'ਨਾਂਦੇੜ, ਮਹਾਰਾਸ਼ਟਰ, ਭਾਰਤ' },
       establishedBy: { en: 'Site of Guru Gobind Singh Ji\'s jyoti jot (1708 CE); Gurdwara built by Maharaja Ranjit Singh (1832–39)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੀ ਜੋਤੀ ਜੋਤ ਦਾ ਅਸਥਾਨ (1708 ਈ.); ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ ਦੁਆਰਾ ਗੁਰਦੁਆਰਾ ਉਸਾਰਿਆ (1832–39)' },

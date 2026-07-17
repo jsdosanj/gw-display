@@ -61,6 +61,7 @@ export interface PanjPyaraProfile {
 export interface TakhtProfile {
   id: string;
   imagePath: string;
+  silhouettePath?: string;
   name: LocalizedText;
   location: LocalizedText;
   establishedBy: LocalizedText;

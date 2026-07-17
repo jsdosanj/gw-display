@@ -1,3 +1,4 @@
+import QRCode from 'qrcode';
 import displayContent from '../data/display-content';
 import {
   advanceQuiz,
@@ -49,6 +50,23 @@ let openFaqIndex: number | null = null;
 let hasCelebratedPerfect = false;
 let resourceCarouselIndex = 0;
 let resourceCarouselTimer = 0;
+const qrDataUrls: Record<string, string> = {};
+
+async function initQrCodes(): Promise<void> {
+  for (const site of content.resources.sites) {
+    try {
+      qrDataUrls[site.id] = await QRCode.toDataURL(site.url, {
+        width: 120,
+        margin: 1,
+        color: { dark: '#f7d989', light: '#050b14' },
+      });
+    } catch {
+      qrDataUrls[site.id] = '';
+    }
+  }
+}
+
+void initQrCodes();
 
 const icons: Record<View, string> = {
   home: '🏛️',
@@ -99,9 +117,8 @@ function renderAttract(): void {
           </div>
           <div class="glass-panel flex flex-col justify-between gap-5 p-6">
             <div>
-              <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300">${text(content.ui.reviewHeading)}</p>
-              <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.review.label)}</p>
-              <p class="mt-3 text-sm leading-6 text-cloud-400 ${classForLanguage()}">${text(content.review.detail)}</p>
+              <p class="text-xs font-semibold uppercase tracking-[0.28em] text-gold-300">Built in Collaboration With</p>
+              <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.home.collaborationBanner)}</p>
             </div>
             <button type="button" data-action="start" class="rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 shadow-lg shadow-gold-400/20 transition active:scale-[0.98]">${text(content.ui.attractButton)}</button>
           </div>
@@ -266,7 +283,7 @@ function renderSubcontinentBackdrop(): string {
 
 function renderPyareMap(selected: PanjPyaraProfile): string {
   return `
-    <div class="glass-panel geo-map-panel relative min-h-[28rem] overflow-hidden p-5">
+    <div class="glass-panel geo-map-panel relative overflow-hidden map-expanded">
       <div class="soft-grid absolute inset-0 opacity-15"></div>
       ${renderSubcontinentBackdrop()}
       ${content.panjPyare
@@ -282,13 +299,20 @@ function renderPyareMap(selected: PanjPyaraProfile): string {
             >
               ${index + 1}
             </button>
+            <div
+              class="pin-label"
+              data-active="${pyara.id === selected.id}"
+              style="left:${pyara.mapPoint.x}; top:${pyara.mapPoint.y};"
+            >
+              <span class="${classForLanguage()}">${text(pyara.name).replace(/Bhai /g, '').replace(/ Ji$/, '')}</span>
+            </div>
           `,
         )
         .join('')}
-      <div class="absolute bottom-5 left-5 right-5 rounded-[22px] border border-white/10 bg-night-950/88 p-4 backdrop-blur-xl">
-        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.originMap)}</p>
-        <h4 class="mt-2 text-lg font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h4>
-        <p class="mt-1 text-sm text-cloud-400 ${classForLanguage()}">${text(selected.from)}</p>
+      <div class="map-info-badge">
+        <p class="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.originMap)}</p>
+        <p class="mt-0.5 text-sm font-semibold text-white ${classForLanguage()}">${text(selected.name)}</p>
+        <p class="text-xs text-cloud-400 ${classForLanguage()}">${text(selected.from)}</p>
       </div>
     </div>
   `;
@@ -482,15 +506,15 @@ function renderPyare(): string {
 
       ${renderPyareMap(selected)}
 
-      <div class="flex flex-wrap gap-2">
+      <div class="silhouette-strip">
         ${content.panjPyare
           .map(
-            (item) => `
-              <button type="button" data-pyara="${item.id}" class="rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                item.id === selected.id
-                  ? 'border-gold-300/50 bg-gold-400/10 text-gold-300'
-                  : 'border-white/10 bg-white/[0.03] text-cloud-200 active:scale-[0.98]'
-              } ${classForLanguage()}">${text(item.name)}</button>
+            (item, index) => `
+              <button type="button" data-pyara="${item.id}" class="silhouette-avatar" data-active="${item.id === selected.id}" aria-label="${text(item.name)}">
+                <img src="${item.silhouettePath}" alt="${text(item.name)}" class="silhouette-avatar__img" />
+                <span class="silhouette-avatar__number">${index + 1}</span>
+                <span class="silhouette-avatar__name ${classForLanguage()}">${text(item.name).replace(/Bhai /g, '').replace(/ Ji$/, '')}</span>
+              </button>
             `,
           )
           .join('')}
@@ -535,7 +559,7 @@ function renderPyare(): string {
 
 function renderTakhtMap(selected: TakhtProfile): string {
   return `
-    <div class="glass-panel geo-map-panel relative min-h-[28rem] overflow-hidden p-6">
+    <div class="glass-panel geo-map-panel relative overflow-hidden map-expanded">
       <div class="soft-grid absolute inset-0 opacity-15"></div>
       ${renderSubcontinentBackdrop()}
       ${content.takhts
@@ -551,13 +575,20 @@ function renderTakhtMap(selected: TakhtProfile): string {
             >
               ${takht.id === selected.id ? '☬' : index + 1}
             </button>
+            <div
+              class="pin-label"
+              data-active="${takht.id === selected.id}"
+              style="left:${takht.mapPoint.x}; top:${takht.mapPoint.y};"
+            >
+              <span class="${classForLanguage()}">${text(takht.name).replace(/Takht Sri |Sri |Takht /g, '').replace(/ Sahib$/, '')}</span>
+            </div>
           `,
         )
         .join('')}
-      <div class="absolute bottom-6 left-6 right-6 rounded-[24px] border border-white/10 bg-night-950/85 p-5 backdrop-blur-xl">
-        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.sacredGeography)}</p>
-        <h4 class="mt-3 text-2xl font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h4>
-        <p class="mt-2 text-sm text-cloud-400 ${classForLanguage()}">${text(selected.location)}</p>
+      <div class="map-info-badge">
+        <p class="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.sacredGeography)}</p>
+        <p class="mt-0.5 text-sm font-semibold text-white ${classForLanguage()}">${text(selected.name)}</p>
+        <p class="text-xs text-cloud-400 ${classForLanguage()}">${text(selected.location)}</p>
       </div>
     </div>
   `;
@@ -612,22 +643,22 @@ function renderTakhts(): string {
 
       ${renderTakhtMap(selected)}
 
-      <div class="flex flex-wrap gap-2">
+      <div class="silhouette-strip">
         ${content.takhts
           .map(
-            (takht) => `
-              <button type="button" data-takht="${takht.id}" class="rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                takht.id === selected.id
-                  ? 'border-gold-300/50 bg-gold-400/10 text-gold-300'
-                  : 'border-white/10 bg-white/[0.03] text-cloud-200 active:scale-[0.98]'
-              } ${classForLanguage()}">${text(takht.name)}</button>
+            (takht, index) => `
+              <button type="button" data-takht="${takht.id}" class="silhouette-avatar" data-active="${takht.id === selected.id}" aria-label="${text(takht.name)}">
+                <img src="${takht.silhouettePath ?? '/assets/images/gurdwara-silhouette.svg'}" alt="${text(takht.name)}" class="silhouette-avatar__img" />
+                <span class="silhouette-avatar__number">${index + 1}</span>
+                <span class="silhouette-avatar__name ${classForLanguage()}">${text(takht.name).replace(/Takht Sri |Sri |Takht /g, '').replace(/ Sahib$/, '')}</span>
+              </button>
             `,
           )
           .join('')}
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
+        ${renderArtworkPanel(selected.silhouettePath ?? selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
@@ -708,7 +739,10 @@ function renderResources(): string {
   if (sites.length === 0) {
     return `<div class="glass-panel p-8 text-center"><p class="text-cloud-200">${text(content.resources.intro)}</p></div>`;
   }
-  const slideWidth = 100 / sites.length;
+
+  // Separate sites into live-preview capable (sikhi.io, sikhiuni) and regular
+  const liveSites = sites.filter((s) => s.id === 'sikhi-io' || s.id === 'sikhiuni');
+  const slideWidth = 100 / liveSites.length;
 
   return `
     <div class="grid gap-6">
@@ -717,22 +751,38 @@ function renderResources(): string {
         <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.resources.intro)}</p>
       </section>
 
-      <section class="glass-panel relative min-h-[22rem] overflow-hidden p-0">
+      <section class="glass-panel relative overflow-hidden p-0" style="min-height:28rem;">
+        <div class="resource-live-header">
+          <span class="resource-live-dot"></span>
+          <span class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300">Live Previews</span>
+        </div>
         <div
           id="resource-carousel-track"
-          class="flex h-[22rem] transition-transform duration-700 ease-out"
-          style="width:${sites.length * 100}%; transform:translateX(-${slideWidth * resourceCarouselIndex}%);"
+          class="flex transition-transform duration-700 ease-out"
+          style="width:${liveSites.length * 100}%; height:28rem; transform:translateX(-${slideWidth * resourceCarouselIndex}%);"
         >
-          ${sites
+          ${liveSites
             .map(
               (site) => `
-                <div class="relative h-full" style="width:${slideWidth}%;">
-                  <iframe src="${site.url}" class="resource-iframe" loading="lazy" sandbox="allow-scripts" title="${site.title}"></iframe>
+                <div class="relative" style="width:${slideWidth}%; height:28rem;">
+                  <iframe
+                    src="${site.url}"
+                    class="resource-iframe"
+                    loading="lazy"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                    title="${site.title}"
+                  ></iframe>
                   <div class="resource-card__overlay p-6 md:p-8">
-                    <div>
-                      <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
-                      <p class="mt-2 max-w-xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(site.previewDescription)}</p>
-                      <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.visitSite)}</a>
+                    <div class="flex items-end justify-between gap-6 w-full">
+                      <div>
+                        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
+                        <p class="mt-2 max-w-xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(site.previewDescription)}</p>
+                        <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.visitSite)}</a>
+                      </div>
+                      <div class="qr-badge">
+                        ${qrDataUrls[site.id] ? `<img src="${qrDataUrls[site.id]}" alt="QR code for ${site.title}" class="qr-badge__img" width="80" height="80" />` : ''}
+                        <p class="qr-badge__hint">Scan to visit</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -741,7 +791,7 @@ function renderResources(): string {
             .join('')}
         </div>
         <div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2" id="resource-carousel-dots">
-          ${sites
+          ${liveSites
             .map(
               (_, index) => `
                 <button type="button" data-carousel-dot="${index}" class="h-2 w-2 rounded-full transition ${index === resourceCarouselIndex ? 'bg-gold-400' : 'bg-white/30'}"></button>
@@ -751,15 +801,21 @@ function renderResources(): string {
         </div>
       </section>
 
-      <section class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+      <section class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         ${sites
           .map(
             (site) => `
               <article class="resource-card">
-                <div class="p-6">
-                  <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h4>
-                  <p class="mt-2 text-sm leading-6 text-cloud-300 ${classForLanguage()}">${text(site.details)}</p>
-                  <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gold-300 ${classForLanguage()}">${text(content.ui.labels.openInBrowser)} →</a>
+                <div class="resource-card__qr">
+                  ${qrDataUrls[site.id] ? `<img src="${qrDataUrls[site.id]}" alt="QR code for ${site.title}" class="resource-card__qr-img" width="80" height="80" />` : '<div class="resource-card__qr-placeholder">QR</div>'}
+                </div>
+                <div class="p-5">
+                  <h4 class="text-base font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h4>
+                  <p class="mt-1.5 text-sm leading-6 text-cloud-300 ${classForLanguage()}">${text(site.details)}</p>
+                  <div class="mt-4 flex items-center gap-3">
+                    <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-gold-300 ${classForLanguage()}">${text(content.ui.labels.openInBrowser)} →</a>
+                    <span class="text-xs text-cloud-500">${site.url.replace(/^https?:\/\//, '')}</span>
+                  </div>
                 </div>
               </article>
             `,
@@ -771,6 +827,7 @@ function renderResources(): string {
 }
 
 function renderLeaflets(): string {
+  const leafletQr = qrDataUrls['basicsofsikhi'] ?? '';
   return `
     <div class="glass-panel p-10 text-center">
       <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.leaflets.title)}</h2>
@@ -779,7 +836,9 @@ function renderLeaflets(): string {
       <p class="text-base text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.leafletsHelper)}</p>
       <a href="${content.leaflets.hubUrl}" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.leaflets.cta)}</a>
       <p class="mt-4 text-sm text-cloud-400">basicsofsikhi.com/resources</p>
-      <div class="mx-auto mt-8 flex h-32 w-32 items-center justify-center rounded-2xl border border-dashed border-white/20 bg-white/[0.03] text-xs uppercase tracking-[0.18em] text-cloud-400">QR Code</div>
+      <div class="mx-auto mt-8 flex flex-col items-center gap-2">
+        ${leafletQr ? `<img src="${leafletQr}" alt="QR code for basicsofsikhi.com/resources" class="leaflet-qr" width="128" height="128" />` : '<div class="mx-auto flex h-32 w-32 items-center justify-center rounded-2xl border border-dashed border-white/20 bg-white/[0.03] text-xs uppercase tracking-[0.18em] text-cloud-400">QR Code</div>'}
+      </div>
       <p class="mt-3 text-xs text-cloud-400">Scan the QR code or visit basicsofsikhi.com/resources</p>
     </div>
   `;
@@ -895,9 +954,9 @@ function clearResourceCarouselTimer(): void {
 
 function updateResourceCarousel(): void {
   const track = document.getElementById('resource-carousel-track');
-  const total = content.resources.sites.length;
+  const liveSiteCount = content.resources.sites.filter((s) => s.id === 'sikhi-io' || s.id === 'sikhiuni').length;
   if (track) {
-    track.style.transform = `translateX(-${(100 / total) * resourceCarouselIndex}%)`;
+    track.style.transform = `translateX(-${(100 / liveSiteCount) * resourceCarouselIndex}%)`;
   }
 
   const dots = document.querySelectorAll<HTMLElement>('[data-carousel-dot]');
@@ -910,14 +969,14 @@ function updateResourceCarousel(): void {
 
 function setupResourceCarousel(): void {
   clearResourceCarouselTimer();
-  const total = content.resources.sites.length;
-  if (total <= 1) {
+  const liveSiteCount = content.resources.sites.filter((s) => s.id === 'sikhi-io' || s.id === 'sikhiuni').length;
+  if (liveSiteCount <= 1) {
     return;
   }
   resourceCarouselTimer = window.setInterval(() => {
-    resourceCarouselIndex = (resourceCarouselIndex + 1) % total;
+    resourceCarouselIndex = (resourceCarouselIndex + 1) % liveSiteCount;
     updateResourceCarousel();
-  }, 4000);
+  }, 5000);
 }
 
 function launchConfetti(): void {
