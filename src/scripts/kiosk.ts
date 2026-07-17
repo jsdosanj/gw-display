@@ -2,15 +2,19 @@ import QRCode from 'qrcode';
 import displayContent from '../data/display-content';
 import {
   advanceQuiz,
+  backToQuizLevels,
   createInitialState,
+  getActiveQuizQuestions,
   getQuizScore,
   isQuizComplete,
   navigate,
   resetForInactivity,
   restartQuiz,
   selectPyara,
+  selectQuizLevel,
   selectTakht,
   setLanguage,
+  startQuiz,
   submitQuizAnswer,
   wakeKiosk,
 } from '../lib/kiosk-state';
@@ -20,6 +24,7 @@ import type {
   Language,
   LocalizedText,
   PanjPyaraProfile,
+  QuizLevel,
   QuizQuestion,
   TakhtProfile,
   View,
@@ -67,6 +72,19 @@ const qrDataUrls: Record<string, string> = {};
 
 const journeyViews: View[] = ['pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
 const visitedViews = new Set<View>();
+
+// Minimal line-art medallion icons for the Panj Kakaar, in the fixed
+// Kesh/Kangha/Kara/Kachhera/Kirpan order the content array is authored in.
+// Abstract symbolism (a topknot, a comb's teeth, a bangle, a waistband, a
+// blade) rather than literal photography — matches the site's line-icon
+// language elsewhere and stays respectful of the articles' sanctity.
+const kakaarIcons: string[] = [
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M8 8c-1 3-1 7 0 11M12 8c0 4 0 8 0 11M16 8c1 3 1 7 0 11"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="5" rx="1.5"/><path d="M6 9v11M9.5 9v11M13 9v11M16.5 9v11"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.2" opacity="0.4"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v6l-2 10h-3.5l-1.5-8-1.5 8H8L6 10V4z"/><path d="M4 8h16"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v14"/><path d="M9 6h6"/><path d="M9 16h6l-1.5 3h-3z"/></svg>',
+];
 
 async function initQrCodes(): Promise<void> {
   for (const site of content.resources.sites) {
@@ -643,13 +661,10 @@ function renderPyare(): string {
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
         ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title), `Commemorative portrait artwork of ${text(selected.name, 'en')}, one of the Panj Pyare`)}
-        <div class="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
-            <h3 class="mt-2 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
-            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.birthName)}: ${text(selected.birthName)} &middot; ${selected.years}</p>
-          </div>
-          <span class="ai-badge">⚠ ${text(content.review.label)}</span>
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
+          <h3 class="mt-2 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
+          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.birthName)}: ${text(selected.birthName)} &middot; ${selected.years}</p>
         </div>
 
         ${beforeKhalsaHtml}
@@ -799,13 +814,10 @@ function renderTakhts(): string {
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
         ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title), `Photograph of ${text(selected.name, 'en')} in ${text(selected.location, 'en')}`)}
-        <div class="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
-            <h3 class="mt-2 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
-            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
-          </div>
-          <span class="ai-badge">⚠ ${text(content.review.label)}</span>
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
+          <h3 class="mt-2 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
+          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
         </div>
 
         ${locationHtml}
@@ -844,10 +856,7 @@ function renderLearn(): string {
       <section class="glass-panel p-8 md:p-10">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(learn.title)}</h2>
-          <div class="flex items-center gap-3">
-            <span class="ai-badge">⚠ ${text(content.review.label)}</span>
-            ${renderListenButton(learn.intro)}
-          </div>
+          ${renderListenButton(learn.intro)}
         </div>
         <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.intro)}</p>
       </section>
@@ -878,6 +887,28 @@ function renderLearn(): string {
                   <h4 class="text-sm font-semibold uppercase tracking-[0.18em] text-gold-300 ${classForLanguage()}">${text(item.title)}</h4>
                   <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(item.description)}</p>
                 </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.guruLineageTitle)}</h3>
+        <p class="mt-3 max-w-3xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.guruLineageIntro)}</p>
+        <div class="guru-lineage mt-8">
+          ${learn.gurus
+            .map(
+              (guru) => `
+                <div class="guru-lineage__node">
+                  <div class="guru-lineage__connector" aria-hidden="true"></div>
+                  <div class="guru-lineage__medallion">${guru.order}</div>
+                  <div class="guru-lineage__card">
+                    <p class="text-base font-semibold text-white ${classForLanguage()}">${text(guru.name)}</p>
+                    <p class="mt-1 text-xs uppercase tracking-[0.14em] text-cloud-400">${guru.years}</p>
+                    <p class="guru-lineage__relation ${classForLanguage()}">${text(guru.relation)}</p>
+                  </div>
+                </div>
               `,
             )
             .join('')}
@@ -922,12 +953,13 @@ function renderLearn(): string {
       <section class="glass-panel p-8 md:p-10">
         <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.kakaarsTitle)}</h3>
         <p class="mt-3 max-w-3xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.kakaarsIntro)}</p>
-        <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        <div class="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
           ${learn.kakaars
             .map(
-              (kakaar) => `
-                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 text-center">
-                  <p class="gurmukhi text-3xl font-semibold text-gold-300">${text(kakaar.name)}</p>
+              (kakaar, index) => `
+                <article class="kakaar-card">
+                  <div class="kakaar-card__icon" aria-hidden="true">${kakaarIcons[index] ?? ''}</div>
+                  <p class="gurmukhi mt-4 text-3xl font-semibold text-gold-300">${text(kakaar.name)}</p>
                   <p class="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-cloud-400">${text(kakaar.meaning)}</p>
                   <p class="mt-3 text-sm leading-6 text-cloud-200 ${classForLanguage()}">${text(kakaar.description)}</p>
                 </article>
@@ -980,7 +1012,7 @@ function renderLearn(): string {
                     <span>·</span>
                     <span class="${classForLanguage()}">${text(shabad.author)}</span>
                   </div>
-                  <p class="mt-4 text-xs italic leading-6 text-cloud-400 ${classForLanguage()}">${text(shabad.verificationNote)}</p>
+                  <p class="mt-4 text-sm italic leading-6 text-cloud-300 ${classForLanguage()}">${text(shabad.verificationNote)}</p>
                 </article>
               `,
             )
@@ -1017,16 +1049,6 @@ function renderAbout(): string {
             `,
           )
           .join('')}
-      </section>
-
-      <section class="glass-panel flex flex-wrap items-center gap-4 p-8">
-        <span class="scholar-badge">✓ ${text(content.ui.reviewHeading)}</span>
-        <span class="ai-badge">⚠ ${text(content.review.label)}</span>
-        <p class="text-sm text-cloud-300 ${classForLanguage()}">${text(content.review.detail)}</p>
-      </section>
-
-      <section class="glass-panel p-8">
-        <p class="lang-badge ${classForLanguage()}">${text(content.ui.labels.aiTranslationDisclaimer)}</p>
       </section>
 
       ${renderFaqSection()}
@@ -1182,22 +1204,104 @@ function quizState(question: QuizQuestion, optionIndex: number): 'default' | 'se
 }
 
 function currentQuizTotal(): number {
-  return Math.min(content.quiz.questionsPerRound, state.quizQuestionOrder.length);
+  return Math.min(state.quizCount, state.quizQuestionOrder.length);
+}
+
+const quizLevelIcons: Record<QuizLevel, string> = {
+  beginner: '🌱',
+  intermediate: '🪔',
+  advanced: '🗡️',
+};
+
+function renderProgressRing(fraction: number, centerLabel: string): string {
+  const radius = 52;
+  const circumference = 2 * Math.PI * radius;
+  const clamped = Math.max(0, Math.min(1, fraction));
+  const offset = circumference * (1 - clamped);
+
+  return `
+    <div class="quiz-ring" role="img" aria-label="${centerLabel}">
+      <svg viewBox="0 0 120 120" width="88" height="88" aria-hidden="true">
+        <circle class="quiz-ring__track" cx="60" cy="60" r="${radius}" />
+        <circle
+          class="quiz-ring__progress"
+          cx="60" cy="60" r="${radius}"
+          style="stroke-dasharray:${circumference};stroke-dashoffset:${offset};"
+        />
+      </svg>
+      <span class="quiz-ring__label" aria-hidden="true">${centerLabel}</span>
+    </div>
+  `;
+}
+
+function renderQuizLevelSelect(): string {
+  const levels: QuizLevel[] = ['beginner', 'intermediate', 'advanced'];
+
+  return `
+    <article class="glass-panel p-8 text-center md:p-12">
+      <p class="quiz-step-label ${classForLanguage()}">${text(content.ui.labels.chooseLevelStep)}</p>
+      <h3 class="mt-3 text-3xl font-semibold text-white md:text-4xl ${classForLanguage()}">${text(content.ui.labels.chooseLevelTitle)}</h3>
+      <p class="mx-auto mt-4 max-w-2xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.quiz.intro)}</p>
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        ${levels
+          .map((level) => {
+            const meta = content.quiz.levelMeta[level];
+            return `
+              <button type="button" class="quiz-level-card" data-quiz-level="${level}">
+                <span class="quiz-level-card__icon" aria-hidden="true">${quizLevelIcons[level]}</span>
+                <span class="quiz-level-card__title ${classForLanguage()}">${text(meta.title)}</span>
+                <span class="quiz-level-card__desc ${classForLanguage()}">${text(meta.description)}</span>
+              </button>
+            `;
+          })
+          .join('')}
+      </div>
+    </article>
+  `;
+}
+
+function renderQuizCountSelect(): string {
+  const level = state.quizLevel;
+  const meta = level ? content.quiz.levelMeta[level] : null;
+
+  return `
+    <article class="glass-panel p-8 text-center md:p-12">
+      <button type="button" data-action="quiz-back-to-levels" class="quiz-back-btn ${classForLanguage()}">
+        <span aria-hidden="true">←</span> ${text(content.ui.labels.backButton)}
+      </button>
+      <p class="quiz-step-label mt-4 ${classForLanguage()}">${text(content.ui.labels.chooseCountStep)}</p>
+      <h3 class="mt-3 text-3xl font-semibold text-white md:text-4xl ${classForLanguage()}">${text(content.ui.labels.chooseCountTitle)}</h3>
+      ${meta ? `<p class="mt-4 text-base text-gold-300 ${classForLanguage()}">${quizLevelIcons[level as QuizLevel]} ${text(meta.title)}</p>` : ''}
+      <div class="mx-auto mt-10 grid max-w-xl gap-5 sm:grid-cols-2">
+        ${content.quiz.countOptions
+          .map(
+            (option) => `
+              <button type="button" class="quiz-count-card" data-quiz-count="${option.count}">
+                <span class="quiz-count-card__number">${option.count}</span>
+                <span class="quiz-count-card__label ${classForLanguage()}">${text(option.label)}</span>
+              </button>
+            `,
+          )
+          .join('')}
+      </div>
+    </article>
+  `;
 }
 
 function renderQuizQuestion(question: QuizQuestion): string {
   const total = currentQuizTotal();
+  const fraction = (state.quizIndex + 1) / total;
 
   return `
     <article class="glass-panel p-8 md:p-10">
-      <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.quizProgress)} ${state.quizIndex + 1} / ${total}</p>
-        <div class="h-2 w-full max-w-xs overflow-hidden rounded-full bg-white/8">
-          <div class="h-full rounded-full bg-gold-400 transition duration-300" style="width:${((state.quizIndex + 1) / total) * 100}%"></div>
+      <div class="mb-6 flex flex-wrap items-center justify-between gap-5">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.quizProgress)} ${state.quizIndex + 1} / ${total}</p>
+          ${state.quizLevel ? `<p class="mt-1 text-sm text-cloud-400 ${classForLanguage()}">${quizLevelIcons[state.quizLevel]} ${text(content.quiz.levelMeta[state.quizLevel].title)}</p>` : ''}
         </div>
+        ${renderProgressRing(fraction, `${state.quizIndex + 1}/${total}`)}
       </div>
       <h3 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(question.prompt)}</h3>
-      <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.quiz.intro)}</p>
       <div class="mt-8 grid gap-4">
         ${question.options
           .map(
@@ -1232,8 +1336,9 @@ function renderQuizQuestion(question: QuizQuestion): string {
 }
 
 function renderRecapCard(): string {
+  const questions = getActiveQuizQuestions(state, content);
   const topics = state.quizQuestionOrder
-    .map((questionIndex) => content.quiz.questions[questionIndex])
+    .map((questionIndex) => questions[questionIndex])
     .filter((question): question is QuizQuestion => Boolean(question));
 
   return `
@@ -1252,17 +1357,49 @@ function renderRecapCard(): string {
   `;
 }
 
+type ScoreTier = 'perfect' | 'excellent' | 'good' | 'try-again';
+
+function scoreTier(score: number, total: number): ScoreTier {
+  if (total === 0) {
+    return 'try-again';
+  }
+  const ratio = score / total;
+  if (score === total) {
+    return 'perfect';
+  }
+  if (ratio >= 0.8) {
+    return 'excellent';
+  }
+  if (ratio >= 0.5) {
+    return 'good';
+  }
+  return 'try-again';
+}
+
+const scoreTierMessage: Record<ScoreTier, LocalizedText> = {
+  perfect: content.ui.labels.perfectScore,
+  excellent: content.ui.labels.excellentScore,
+  good: content.ui.labels.goodScore,
+  'try-again': content.ui.labels.tryAgainScore,
+};
+
 function renderQuizResults(): string {
   const score = getQuizScore(state, content);
   const total = currentQuizTotal();
+  const tier = scoreTier(score, total);
 
   return `
     <article class="glass-panel p-8 text-center md:p-12">
       <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.sections.quiz.title)}</p>
-      <h3 class="mt-5 text-5xl font-semibold text-white">${score} / ${total}</h3>
+      <div class="mx-auto mt-6 flex justify-center">
+        ${renderProgressRing(total === 0 ? 0 : score / total, `${score}/${total}`)}
+      </div>
       <p class="mt-4 text-xl text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.yourScore)}</p>
-      <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${score === total ? text(content.ui.labels.perfectScore) : text(content.ui.labels.replayPrompt)}</p>
-      <button type="button" data-action="restart-quiz" class="mt-8 rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98]">${text(content.ui.labels.restartQuiz)}</button>
+      <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(scoreTierMessage[tier])}</p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <button type="button" data-action="restart-quiz" class="rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.tryAgainButton)}</button>
+        <button type="button" data-action="change-level" class="rounded-full border border-white/15 bg-white/[0.04] px-6 py-4 text-base font-semibold text-cloud-200 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.changeLevel)}</button>
+      </div>
       ${renderRecapCard()}
     </article>
   `;
@@ -1404,15 +1541,24 @@ function renderView(): void {
       viewContent.innerHTML = renderLeaflets();
       break;
     case 'quiz': {
-      if (isQuizComplete(state, content)) {
+      if (state.quizPhase === 'level') {
+        viewContent.innerHTML = renderQuizLevelSelect();
+        break;
+      }
+      if (state.quizPhase === 'count') {
+        viewContent.innerHTML = renderQuizCountSelect();
+        break;
+      }
+      if (isQuizComplete(state)) {
         viewContent.innerHTML = renderQuizResults();
         if (getQuizScore(state, content) === currentQuizTotal() && !hasCelebratedPerfect) {
           hasCelebratedPerfect = true;
           launchConfetti();
         }
       } else {
+        const questions = getActiveQuizQuestions(state, content);
         const questionIndex = state.quizQuestionOrder[state.quizIndex];
-        const question = questionIndex === undefined ? undefined : content.quiz.questions[questionIndex];
+        const question = questionIndex === undefined ? undefined : questions[questionIndex];
         if (!question) {
           viewContent.innerHTML = renderQuizResults();
           break;
@@ -1497,6 +1643,25 @@ document.addEventListener('keydown', (event) => {
   }
   handleUserWake();
 });
+
+// Reading a long passage or scrolling through a panel is real engagement
+// too — without this, a visitor who stops tapping to read would silently
+// get bounced back to the attract screen mid-article, which reads as a
+// "random" reset. Only resets the idle countdown (no wake/re-render) since
+// scrolling can happen at any scroll depth without implying "wake me up".
+let scrollActivityThrottle = 0;
+function handleScrollActivity(): void {
+  if (!state.awake) {
+    return;
+  }
+  window.clearTimeout(scrollActivityThrottle);
+  scrollActivityThrottle = window.setTimeout(() => {
+    scheduleInactivityReset();
+  }, 500);
+}
+
+document.addEventListener('scroll', handleScrollActivity, { capture: true, passive: true });
+document.addEventListener('touchmove', handleScrollActivity, { passive: true });
 
 document.addEventListener('click', (event) => {
   const target = event.target instanceof HTMLElement ? event.target : null;
@@ -1603,6 +1768,37 @@ document.addEventListener('click', (event) => {
     resourceCarouselIndex = Number(carouselDotTarget.dataset.carouselDot);
     updateResourceCarousel();
     setupResourceCarousel();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const levelTarget = target.closest<HTMLElement>('[data-quiz-level]');
+  if (levelTarget?.dataset.quizLevel) {
+    state = selectQuizLevel(state, levelTarget.dataset.quizLevel as QuizLevel);
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const countTarget = target.closest<HTMLElement>('[data-quiz-count]');
+  if (countTarget?.dataset.quizCount) {
+    state = startQuiz(state, content, Number(countTarget.dataset.quizCount));
+    hasCelebratedPerfect = false;
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  if (target.closest('[data-action="quiz-back-to-levels"]')) {
+    state = backToQuizLevels(state);
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  if (target.closest('[data-action="change-level"]')) {
+    state = backToQuizLevels(state);
+    render();
     scheduleInactivityReset();
     return;
   }

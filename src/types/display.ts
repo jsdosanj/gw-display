@@ -9,13 +9,6 @@ export interface LocalizedText {
   ar?: string;
 }
 
-export interface ReviewMeta {
-  label: LocalizedText;
-  detail: LocalizedText;
-  provenance: 'created-by-ai' | 'legacy-migration';
-  status: 'pending-scholar-review' | 'reviewed';
-}
-
 export interface ViewCopy {
   title: LocalizedText;
   subtitle: LocalizedText;
@@ -84,11 +77,18 @@ export interface TakhtProfile {
   localImpact?: LocalizedText;
 }
 
+export type QuizLevel = 'beginner' | 'intermediate' | 'advanced';
+
 export interface QuizQuestion {
   prompt: LocalizedText;
   options: LocalizedText[];
   correctIndex: number;
   insight: LocalizedText;
+}
+
+export interface QuizLevelMeta {
+  title: LocalizedText;
+  description: LocalizedText;
 }
 
 export interface FaqItem {
@@ -118,6 +118,7 @@ export interface GuruSummary {
   name: LocalizedText;
   years: string;
   summary: LocalizedText;
+  relation: LocalizedText;
 }
 
 export interface SahibzaadaSummary {
@@ -155,6 +156,8 @@ export interface LearnSikhiContent {
   etiquette: EtiquetteItem[];
   gurusTitle: LocalizedText;
   gurus: GuruSummary[];
+  guruLineageTitle: LocalizedText;
+  guruLineageIntro: LocalizedText;
   sahibzaadeTitle: LocalizedText;
   sahibzaade: SahibzaadaSummary[];
   kakaarsTitle: LocalizedText;
@@ -175,7 +178,6 @@ export interface DisplayContent {
   settings: {
     timeoutSeconds: number;
   };
-  review: ReviewMeta;
   sections: Record<View, ViewCopy>;
   ui: {
     experienceLabel: LocalizedText;
@@ -188,8 +190,6 @@ export interface DisplayContent {
     languageLabel: LocalizedText;
     languages: Record<Language, string>;
     reset: LocalizedText;
-    reviewHeading: LocalizedText;
-    reviewAction: LocalizedText;
     labels: {
       birthName: LocalizedText;
       birthDeath: LocalizedText;
@@ -206,7 +206,17 @@ export interface DisplayContent {
       restartQuiz: LocalizedText;
       yourScore: LocalizedText;
       perfectScore: LocalizedText;
+      excellentScore: LocalizedText;
+      goodScore: LocalizedText;
+      tryAgainScore: LocalizedText;
       replayPrompt: LocalizedText;
+      chooseLevelTitle: LocalizedText;
+      chooseLevelStep: LocalizedText;
+      chooseCountTitle: LocalizedText;
+      chooseCountStep: LocalizedText;
+      backButton: LocalizedText;
+      changeLevel: LocalizedText;
+      tryAgainButton: LocalizedText;
       correctAnswer: LocalizedText;
       reviewPanel: LocalizedText;
       story: LocalizedText;
@@ -216,7 +226,6 @@ export interface DisplayContent {
       shaheedi: LocalizedText;
       jathedaar: LocalizedText;
       visitorsInfo: LocalizedText;
-      aiTranslationDisclaimer: LocalizedText;
       openInBrowser: LocalizedText;
       visitSite: LocalizedText;
       takhtsIntro: LocalizedText;
@@ -288,8 +297,9 @@ export interface DisplayContent {
   learnSikhi: LearnSikhiContent;
   quiz: {
     intro: LocalizedText;
-    questionsPerRound: number;
-    questions: QuizQuestion[];
+    levelMeta: Record<QuizLevel, QuizLevelMeta>;
+    countOptions: { count: number; label: LocalizedText }[];
+    levels: Record<QuizLevel, QuizQuestion[]>;
   };
   faq: FaqItem[];
   timeline: TimelineEvent[];
