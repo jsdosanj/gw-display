@@ -101,7 +101,8 @@ function applyDocumentDirection(language: Language): void {
 
 function renderAttract(): void {
   attractScreen.innerHTML = `
-    <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12">
+    <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12" style="background-image:url('/assets/images/IMG_3198.jpeg');background-size:cover;background-position:center;">
+      <div class="absolute inset-0 bg-night-950/80"></div>
       <div class="attract-halo absolute h-[32rem] w-[32rem] rounded-full bg-gold-400/18 blur-3xl"></div>
       <div class="float-slow absolute left-[12%] top-[18%] h-32 w-32 rounded-full bg-sky-400/12 blur-3xl"></div>
       <div class="float-delay absolute bottom-[18%] right-[10%] h-44 w-44 rounded-full bg-gold-300/10 blur-3xl"></div>
@@ -419,10 +420,13 @@ function renderHome(): string {
 
       <section class="glass-panel overflow-hidden p-7 md:p-10">
         <div class="soft-grid absolute inset-0 opacity-20"></div>
-        <div class="relative">
-          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold-300">${text(content.sections.home.title)}</p>
-          <h3 class="mt-4 max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl ${classForLanguage()}">${text(content.home.heroTitle)}</h3>
-          <p class="mt-6 max-w-3xl text-lg leading-8 text-cloud-200 ${classForLanguage()}">${text(content.home.heroDescription)}</p>
+        <div class="relative grid md:grid-cols-[1fr_auto] gap-8 items-center">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold-300">${text(content.sections.home.title)}</p>
+            <h3 class="mt-4 max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl ${classForLanguage()}">${text(content.home.heroTitle)}</h3>
+            <p class="mt-6 max-w-3xl text-lg leading-8 text-cloud-200 ${classForLanguage()}">${text(content.home.heroDescription)}</p>
+          </div>
+          <img src="/assets/images/IMG_8284.jpeg" alt="Ten Sikh Gurus — traditional painting" class="hidden md:block w-56 rounded-[20px] object-cover opacity-80" style="aspect-ratio:4/3;" />
         </div>
       </section>
 
@@ -529,7 +533,7 @@ function renderPyare(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.silhouettePath, text(selected.name), text(content.sections.pyare.title))}
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title))}
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
@@ -666,7 +670,7 @@ function renderTakhts(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.silhouettePath ?? selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
@@ -714,6 +718,16 @@ function renderAbout(): string {
         <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.futureUpdates)}</p>
       </section>
 
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-xl font-semibold text-white">Gurmat Camp — July 2026</h3>
+        <p class="mt-2 text-sm text-cloud-300">Design planning and content brainstorming from the San Jose Gurmat Camp collaboration session.</p>
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          <img src="/assets/images/IMG_1402.jpeg" alt="Whiteboard: 5 Takhts and 5 Pyare content outline" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" />
+          <img src="/assets/images/IMG_1404.jpeg" alt="Whiteboard: Layout wireframes for modules" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" />
+          <img src="/assets/images/IMG_1405.jpeg" alt="Whiteboard: Content and design planning" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" />
+        </div>
+      </section>
+
       <section class="grid gap-6 md:grid-cols-3">
         ${content.about.principles
           .map(
@@ -744,6 +758,12 @@ function renderAbout(): string {
 
 function renderResources(): string {
   const sites = content.resources.sites;
+  const resourceBanners: Record<string, string> = {
+    'sikhi-io': '/assets/images/sikhi-io-beliefs-banner-new-4.webp',
+    'sikhiuni': '/assets/images/sikhi-io-gurbani-banner.webp',
+    'gursevak': '/assets/images/sikhi-io-gallery-banner.webp',
+    'basicsofsikhi': '/assets/images/sikhi-io-sangat-banner.webp',
+  };
   if (sites.length === 0) {
     return `<div class="glass-panel p-8 text-center"><p class="text-cloud-200">${text(content.resources.intro)}</p></div>`;
   }
@@ -814,6 +834,7 @@ function renderResources(): string {
           .map(
             (site) => `
               <article class="resource-card">
+                ${resourceBanners[site.id] ? `<img src="${resourceBanners[site.id]}" alt="${site.title} banner" class="w-full object-cover" style="height:6rem;border-radius:28px 28px 0 0;" />` : ''}
                 <div class="resource-card__qr">
                   ${qrDataUrls[site.id] ? `<img src="${qrDataUrls[site.id]}" alt="QR code for ${site.title}" class="resource-card__qr-img" width="80" height="80" />` : '<div class="resource-card__qr-placeholder">QR</div>'}
                 </div>
@@ -840,7 +861,9 @@ function renderLeaflets(): string {
     <div class="glass-panel p-10 text-center">
       <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.leaflets.title)}</h2>
       <p class="intro mx-auto mt-4 max-w-2xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.leaflets.intro)}</p>
-      <div class="leaflet-hero my-8 text-7xl">📄</div>
+      <div class="leaflet-hero my-8 overflow-hidden rounded-[20px]">
+        <img src="/assets/images/sikh-fresco-·-restoration-3-restored.png" alt="Restored Sikh fresco artwork" class="mx-auto max-h-48 w-full object-cover object-top" />
+      </div>
       <p class="text-base text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.leafletsHelper)}</p>
       <a href="${content.leaflets.hubUrl}" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.leaflets.cta)}</a>
       <p class="mt-4 text-sm text-cloud-400">basicsofsikhi.com/resources</p>
