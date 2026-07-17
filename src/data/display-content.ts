@@ -67,6 +67,7 @@ const displayContent: DisplayContent = {
       ar: 'العربية',
     },
     reset: { en: 'Reset display', pa: 'ਪ੍ਰਦਰਸ਼ਨੀ ਰੀਸੈੱਟ ਕਰੋ' },
+    themeLabel: { en: 'Occasion theme', pa: 'ਮੌਕੇ ਦਾ ਥੀਮ' },
     labels: {
       birthName: { en: 'Birth name', pa: 'ਜਨਮ ਨਾਮ' },
       birthDeath: { en: 'Birth & shaheedi', pa: 'ਜਨਮ ਅਤੇ ਸ਼ਹੀਦੀ' },
@@ -875,6 +876,22 @@ const displayContent: DisplayContent = {
       },
     ],
   },
+  themes: [
+    { id: 'default', palette: 'default', icon: '☬', label: { en: 'Default display', pa: 'ਮੂਲ ਪ੍ਰਦਰਸ਼ਨੀ' } },
+    { id: 'vaisakhi', palette: 'vaisakhi', icon: '🌾', label: { en: 'Vaisakhi', pa: 'ਵਿਸਾਖੀ' } },
+    { id: 'bandi-chhor-divas', palette: 'diwali', icon: '🪔', label: { en: 'Bandi Chhor Divas', pa: 'ਬੰਦੀ ਛੋੜ ਦਿਵਸ' } },
+    { id: 'gurpurab-guru-nanak', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Nanak Dev Ji — Parkash Purab', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-angad', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Angad Dev Ji — Parkash Purab', pa: 'ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-amar-das', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Amar Das Ji — Parkash Purab', pa: 'ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-ram-das', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Ram Das Ji — Parkash Purab', pa: 'ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-arjan', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Arjan Dev Ji — Parkash Purab', pa: 'ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-hargobind', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Hargobind Sahib Ji — Parkash Purab', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-har-rai', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Har Rai Ji — Parkash Purab', pa: 'ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-har-krishan', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Har Krishan Ji — Parkash Purab', pa: 'ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-tegh-bahadur', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Tegh Bahadur Ji — Parkash Purab', pa: 'ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurpurab-guru-gobind-singh', palette: 'gurpurab', icon: '✨', label: { en: 'Guru Gobind Singh Ji — Parkash Purab', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ — ਪ੍ਰਕਾਸ਼ ਪੁਰਬ' } },
+    { id: 'gurgaddi-guru-granth-sahib', palette: 'gurpurab', icon: '📖', label: { en: 'Guru Granth Sahib Ji — Gurgaddi Divas', pa: 'ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ — ਗੁਰਗੱਦੀ ਦਿਵਸ' } },
+  ],
   quiz: {
     intro: { en: 'Quick, polished recall rounds help visitors reinforce names, places, and significance before moving on.', pa: 'ਛੋਟੇ ਨਿੱਖਰੇ ਯਾਦਗਾਰੀ ਰਾਊਂਡ ਨਾਮਾਂ, ਥਾਵਾਂ ਅਤੇ ਮਹੱਤਵ ਨੂੰ ਅੱਗੇ ਵਧਣ ਤੋਂ ਪਹਿਲਾਂ ਮਜ਼ਬੂਤ ਕਰਦੇ ਹਨ।' },
     levelMeta: {

@@ -14,10 +14,12 @@ import {
   selectQuizLevel,
   selectTakht,
   setLanguage,
+  setTheme,
   startQuiz,
   submitQuizAnswer,
   wakeKiosk,
 } from '../lib/kiosk-state';
+import type { KioskState } from '../lib/kiosk-state';
 import type {
   DisplayContent,
   HomeFeature,
@@ -64,6 +66,7 @@ const viewAnnouncer = requireElement('view-announcer');
 let state = createInitialState(content);
 let inactivityTimer = 0;
 let langMenuOpen = false;
+let themeMenuOpen = false;
 let openFaqIndex: number | null = null;
 let hasCelebratedPerfect = false;
 let resourceCarouselIndex = 0;
@@ -194,6 +197,15 @@ function applyDocumentDirection(language: Language): void {
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
 }
 
+function applyDocumentTheme(current: KioskState): void {
+  const palette = content.themes.find((theme) => theme.id === current.themeId)?.palette ?? 'default';
+  if (palette === 'default') {
+    document.documentElement.removeAttribute('data-theme');
+  } else {
+    document.documentElement.dataset.theme = palette;
+  }
+}
+
 function renderAttract(): void {
   attractScreen.innerHTML = `
     <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12" style="background-image:url('${asset('/assets/images/IMG_3198.jpeg')}');background-size:cover;background-position:center;">
@@ -263,6 +275,41 @@ function renderLanguageMenu(): string {
   `;
 }
 
+function activeTheme() {
+  return content.themes.find((theme) => theme.id === state.themeId) ?? content.themes[0];
+}
+
+function renderThemeMenu(): string {
+  const current = activeTheme();
+
+  return `
+    <div class="relative" id="theme-dropdown-wrapper">
+      <button
+        type="button"
+        data-action="toggle-theme-menu"
+        class="lang-badge"
+        aria-haspopup="menu"
+        aria-expanded="${themeMenuOpen}"
+        aria-controls="theme-menu"
+        aria-label="${text(content.ui.themeLabel)}"
+      >
+        <span aria-hidden="true">${current?.icon ?? '☬'}</span><span class="hidden lg:inline">${current ? text(current.label) : ''}</span> ▾
+      </button>
+      <div class="lang-menu theme-menu" id="theme-menu" role="menu" ${themeMenuOpen ? '' : 'hidden'}>
+        ${content.themes
+          .map(
+            (themeOption) => `
+              <button type="button" data-set-theme="${themeOption.id}" class="lang-option ${classForLanguage()} ${themeOption.id === state.themeId ? 'active' : ''}">
+                <span aria-hidden="true">${themeOption.icon}</span> ${text(themeOption.label)}
+              </button>
+            `,
+          )
+          .join('')}
+      </div>
+    </div>
+  `;
+}
+
 function renderJourneyIndicator(): string {
   const total = journeyViews.length;
   const visited = journeyViews.filter((view) => visitedViews.has(view)).length;
@@ -313,6 +360,7 @@ function renderHeader(): void {
         </div>
         <div class="flex shrink-0 items-center gap-2 sm:gap-3">
           ${renderJourneyIndicator()}
+          ${renderThemeMenu()}
           ${renderLanguageMenu()}
           <button
             type="button"
@@ -325,6 +373,7 @@ function renderHeader(): void {
           </button>
         </div>
       </div>
+      ${state.themeId !== 'default' ? `<div class="event-theme-banner ${classForLanguage()}"><span aria-hidden="true">${activeTheme()?.icon ?? ''}</span> ${activeTheme() ? text(activeTheme()!.label) : ''}</div>` : ''}
       ${renderJourneyProgressStrip()}
     </div>
   `;
@@ -944,7 +993,7 @@ function renderLearn(): string {
               (guru) => `
                 <div class="guru-lineage__node">
                   <div class="guru-lineage__connector" aria-hidden="true"></div>
-                  <div class="guru-lineage__medallion">${guru.order}</div>
+                  <div class="guru-lineage__medallion"><span>${guru.order}</span></div>
                   <div class="guru-lineage__card">
                     <p class="text-base font-semibold text-white ${classForLanguage()}">${text(guru.name)}</p>
                     <p class="mt-1 text-xs uppercase tracking-[0.14em] text-cloud-400">${guru.years}</p>
@@ -1628,6 +1677,41 @@ function scheduleInactivityReset(): void {
 
 let lastAnnouncedView: View | null = null;
 
+// Aggregate-only multi-kiosk analytics: a random, non-identifying token
+// generated once per device (never tied to a visitor) lets a gurdwara with
+// several kiosks compare traffic across them via /api/analytics-summary.
+// Sends are best-effort — analytics/api/analytics.ts responds 204 even
+// with no KV binding provisioned, and any network failure here is silently
+// swallowed since this must never affect the visitor experience.
+const ANALYTICS_KIOSK_ID_KEY = 'khalsa-display-kiosk-id';
+
+function getKioskAnalyticsId(): string {
+  try {
+    const existing = window.localStorage.getItem(ANALYTICS_KIOSK_ID_KEY);
+    if (existing) {
+      return existing;
+    }
+    const generated = crypto.randomUUID();
+    window.localStorage.setItem(ANALYTICS_KIOSK_ID_KEY, generated);
+    return generated;
+  } catch {
+    return 'unknown';
+  }
+}
+
+function sendAnalyticsPing(view: View, event: 'view' | 'heartbeat'): void {
+  const payload = JSON.stringify({ kioskId: getKioskAnalyticsId(), view, event });
+  try {
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(asset('/api/analytics'), new Blob([payload], { type: 'application/json' }));
+    } else {
+      fetch(asset('/api/analytics'), { method: 'POST', body: payload, keepalive: true }).catch(() => {});
+    }
+  } catch {
+    // Analytics must never break the display — swallow any failure.
+  }
+}
+
 function render(): void {
   if (state.awake && journeyViews.includes(state.view)) {
     visitedViews.add(state.view);
@@ -1653,6 +1737,7 @@ function render(): void {
     viewAnnouncer.textContent = text(content.sections[state.view].title);
     viewContent.focus({ preventScroll: true });
     viewContent.scrollTop = 0;
+    sendAnalyticsPing(state.view, 'view');
 
     // Restart the transition animation on real navigation only (not every
     // in-view interaction) by removing and re-adding the class to force a
@@ -1747,6 +1832,7 @@ document.addEventListener('click', (event) => {
 
   if (target.closest('[data-action="toggle-lang-menu"]')) {
     langMenuOpen = !langMenuOpen;
+    themeMenuOpen = false;
     renderHeader();
     scheduleInactivityReset();
     return;
@@ -1762,13 +1848,33 @@ document.addEventListener('click', (event) => {
     return;
   }
 
+  if (target.closest('[data-action="toggle-theme-menu"]')) {
+    themeMenuOpen = !themeMenuOpen;
+    langMenuOpen = false;
+    renderHeader();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const themeTarget = target.closest<HTMLElement>('[data-set-theme]');
+  if (themeTarget?.dataset.setTheme) {
+    state = setTheme(state, themeTarget.dataset.setTheme);
+    themeMenuOpen = false;
+    applyDocumentTheme(state);
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
   if (target.closest('[data-action="reset"]')) {
     state = resetForInactivity(content);
     hasCelebratedPerfect = false;
     openFaqIndex = null;
     langMenuOpen = false;
+    themeMenuOpen = false;
     resourceCarouselIndex = 0;
     visitedViews.clear();
+    applyDocumentTheme(state);
     applyDocumentDirection(state.language);
     render();
     return;
@@ -1870,4 +1976,15 @@ document.addEventListener('click', (event) => {
 });
 
 applyDocumentDirection(state.language);
+applyDocumentTheme(state);
 render();
+
+if ('serviceWorker' in navigator) {
+  // Offline resilience is a progressive enhancement — a kiosk that loses
+  // venue wifi mid-visit should keep working, not go blank. Registration
+  // failure (e.g. a local file preview with no HTTPS origin) is silently
+  // ignored rather than surfaced, since the site works fine without it.
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(asset('/sw.js')).catch(() => {});
+  });
+}

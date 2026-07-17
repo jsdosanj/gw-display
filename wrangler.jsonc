@@ -8,6 +8,12 @@
 		"directory": "./dist/client",
 		"binding": "ASSETS"
 	},
+	"kv_namespaces": [
+		{
+			"binding": "ANALYTICS_KV",
+			"id": "420d2e1349de495a94f78acfa9dd9791"
+		}
+	],
 	"observability": {
 		"enabled": true
 	}
