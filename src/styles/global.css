@@ -239,6 +239,11 @@ button {
   }
 }
 
+#app-header {
+  position: relative;
+  z-index: 30;
+}
+
 #app-header > div {
   padding-top: max(0.25rem, env(safe-area-inset-top));
 }

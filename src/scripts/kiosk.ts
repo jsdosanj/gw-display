@@ -229,11 +229,12 @@ function renderFeatureCard(feature: HomeFeature): string {
   `;
 }
 
-function renderArtworkPanel(imagePath: string, title: string, eyebrow: string): string {
+function renderArtworkPanel(imagePath: string, title: string, eyebrow: string, imageAlt: string): string {
   const imageStyle = imagePath ? `style="--art-image:url('${imagePath}');"` : '';
+  const imageRole = imagePath ? `role="img" aria-label="${imageAlt}"` : '';
 
   return `
-    <div class="art-panel mb-6" data-has-image="${String(Boolean(imagePath))}" ${imageStyle}>
+    <div class="art-panel mb-6" data-has-image="${String(Boolean(imagePath))}" ${imageStyle} ${imageRole}>
       <div class="art-panel__glow"></div>
       <div class="relative z-10">
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300">${eyebrow}</p>
@@ -533,7 +534,7 @@ function renderPyare(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title))}
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title), `Commemorative portrait artwork of ${text(selected.name, 'en')}, one of the Panj Pyare`)}
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
@@ -670,7 +671,7 @@ function renderTakhts(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title), `Photograph of ${text(selected.name, 'en')} in ${text(selected.location, 'en')}`)}
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
@@ -716,16 +717,6 @@ function renderAbout(): string {
         </div>
         <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.partnerships)}</p>
         <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.futureUpdates)}</p>
-      </section>
-
-      <section class="glass-panel p-8 md:p-10">
-        <h3 class="text-xl font-semibold text-white ${classForLanguage()}">Gurmat Camp — July 2026</h3>
-        <p class="mt-2 text-sm text-cloud-300 ${classForLanguage()}">Design planning and content brainstorming from the San Jose Gurmat Camp collaboration session.</p>
-        <div class="mt-6 grid gap-4 md:grid-cols-3">
-          <img src="/assets/images/IMG_1402.jpeg" alt="Whiteboard: 5 Takhts and 5 Pyare content outline" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
-          <img src="/assets/images/IMG_1404.jpeg" alt="Whiteboard: Layout wireframes for modules" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
-          <img src="/assets/images/IMG_1405.jpeg" alt="Whiteboard: Content and design planning" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
-        </div>
       </section>
 
       <section class="grid gap-6 md:grid-cols-3">
