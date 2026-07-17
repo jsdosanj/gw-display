@@ -24,6 +24,58 @@
     linear-gradient(180deg, #091322 0%, #050b14 100%);
 }
 
+/* Accessibility: skip link, screen-reader-only text, focus states, reduced motion */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  @apply sr-only;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 100;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.25rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  border-radius: 999px;
+  background: var(--color-gold-400);
+  color: var(--color-night-950);
+  font-weight: 600;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-gold-300);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 html,
 body {
   margin: 0;
@@ -35,6 +87,30 @@ body {
 body {
   overflow: hidden;
   color: #f8fafc;
+}
+
+/* Fresco background layer, present on every view. The fresco renders at
+   ~75% opacity; the separate scrim gradient on top is what keeps foreground
+   text at that opacity passing WCAG AA (verified with axe-core, not just
+   assumed — panel text also gets its own backdrop treatment for the same
+   reason). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: var(--fresco-bg-url, none);
+  background-size: cover;
+  background-position: center 30%;
+  opacity: 0.75;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(5, 11, 20, 0.72) 0%, rgba(5, 11, 20, 0.85) 55%, rgba(5, 11, 20, 0.93) 100%);
 }
 
 * {
@@ -212,8 +288,56 @@ button {
   mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
 }
 
+.view-transition-in {
+  animation: viewFadeIn 0.4s ease-out;
+}
+
+@keyframes viewFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .attract-halo {
   animation: pulseHalo 8s ease-in-out infinite;
+}
+
+.ik-onkar-motif {
+  opacity: 0;
+  animation: ikOnkarReveal 2.4s ease-out 0.2s forwards;
+  text-shadow: 0 0 40px rgba(228, 187, 94, 0.35);
+}
+
+@keyframes ikOnkarReveal {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 12px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.cinematic-fade {
+  opacity: 0;
+  animation: cinematicFadeIn 1.4s ease-out 0.6s forwards;
+}
+
+@keyframes cinematicFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .float-slow {
@@ -237,6 +361,11 @@ button {
     height: 100dvh;
     min-height: 100dvh;
   }
+}
+
+#app-header {
+  position: relative;
+  z-index: 30;
 }
 
 #app-header > div {
@@ -343,6 +472,32 @@ button {
   @apply absolute right-0 top-full z-50 mt-2 min-w-[9rem] overflow-hidden rounded-[20px] border border-white/15 bg-night-950/95 p-1.5 shadow-2xl backdrop-blur-2xl;
 }
 
+/* "Your journey" progress indicator */
+.journey-indicator {
+  @apply items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5;
+}
+
+.journey-indicator__track {
+  @apply flex items-center gap-1;
+}
+
+.journey-indicator__dot {
+  @apply h-1.5 w-1.5 rounded-full bg-white/25 transition;
+}
+
+.journey-indicator__dot[data-visited='true'] {
+  @apply bg-gold-400;
+}
+
+/* Text-to-speech "listen" control */
+.listen-btn {
+  @apply inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-cloud-200 transition hover:border-gold-300/40 active:scale-[0.97];
+}
+
+.tts-notice {
+  @apply mt-2 text-xs text-cloud-400;
+}
+
 .lang-option {
   @apply flex w-full items-center rounded-[14px] px-4 py-2.5 text-sm font-medium text-cloud-200 transition hover:bg-white/8;
 }
@@ -366,6 +521,30 @@ button {
 .resource-card__overlay {
   @apply absolute inset-0 flex cursor-pointer items-end;
   background: linear-gradient(to top, rgba(5, 11, 20, 0.95) 0%, rgba(5, 11, 20, 0.4) 50%, transparent 100%);
+}
+
+.resource-fallback-panel {
+  @apply absolute inset-0 overflow-hidden rounded-[24px] bg-night-900;
+}
+
+.resource-fallback-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    var(--art-image, none),
+    linear-gradient(180deg, rgba(5, 11, 20, 0.55) 0%, rgba(5, 11, 20, 0.96) 78%);
+  background-position: center;
+  background-size: cover;
+  opacity: 0.85;
+}
+
+.resource-fallback-panel__glow {
+  position: absolute;
+  inset: auto -10% -30% -10%;
+  height: 60%;
+  background: radial-gradient(circle at center, rgba(228, 187, 94, 0.2), transparent 70%);
+  filter: blur(20px);
 }
 
 /* Onboarding and FAQ */

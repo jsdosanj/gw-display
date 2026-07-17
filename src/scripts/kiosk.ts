@@ -27,6 +27,18 @@ import type {
 
 const content: DisplayContent = displayContent;
 
+// Astro serves this site under the "/gw-display" base path (see
+// astro.config.mjs), but content data stores root-relative asset paths like
+// "/assets/images/x.jpeg" for readability. Without this, every image 404s
+// once deployed — reproduced and confirmed against the dev server directly.
+const BASE_URL = import.meta.env.BASE_URL;
+
+function asset(path: string): string {
+  return `${BASE_URL.replace(/\/$/, '')}${path}`;
+}
+
+document.documentElement.style.setProperty('--fresco-bg-url', `url('${asset('/assets/images/sikh-fresco-·-restoration-3-restored.png')}')`);
+
 function requireElement(id: string): HTMLElement {
   const element = document.getElementById(id);
 
@@ -42,6 +54,7 @@ const mainShell = requireElement('main-shell');
 const header = requireElement('app-header');
 const viewContent = requireElement('view-content');
 const bottomNav = requireElement('bottom-nav');
+const viewAnnouncer = requireElement('view-announcer');
 
 let state = createInitialState(content);
 let inactivityTimer = 0;
@@ -51,6 +64,9 @@ let hasCelebratedPerfect = false;
 let resourceCarouselIndex = 0;
 let resourceCarouselTimer = 0;
 const qrDataUrls: Record<string, string> = {};
+
+const journeyViews: View[] = ['pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
+const visitedViews = new Set<View>();
 
 async function initQrCodes(): Promise<void> {
   for (const site of content.resources.sites) {
@@ -81,6 +97,7 @@ const icons: Record<View, string> = {
   pyare: '⚔️',
   takhts: '🕌',
   quiz: '✨',
+  learn: '📖',
   about: 'ℹ️',
   resources: '🌐',
   leaflets: '📄',
@@ -94,6 +111,60 @@ function classForLanguage(language = state.language): string {
   return language === 'pa' ? 'gurmukhi' : '';
 }
 
+function escapeAttr(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
+const speechLangCodes: Record<Language, string> = {
+  en: 'en-US',
+  pa: 'pa-IN',
+  hi: 'hi-IN',
+  es: 'es-ES',
+  ar: 'ar-SA',
+};
+
+function showTtsNotice(buttonEl: HTMLElement, message: string): void {
+  buttonEl.parentElement?.querySelector('.tts-notice')?.remove();
+  const notice = document.createElement('p');
+  notice.className = 'tts-notice';
+  notice.setAttribute('role', 'status');
+  notice.textContent = message;
+  buttonEl.insertAdjacentElement('afterend', notice);
+  window.setTimeout(() => notice.remove(), 5000);
+}
+
+function speakText(value: string, language: Language, buttonEl: HTMLElement): void {
+  if (!('speechSynthesis' in window)) {
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const voices = window.speechSynthesis.getVoices();
+  const matchingVoice = voices.find((voice) => voice.lang.toLowerCase().startsWith(language));
+
+  // English works reliably everywhere; Punjabi voices are not installed on
+  // most devices, so tell the visitor instead of speaking with the wrong
+  // language's pronunciation rules.
+  if (language === 'pa' && !matchingVoice) {
+    showTtsNotice(buttonEl, text(content.ui.labels.ttsNoPunjabiVoice));
+    return;
+  }
+
+  const utterance = new SpeechSynthesisUtterance(value);
+  utterance.lang = speechLangCodes[language];
+  if (matchingVoice) {
+    utterance.voice = matchingVoice;
+  }
+  window.speechSynthesis.speak(utterance);
+}
+
+function renderListenButton(payload: LocalizedText): string {
+  const value = text(payload);
+  const label = text(content.ui.labels.ttsListen);
+  return `<button type="button" class="listen-btn" data-tts-text="${escapeAttr(value)}" data-tts-lang="${state.language}" aria-label="${label}">🔊 <span class="${classForLanguage()}">${label}</span></button>`;
+}
+
 function applyDocumentDirection(language: Language): void {
   document.documentElement.lang = language;
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
@@ -101,13 +172,14 @@ function applyDocumentDirection(language: Language): void {
 
 function renderAttract(): void {
   attractScreen.innerHTML = `
-    <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12" style="background-image:url('/assets/images/IMG_3198.jpeg');background-size:cover;background-position:center;">
+    <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12" style="background-image:url('${asset('/assets/images/IMG_3198.jpeg')}');background-size:cover;background-position:center;">
       <div class="absolute inset-0 bg-night-950/80"></div>
       <div class="attract-halo absolute h-[32rem] w-[32rem] rounded-full bg-gold-400/18 blur-3xl"></div>
       <div class="float-slow absolute left-[12%] top-[18%] h-32 w-32 rounded-full bg-sky-400/12 blur-3xl"></div>
       <div class="float-delay absolute bottom-[18%] right-[10%] h-44 w-44 rounded-full bg-gold-300/10 blur-3xl"></div>
       <div class="soft-grid absolute inset-0 opacity-25"></div>
-      <div class="glass-panel relative z-10 flex w-full max-w-5xl flex-col gap-8 overflow-hidden px-8 py-10 md:px-14 md:py-14">
+      <p class="ik-onkar-motif absolute left-1/2 top-[8%] -translate-x-1/2 text-7xl text-gold-300/90 md:text-8xl" aria-hidden="true">ੴ</p>
+      <div class="glass-panel cinematic-fade relative z-10 flex w-full max-w-5xl flex-col gap-8 overflow-hidden px-8 py-10 md:px-14 md:py-14">
         <div class="flex items-center justify-between gap-6">
           <div>
             <p class="mb-3 text-sm font-semibold uppercase tracking-[0.28em] text-gold-300">${text(content.ui.attractEyebrow)}</p>
@@ -167,13 +239,31 @@ function renderLanguageMenu(): string {
   `;
 }
 
+function renderJourneyIndicator(): string {
+  const total = journeyViews.length;
+  const visited = journeyViews.filter((view) => visitedViews.has(view)).length;
+  const label = text(content.ui.labels.journeyProgress);
+
+  return `
+    <div class="journey-indicator hidden lg:flex" role="status" aria-label="${label}: ${visited} / ${total}">
+      <span class="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-cloud-400 ${classForLanguage()}">${label}</span>
+      <div class="journey-indicator__track">
+        ${journeyViews
+          .map((view) => `<span class="journey-indicator__dot" data-visited="${visitedViews.has(view)}"></span>`)
+          .join('')}
+      </div>
+      <span class="text-xs font-semibold text-gold-300">${visited}/${total}</span>
+    </div>
+  `;
+}
+
 function renderHeader(): void {
   const copy = content.sections[state.view];
 
   header.innerHTML = `
     <div class="glass-header flex min-h-20 items-center justify-between px-4 py-2 md:min-h-24 md:px-8 md:py-0">
       <div class="flex min-w-0 items-center gap-4">
-        <button type="button" data-nav="home" class="flex h-14 w-14 items-center justify-center rounded-full border border-gold-300/30 bg-white/5 text-2xl text-gold-300 transition active:scale-[0.98]">☬</button>
+        <button type="button" data-nav="home" aria-label="${text(content.ui.nav.home)}" class="flex h-14 w-14 items-center justify-center rounded-full border border-gold-300/30 bg-white/5 text-2xl text-gold-300 transition active:scale-[0.98]">☬</button>
         <div class="min-w-0">
           <p class="truncate text-xs font-semibold uppercase tracking-[0.22em] text-cloud-400">${text(content.ui.experienceLabel)}</p>
           <h2 class="truncate text-xl font-semibold text-white md:text-2xl ${classForLanguage()}">${text(copy.title)}</h2>
@@ -181,6 +271,7 @@ function renderHeader(): void {
         </div>
       </div>
       <div class="flex items-center gap-3">
+        ${renderJourneyIndicator()}
         ${renderLanguageMenu()}
         <button type="button" data-action="reset" class="hidden rounded-full border border-white/10 px-4 py-3 text-sm font-semibold text-cloud-200 transition active:scale-[0.98] md:block ${classForLanguage()}">${text(content.ui.reset)}</button>
       </div>
@@ -189,10 +280,10 @@ function renderHeader(): void {
 }
 
 function renderNav(): void {
-  const views: View[] = ['home', 'pyare', 'takhts', 'quiz', 'about', 'resources', 'leaflets'];
+  const views: View[] = ['home', 'pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
 
   bottomNav.innerHTML = `
-    <div class="glass-header flex min-h-20 gap-2 overflow-x-auto px-2 pt-2 md:grid md:min-h-24 md:grid-cols-7 md:gap-2 md:overflow-visible md:px-5 md:py-2">
+    <div class="glass-header flex min-h-20 gap-2 overflow-x-auto px-2 pt-2 md:grid md:min-h-24 md:grid-cols-8 md:gap-2 md:overflow-visible md:px-5 md:py-2">
       ${views
         .map(
           (view) => `
@@ -229,11 +320,12 @@ function renderFeatureCard(feature: HomeFeature): string {
   `;
 }
 
-function renderArtworkPanel(imagePath: string, title: string, eyebrow: string): string {
-  const imageStyle = imagePath ? `style="--art-image:url('${imagePath}');"` : '';
+function renderArtworkPanel(imagePath: string, title: string, eyebrow: string, imageAlt: string): string {
+  const imageStyle = imagePath ? `style="--art-image:url('${asset(imagePath)}');"` : '';
+  const imageRole = imagePath ? `role="img" aria-label="${imageAlt}"` : '';
 
   return `
-    <div class="art-panel mb-6" data-has-image="${String(Boolean(imagePath))}" ${imageStyle}>
+    <div class="art-panel mb-6" data-has-image="${String(Boolean(imagePath))}" ${imageStyle} ${imageRole}>
       <div class="art-panel__glow"></div>
       <div class="relative z-10">
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300">${eyebrow}</p>
@@ -359,13 +451,13 @@ function renderFaqSection(): string {
           .map(
             (item, index) => `
               <div class="faq-item" data-open="${openFaqIndex === index}">
-                <button type="button" data-faq-toggle="${index}" class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left">
+                <button type="button" data-faq-toggle="${index}" aria-expanded="${openFaqIndex === index}" aria-controls="faq-answer-${index}" class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left">
                   <span class="text-base font-semibold text-white ${classForLanguage()}">${text(item.question)}</span>
-                  <span class="text-gold-300">${openFaqIndex === index ? '−' : '+'}</span>
+                  <span class="text-gold-300" aria-hidden="true">${openFaqIndex === index ? '−' : '+'}</span>
                 </button>
                 ${
                   openFaqIndex === index
-                    ? `<p class="px-5 pb-5 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(item.answer)}</p>`
+                    ? `<p id="faq-answer-${index}" class="px-5 pb-5 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(item.answer)}</p>`
                     : ''
                 }
               </div>
@@ -426,7 +518,7 @@ function renderHome(): string {
             <h3 class="mt-4 max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl ${classForLanguage()}">${text(content.home.heroTitle)}</h3>
             <p class="mt-6 max-w-3xl text-lg leading-8 text-cloud-200 ${classForLanguage()}">${text(content.home.heroDescription)}</p>
           </div>
-          <img src="/assets/images/IMG_8284.jpeg" alt="Ten Sikh Gurus — traditional painting" class="hidden md:block w-56 rounded-[20px] object-cover opacity-80" style="aspect-ratio:4/3;" />
+          <img src="${asset('/assets/images/IMG_8284.jpeg')}" alt="Ten Sikh Gurus — traditional painting" class="hidden md:block w-56 rounded-[20px] object-cover opacity-80" style="aspect-ratio:4/3;" />
         </div>
       </section>
 
@@ -437,7 +529,7 @@ function renderHome(): string {
           ${content.home.differentiationCards
             .map(
               (card) => `
-                <button type="button" data-home-target="${card.id}" class="art-panel text-left transition duration-200 hover:border-gold-300/40 active:scale-[0.99]" data-has-image="true" style="--art-image:url('${card.imagePath}');">
+                <button type="button" data-home-target="${card.id}" class="art-panel text-left transition duration-200 hover:border-gold-300/40 active:scale-[0.99]" data-has-image="true" style="--art-image:url('${asset(card.imagePath)}');">
                   <div class="art-panel__glow"></div>
                   <div class="relative z-10">
                     <h4 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(card.title)}</h4>
@@ -484,7 +576,10 @@ function renderPyare(): string {
 
   const storyHtml = `
     <div class="story-panel mt-6">
-      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+        ${renderListenButton(selected.story ?? selected.details)}
+      </div>
       <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.story ?? selected.details)}</p>
     </div>
   `;
@@ -512,6 +607,20 @@ function renderPyare(): string {
        </div>`
     : '';
 
+  const lessonsHtml = selected.lessons
+    ? `<div class="story-panel mt-6">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.lessons)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.lessons)}</p>
+       </div>`
+    : '';
+
+  const languageQualitiesHtml = selected.language || selected.qualities
+    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+         ${selected.qualities ? `<p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.qualities)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.qualities)}</p>` : ''}
+         ${selected.language ? `<p class="${selected.qualities ? 'mt-5' : ''} text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.language)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.language)}</p>` : ''}
+       </div>`
+    : '';
+
   return `
     <div class="grid gap-6">
       <p class="max-w-4xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.pyareIntro)}</p>
@@ -523,7 +632,7 @@ function renderPyare(): string {
           .map(
             (item, index) => `
               <button type="button" data-pyara="${item.id}" class="silhouette-avatar" data-active="${item.id === selected.id}" aria-label="${text(item.name)}">
-                <img src="${item.silhouettePath}" alt="${text(item.name)}" class="silhouette-avatar__img" />
+                <img src="${asset(item.silhouettePath)}" alt="${text(item.name)}" class="silhouette-avatar__img" />
                 <span class="silhouette-avatar__number">${index + 1}</span>
                 <span class="silhouette-avatar__name ${classForLanguage()}">${text(item.name).replace(/Bhai /g, '').replace(/ Ji$/, '')}</span>
               </button>
@@ -533,7 +642,7 @@ function renderPyare(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title))}
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title), `Commemorative portrait artwork of ${text(selected.name, 'en')}, one of the Panj Pyare`)}
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
@@ -548,6 +657,8 @@ function renderPyare(): string {
         ${afterKhalsaHtml}
         ${funFactHtml}
         ${shaheediHtml}
+        ${lessonsHtml}
+        ${languageQualitiesHtml}
 
         <div class="storyline-panel mt-8">
           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
@@ -622,7 +733,10 @@ function renderTakhts(): string {
 
   const storyHtml = selected.story
     ? `<div class="story-panel mt-6">
-         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+         <div class="flex flex-wrap items-center justify-between gap-3">
+           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+           ${renderListenButton(selected.story)}
+         </div>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.story)}</p>
        </div>`
     : '';
@@ -649,6 +763,20 @@ function renderTakhts(): string {
        </div>`
     : '';
 
+  const gurusVisitedHtml = selected.gurusVisited
+    ? `<div class="story-panel mt-6">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.gurusVisited)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.gurusVisited)}</p>
+       </div>`
+    : '';
+
+  const areaImpactHtml = selected.areaHistory || selected.localImpact
+    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+         ${selected.areaHistory ? `<p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.areaHistory)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.areaHistory)}</p>` : ''}
+         ${selected.localImpact ? `<p class="${selected.areaHistory ? 'mt-5' : ''} text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.localImpact)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.localImpact)}</p>` : ''}
+       </div>`
+    : '';
+
   return `
     <div class="grid gap-6">
       <p class="max-w-4xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.takhtsIntro)}</p>
@@ -660,7 +788,7 @@ function renderTakhts(): string {
           .map(
             (takht, index) => `
               <button type="button" data-takht="${takht.id}" class="silhouette-avatar" data-active="${takht.id === selected.id}" aria-label="${text(takht.name)}">
-                <img src="${takht.silhouettePath ?? '/assets/images/gurdwara-silhouette.svg'}" alt="${text(takht.name)}" class="silhouette-avatar__img" />
+                <img src="${asset(takht.silhouettePath ?? '/assets/images/gurdwara-silhouette.svg')}" alt="${text(takht.name)}" class="silhouette-avatar__img" />
                 <span class="silhouette-avatar__number">${index + 1}</span>
                 <span class="silhouette-avatar__name ${classForLanguage()}">${text(takht.name).replace(/Takht Sri |Sri |Takht /g, '').replace(/ Sahib$/, '')}</span>
               </button>
@@ -670,7 +798,7 @@ function renderTakhts(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title), `Photograph of ${text(selected.name, 'en')} in ${text(selected.location, 'en')}`)}
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
@@ -685,6 +813,8 @@ function renderTakhts(): string {
         ${funFactHtml}
         ${jathedaarHtml}
         ${visitorsHtml}
+        ${gurusVisitedHtml}
+        ${areaImpactHtml}
 
         <div class="storyline-panel mt-8">
           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
@@ -706,26 +836,174 @@ function renderTakhts(): string {
   `;
 }
 
+function renderLearn(): string {
+  const learn = content.learnSikhi;
+
+  return `
+    <div class="grid gap-6">
+      <section class="glass-panel p-8 md:p-10">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(learn.title)}</h2>
+          <div class="flex items-center gap-3">
+            <span class="ai-badge">⚠ ${text(content.review.label)}</span>
+            ${renderListenButton(learn.intro)}
+          </div>
+        </div>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.intro)}</p>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.gurdwaraRoomsTitle)}</h3>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          ${learn.gurdwaraRooms
+            .map(
+              (room) => `
+                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                  <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(room.name)}</h4>
+                  <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(room.description)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.etiquetteTitle)}</h3>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          ${learn.etiquette
+            .map(
+              (item) => `
+                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                  <h4 class="text-sm font-semibold uppercase tracking-[0.18em] text-gold-300 ${classForLanguage()}">${text(item.title)}</h4>
+                  <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(item.description)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.gurusTitle)}</h3>
+        <div class="mt-6 grid gap-4">
+          ${learn.gurus
+            .map(
+              (guru) => `
+                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 flex gap-4">
+                  <span class="shrink-0 flex h-10 w-10 items-center justify-center rounded-full border border-gold-300/30 bg-gold-400/10 text-sm font-semibold text-gold-300">${guru.order}</span>
+                  <div>
+                    <h4 class="text-base font-semibold text-white ${classForLanguage()}">${text(guru.name)} <span class="font-normal text-cloud-400">— ${guru.years}</span></h4>
+                    <p class="mt-2 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(guru.summary)}</p>
+                  </div>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.sahibzaadeTitle)}</h3>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          ${learn.sahibzaade
+            .map(
+              (child) => `
+                <article class="rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5">
+                  <h4 class="text-base font-semibold text-white ${classForLanguage()}">${text(child.name)} <span class="font-normal text-cloud-400">— ${child.years}</span></h4>
+                  <p class="mt-2 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(child.summary)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.kakaarsTitle)}</h3>
+        <p class="mt-3 max-w-3xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.kakaarsIntro)}</p>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+          ${learn.kakaars
+            .map(
+              (kakaar) => `
+                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 text-center">
+                  <p class="gurmukhi text-3xl font-semibold text-gold-300">${text(kakaar.name)}</p>
+                  <p class="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-cloud-400">${text(kakaar.meaning)}</p>
+                  <p class="mt-3 text-sm leading-6 text-cloud-200 ${classForLanguage()}">${text(kakaar.description)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.introTitle)}</h3>
+          ${renderListenButton(learn.whatIsSikhi)}
+        </div>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.whatIsSikhi)}</p>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.founding)}</p>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.sevaSimran)}</p>
+        <h4 class="mt-8 text-lg font-semibold text-white ${classForLanguage()}">${text(learn.pillarsTitle)}</h4>
+        <div class="mt-4 grid gap-4 md:grid-cols-3">
+          ${learn.pillars
+            .map(
+              (pillar) => `
+                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                  <p class="gurmukhi text-xl font-semibold text-gold-300">${text(pillar.term)}</p>
+                  <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(pillar.description)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.gurbaniTitle)}</h3>
+        <p class="mt-4 max-w-3xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.gurbaniIntro)}</p>
+        <div class="mt-6 grid gap-5">
+          ${learn.shabads
+            .map(
+              (shabad) => `
+                <article class="rounded-[24px] border border-gold-300/20 bg-gold-400/5 p-6">
+                  <div class="flex flex-wrap items-start justify-between gap-3">
+                    <p class="gurmukhi text-2xl leading-relaxed text-white">${shabad.gurmukhi}</p>
+                    ${renderListenButton(shabad.translation)}
+                  </div>
+                  <p class="mt-4 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(shabad.translation)}</p>
+                  <div class="mt-4 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-gold-300">
+                    <span>Ang ${shabad.ang}</span>
+                    <span>·</span>
+                    <span>${shabad.raag}</span>
+                    <span>·</span>
+                    <span class="${classForLanguage()}">${text(shabad.author)}</span>
+                  </div>
+                  <p class="mt-4 text-xs italic leading-6 text-cloud-400 ${classForLanguage()}">${text(shabad.verificationNote)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+    </div>
+  `;
+}
+
 function renderAbout(): string {
   return `
     <div class="grid gap-6">
       <section class="glass-panel p-8 md:p-10">
-        <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.about.title)}</h2>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.about.title)}</h2>
+          ${renderListenButton(content.about.partnerships)}
+        </div>
         <div class="mt-6 rounded-[24px] border border-gold-300/25 bg-gold-400/8 p-6">
           <p class="text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.collaboration)}</p>
         </div>
         <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.partnerships)}</p>
         <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.futureUpdates)}</p>
-      </section>
-
-      <section class="glass-panel p-8 md:p-10">
-        <h3 class="text-xl font-semibold text-white ${classForLanguage()}">Gurmat Camp — July 2026</h3>
-        <p class="mt-2 text-sm text-cloud-300 ${classForLanguage()}">Design planning and content brainstorming from the San Jose Gurmat Camp collaboration session.</p>
-        <div class="mt-6 grid gap-4 md:grid-cols-3">
-          <img src="/assets/images/IMG_1402.jpeg" alt="Whiteboard: 5 Takhts and 5 Pyare content outline" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
-          <img src="/assets/images/IMG_1404.jpeg" alt="Whiteboard: Layout wireframes for modules" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
-          <img src="/assets/images/IMG_1405.jpeg" alt="Whiteboard: Content and design planning" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
-        </div>
       </section>
 
       <section class="grid gap-6 md:grid-cols-3">
@@ -799,8 +1077,18 @@ function renderResources(): string {
                     loading="lazy"
                     sandbox="allow-scripts"
                     title="${site.title}"
+                    data-iframe-slot="${site.id}"
                   ></iframe>
-                  <div class="resource-card__overlay p-6 md:p-8">
+                  <div class="resource-fallback-panel" data-fallback-slot="${site.id}" hidden ${resourceBanners[site.id] ? `style="--art-image:url('${asset(resourceBanners[site.id])}');"` : ''}>
+                    <div class="resource-fallback-panel__glow"></div>
+                    <div class="relative z-10 flex h-full flex-col items-start justify-end p-6 md:p-8">
+                      <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
+                      <p class="mt-2 max-w-xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(site.previewDescription)}</p>
+                      <p class="mt-2 text-xs uppercase tracking-[0.18em] text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.embedUnavailable)}</p>
+                      <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.openInBrowser)}</a>
+                    </div>
+                  </div>
+                  <div class="resource-card__overlay p-6 md:p-8" data-overlay-slot="${site.id}">
                     <div class="flex items-end justify-between gap-6 w-full">
                       <div>
                         <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
@@ -821,8 +1109,10 @@ function renderResources(): string {
         <div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2" id="resource-carousel-dots">
           ${liveSites
             .map(
-              (_, index) => `
-                <button type="button" data-carousel-dot="${index}" class="h-2 w-2 rounded-full transition ${index === resourceCarouselIndex ? 'bg-gold-400' : 'bg-white/30'}"></button>
+              (site, index) => `
+                <button type="button" data-carousel-dot="${index}" aria-label="${text(content.ui.labels.livePreviews)}: ${site.title}" aria-current="${index === resourceCarouselIndex}" class="flex h-6 w-6 items-center justify-center">
+                  <span class="h-2 w-2 rounded-full transition ${index === resourceCarouselIndex ? 'bg-gold-400' : 'bg-white/30'}"></span>
+                </button>
               `,
             )
             .join('')}
@@ -834,7 +1124,7 @@ function renderResources(): string {
           .map(
             (site) => `
               <article class="resource-card">
-                ${resourceBanners[site.id] ? `<img src="${resourceBanners[site.id]}" alt="${site.title} banner" class="w-full object-cover" style="height:6rem;border-radius:28px 28px 0 0;" loading="lazy" decoding="async" />` : ''}
+                ${resourceBanners[site.id] ? `<img src="${asset(resourceBanners[site.id])}" alt="${site.title} banner" class="w-full object-cover" style="height:6rem;border-radius:28px 28px 0 0;" loading="lazy" decoding="async" />` : ''}
                 <div class="resource-card__qr">
                   ${qrDataUrls[site.id] ? `<img src="${qrDataUrls[site.id]}" alt="QR code for ${site.title}" class="resource-card__qr-img" width="80" height="80" />` : '<div class="resource-card__qr-placeholder">QR</div>'}
                 </div>
@@ -862,7 +1152,7 @@ function renderLeaflets(): string {
       <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.leaflets.title)}</h2>
       <p class="intro mx-auto mt-4 max-w-2xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.leaflets.intro)}</p>
       <div class="leaflet-hero my-8 overflow-hidden rounded-[20px]">
-        <img src="/assets/images/sikh-fresco-·-restoration-3-restored.png" alt="Restored Sikh fresco artwork" class="mx-auto max-h-48 w-full object-cover object-top" decoding="async" />
+        <img src="${asset('/assets/images/sikh-fresco-·-restoration-3-restored.png')}" alt="Restored Sikh fresco artwork" class="mx-auto max-h-48 w-full object-cover object-top" decoding="async" />
       </div>
       <p class="text-base text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.leafletsHelper)}</p>
       <a href="${content.leaflets.hubUrl}" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.leaflets.cta)}</a>
@@ -993,8 +1283,59 @@ function updateResourceCarousel(): void {
   const dots = document.querySelectorAll<HTMLElement>('[data-carousel-dot]');
   dots.forEach((dot) => {
     const isActive = Number(dot.dataset.carouselDot) === resourceCarouselIndex;
-    dot.classList.toggle('bg-gold-400', isActive);
-    dot.classList.toggle('bg-white/30', !isActive);
+    dot.setAttribute('aria-current', String(isActive));
+    const dotMarker = dot.querySelector('span');
+    dotMarker?.classList.toggle('bg-gold-400', isActive);
+    dotMarker?.classList.toggle('bg-white/30', !isActive);
+  });
+}
+
+function activateResourceFallback(siteId: string): void {
+  const iframe = document.querySelector<HTMLIFrameElement>(`[data-iframe-slot="${siteId}"]`);
+  const overlay = document.querySelector<HTMLElement>(`[data-overlay-slot="${siteId}"]`);
+  const fallback = document.querySelector<HTMLElement>(`[data-fallback-slot="${siteId}"]`);
+  if (iframe) {
+    iframe.style.display = 'none';
+  }
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+  if (fallback) {
+    fallback.hidden = false;
+  }
+}
+
+function setupIframeFallbacks(): void {
+  const iframes = document.querySelectorAll<HTMLIFrameElement>('[data-iframe-slot]');
+
+  iframes.forEach((iframe) => {
+    const siteId = iframe.dataset.iframeSlot;
+    const url = iframe.src;
+    if (!siteId || !url) {
+      return;
+    }
+
+    // A cross-origin iframe's "load" event fires whether the embed actually
+    // rendered or the browser committed an internal error page in its place —
+    // both throw the same SecurityError on contentWindow.location access, so
+    // that alone can't tell success from failure. What a plain network-level
+    // failure (DNS, connection refused/reset — the case this sandbox hits
+    // against every external host) *can* tell us is whether the request ever
+    // reached the server at all, via a no-cors fetch racing a short timeout.
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 4000);
+
+    fetch(url, { mode: 'no-cors', signal: controller.signal })
+      .catch(() => {
+        activateResourceFallback(siteId);
+      })
+      .finally(() => {
+        window.clearTimeout(timeoutId);
+      });
+
+    iframe.addEventListener('error', () => {
+      activateResourceFallback(siteId);
+    });
   });
 }
 
@@ -1048,12 +1389,16 @@ function renderView(): void {
     case 'takhts':
       viewContent.innerHTML = renderTakhts();
       break;
+    case 'learn':
+      viewContent.innerHTML = renderLearn();
+      break;
     case 'about':
       viewContent.innerHTML = renderAbout();
       break;
     case 'resources':
       viewContent.innerHTML = renderResources();
       setupResourceCarousel();
+      setupIframeFallbacks();
       break;
     case 'leaflets':
       viewContent.innerHTML = renderLeaflets();
@@ -1087,12 +1432,19 @@ function scheduleInactivityReset(): void {
     openFaqIndex = null;
     langMenuOpen = false;
     resourceCarouselIndex = 0;
+    visitedViews.clear();
     applyDocumentDirection(state.language);
     render();
   }, content.settings.timeoutSeconds * 1000);
 }
 
+let lastAnnouncedView: View | null = null;
+
 function render(): void {
+  if (state.awake && journeyViews.includes(state.view)) {
+    visitedViews.add(state.view);
+  }
+
   renderAttract();
   renderHeader();
   renderNav();
@@ -1106,6 +1458,20 @@ function render(): void {
     attractScreen.classList.remove('hidden');
     mainShell.classList.add('hidden');
     mainShell.classList.remove('flex');
+  }
+
+  if (state.awake && state.view !== lastAnnouncedView) {
+    lastAnnouncedView = state.view;
+    viewAnnouncer.textContent = text(content.sections[state.view].title);
+    viewContent.focus({ preventScroll: true });
+
+    // Restart the transition animation on real navigation only (not every
+    // in-view interaction) by removing and re-adding the class to force a
+    // reflow between the two — reduced-motion users get the same class but
+    // the global media query collapses its duration to ~0.
+    viewContent.classList.remove('view-transition-in');
+    void viewContent.offsetWidth;
+    viewContent.classList.add('view-transition-in');
   }
 }
 
@@ -1122,7 +1488,13 @@ document.addEventListener('pointerdown', () => {
   handleUserWake();
 });
 
-document.addEventListener('keydown', () => {
+document.addEventListener('keydown', (event) => {
+  // Tab is pure focus navigation, not an "I want to engage" gesture — waking
+  // (and re-rendering) on it would yank a keyboard user's focus mid-navigation
+  // before they ever reach the visible "Begin Experience" button.
+  if (event.key === 'Tab') {
+    return;
+  }
   handleUserWake();
 });
 
@@ -1188,6 +1560,7 @@ document.addEventListener('click', (event) => {
     openFaqIndex = null;
     langMenuOpen = false;
     resourceCarouselIndex = 0;
+    visitedViews.clear();
     applyDocumentDirection(state.language);
     render();
     return;
@@ -1214,6 +1587,13 @@ document.addEventListener('click', (event) => {
     const index = Number(faqTarget.dataset.faqToggle);
     openFaqIndex = openFaqIndex === index ? null : index;
     render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const ttsTarget = target.closest<HTMLElement>('[data-tts-text]');
+  if (ttsTarget?.dataset.ttsText) {
+    speakText(ttsTarget.dataset.ttsText, (ttsTarget.dataset.ttsLang as Language | undefined) ?? state.language, ttsTarget);
     scheduleInactivityReset();
     return;
   }

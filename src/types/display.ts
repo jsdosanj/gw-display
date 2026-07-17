@@ -1,5 +1,5 @@
 export type Language = 'en' | 'pa' | 'hi' | 'es' | 'ar';
-export type View = 'home' | 'pyare' | 'takhts' | 'quiz' | 'about' | 'resources' | 'leaflets';
+export type View = 'home' | 'pyare' | 'takhts' | 'quiz' | 'learn' | 'about' | 'resources' | 'leaflets';
 
 export interface LocalizedText {
   en: string;
@@ -56,6 +56,9 @@ export interface PanjPyaraProfile {
   roles?: LocalizedText;
   accomplishments?: LocalizedText;
   shaheedi?: LocalizedText;
+  lessons?: LocalizedText;
+  language?: LocalizedText;
+  qualities?: LocalizedText;
 }
 
 export interface TakhtProfile {
@@ -76,6 +79,9 @@ export interface TakhtProfile {
   jathedaar?: LocalizedText;
   visitorsInfo?: LocalizedText;
   yearDeclared?: string;
+  gurusVisited?: LocalizedText;
+  areaHistory?: LocalizedText;
+  localImpact?: LocalizedText;
 }
 
 export interface QuizQuestion {
@@ -95,6 +101,74 @@ export interface TimelineEvent {
   title: LocalizedText;
   description: LocalizedText;
   mapPoint?: { x: string; y: string };
+}
+
+export interface GurdwaraRoom {
+  name: LocalizedText;
+  description: LocalizedText;
+}
+
+export interface EtiquetteItem {
+  title: LocalizedText;
+  description: LocalizedText;
+}
+
+export interface GuruSummary {
+  order: number;
+  name: LocalizedText;
+  years: string;
+  summary: LocalizedText;
+}
+
+export interface SahibzaadaSummary {
+  name: LocalizedText;
+  years: string;
+  summary: LocalizedText;
+}
+
+export interface KakaarItem {
+  name: LocalizedText;
+  meaning: LocalizedText;
+  description: LocalizedText;
+}
+
+export interface PillarItem {
+  term: LocalizedText;
+  description: LocalizedText;
+}
+
+export interface ShabadItem {
+  gurmukhi: string;
+  translation: LocalizedText;
+  ang: number;
+  raag: string;
+  author: LocalizedText;
+  verificationNote: LocalizedText;
+}
+
+export interface LearnSikhiContent {
+  title: LocalizedText;
+  intro: LocalizedText;
+  gurdwaraRoomsTitle: LocalizedText;
+  gurdwaraRooms: GurdwaraRoom[];
+  etiquetteTitle: LocalizedText;
+  etiquette: EtiquetteItem[];
+  gurusTitle: LocalizedText;
+  gurus: GuruSummary[];
+  sahibzaadeTitle: LocalizedText;
+  sahibzaade: SahibzaadaSummary[];
+  kakaarsTitle: LocalizedText;
+  kakaarsIntro: LocalizedText;
+  kakaars: KakaarItem[];
+  introTitle: LocalizedText;
+  whatIsSikhi: LocalizedText;
+  founding: LocalizedText;
+  sevaSimran: LocalizedText;
+  pillarsTitle: LocalizedText;
+  pillars: PillarItem[];
+  gurbaniTitle: LocalizedText;
+  gurbaniIntro: LocalizedText;
+  shabads: ShabadItem[];
 }
 
 export interface DisplayContent {
@@ -158,6 +232,16 @@ export interface DisplayContent {
       collaborationWith: LocalizedText;
       livePreviews: LocalizedText;
       scanToVisit: LocalizedText;
+      lessons: LocalizedText;
+      language: LocalizedText;
+      qualities: LocalizedText;
+      gurusVisited: LocalizedText;
+      areaHistory: LocalizedText;
+      localImpact: LocalizedText;
+      embedUnavailable: LocalizedText;
+      ttsListen: LocalizedText;
+      ttsNoPunjabiVoice: LocalizedText;
+      journeyProgress: LocalizedText;
     };
   };
   home: {
@@ -201,6 +285,7 @@ export interface DisplayContent {
   };
   panjPyare: PanjPyaraProfile[];
   takhts: TakhtProfile[];
+  learnSikhi: LearnSikhiContent;
   quiz: {
     intro: LocalizedText;
     questionsPerRound: number;
