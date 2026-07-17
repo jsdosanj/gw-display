@@ -844,7 +844,10 @@ function renderLearn(): string {
       <section class="glass-panel p-8 md:p-10">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(learn.title)}</h2>
-          ${renderListenButton(learn.intro)}
+          <div class="flex items-center gap-3">
+            <span class="ai-badge">⚠ ${text(content.review.label)}</span>
+            ${renderListenButton(learn.intro)}
+          </div>
         </div>
         <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.intro)}</p>
       </section>
