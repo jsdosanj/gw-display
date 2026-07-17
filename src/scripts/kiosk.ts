@@ -1042,7 +1042,7 @@ function renderLearn(): string {
       </section>
 
       <section class="glass-panel p-8 md:p-10">
-        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.guruLineageTitle)}</h3>
+        ${renderArtworkPanel('/assets/images/IMG_8284.jpeg', text(learn.guruLineageTitle), text(content.sections.learn.title), 'Traditional painting depicting the Ten Sikh Gurus seated together')}
         <p class="mt-3 max-w-3xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.guruLineageIntro)}</p>
         <div class="guru-lineage mt-8">
           ${learn.gurus
