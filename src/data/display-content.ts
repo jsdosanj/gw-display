@@ -33,6 +33,10 @@ const displayContent: DisplayContent = {
       title: { en: 'Interactive Quiz', pa: 'ਇੰਟਰਐਕਟਿਵ ਕਵਿਜ਼' },
       subtitle: { en: 'A touch-friendly learning mode for families, students, and sangat', pa: 'ਪਰਿਵਾਰਾਂ, ਵਿਦਿਆਰਥੀਆਂ ਅਤੇ ਸੰਗਤ ਲਈ ਟਚ-ਦੋਸਤ ਸਿੱਖਣ ਮੋਡ' },
     },
+    learn: {
+      title: { en: 'Learn About Sikhi', pa: 'ਸਿੱਖੀ ਬਾਰੇ ਜਾਣੋ' },
+      subtitle: { en: 'Gurdwara etiquette, the Gurus, the Kakaars, and verified Gurbani', pa: 'ਗੁਰਦੁਆਰਾ ਮਰਯਾਦਾ, ਗੁਰੂ ਸਾਹਿਬਾਨ, ਕਕਾਰ ਅਤੇ ਪ੍ਰਮਾਣਿਤ ਗੁਰਬਾਣੀ' },
+    },
     about: {
       title: { en: 'About', pa: 'ਸਾਡੇ ਬਾਰੇ' },
       subtitle: { en: 'Collaboration, quality standards, and project direction', pa: 'ਸਹਿਯੋਗ, ਗੁਣਵੱਤਾ ਮਾਪਦੰਡ ਅਤੇ ਪ੍ਰੋਜੈਕਟ ਦੀ ਦਿਸ਼ਾ' },
@@ -58,6 +62,7 @@ const displayContent: DisplayContent = {
       pyare: { en: '5 Pyare', pa: '੫ ਪਿਆਰੇ', hi: '5 प्यारे', es: '5 Amados', ar: '٥ محبوبين' },
       takhts: { en: '5 Takht', pa: '੫ ਤਖ਼ਤ', hi: '5 तख्त', es: '5 Tronos', ar: '٥ عروش' },
       quiz: { en: 'Quiz', pa: 'ਕਵਿਜ਼', hi: 'प्रश्नोत्तरी', es: 'Cuestionario', ar: 'اختبار' },
+      learn: { en: 'Learn Sikhi', pa: 'ਸਿੱਖੀ ਸਿੱਖੋ', hi: 'सिखी सीखें', es: 'Aprende Sikhi', ar: 'تعلّم السيخية' },
       about: { en: 'About', pa: 'ਬਾਰੇ', hi: 'परिचय', es: 'Acerca de', ar: 'حول' },
       resources: { en: 'Resources', pa: 'ਸਰੋਤ', hi: 'संसाधन', es: 'Recursos', ar: 'موارد' },
       leaflets: { en: 'Leaflets', pa: 'ਲੀਫਲੈਟ', hi: 'पत्रक', es: 'Folletos', ar: 'نشرات' },
@@ -690,6 +695,182 @@ const displayContent: DisplayContent = {
       },
     },
   ],
+  learnSikhi: {
+    title: { en: 'Learn About Sikhi', pa: 'ਸਿੱਖੀ ਬਾਰੇ ਜਾਣੋ' },
+    intro: {
+      en: 'A foundational introduction to gurdwara spaces, etiquette, the Ten Gurus, the Char Sahibzaade, the Panj Kakaar, and Gurbani — for visitors of any background.',
+      pa: 'ਗੁਰਦੁਆਰਾ ਸਥਾਨਾਂ, ਮਰਯਾਦਾ, ਦਸ ਗੁਰੂ ਸਾਹਿਬਾਨ, ਚਾਰ ਸਾਹਿਬਜ਼ਾਦਿਆਂ, ਪੰਜ ਕਕਾਰਾਂ ਅਤੇ ਗੁਰਬਾਣੀ ਬਾਰੇ ਇੱਕ ਬੁਨਿਆਦੀ ਜਾਣ-ਪਛਾਣ — ਹਰ ਪਿਛੋਕੜ ਦੇ ਸੈਲਾਨੀਆਂ ਲਈ।',
+    },
+    gurdwaraRoomsTitle: { en: 'Gurdwara rooms', pa: 'ਗੁਰਦੁਆਰੇ ਦੇ ਸਥਾਨ' },
+    gurdwaraRooms: [
+      {
+        name: { en: 'Diwan Hall', pa: 'ਦੀਵਾਨ ਹਾਲ' },
+        description: {
+          en: 'The main congregation hall where Sri Guru Granth Sahib Ji is enthroned. Kirtan and katha take place here, and the sangat sits together on the floor as equals, regardless of status, facing the Guru.',
+          pa: 'ਮੁੱਖ ਸੰਗਤ ਹਾਲ ਜਿੱਥੇ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦਾ ਪ੍ਰਕਾਸ਼ ਹੁੰਦਾ ਹੈ। ਇੱਥੇ ਕੀਰਤਨ ਅਤੇ ਕਥਾ ਹੁੰਦੀ ਹੈ, ਅਤੇ ਸੰਗਤ ਬਰਾਬਰੀ ਨਾਲ ਫ਼ਰਸ਼ ਤੇ ਬੈਠਦੀ ਹੈ।',
+        },
+      },
+      {
+        name: { en: 'Sachkhand', pa: 'ਸਚਖੰਡ' },
+        description: {
+          en: '"Realm of Truth" — the inner sanctum where Sri Guru Granth Sahib Ji rests overnight (Sukhasan) after the day\'s prakash. It is treated with the same reverence given to a living Guru\'s private chamber, and access is often restricted.',
+          pa: '"ਸੱਚ ਦਾ ਖੇਤਰ" — ਅੰਦਰੂਨੀ ਪਵਿੱਤਰ ਅਸਥਾਨ ਜਿੱਥੇ ਦਿਨ ਦੇ ਪ੍ਰਕਾਸ਼ ਤੋਂ ਬਾਅਦ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਰਾਤ ਨੂੰ ਸੁਖਾਸਨ ਕਰਦੇ ਹਨ। ਇਸਨੂੰ ਜੀਵੰਤ ਗੁਰੂ ਦੇ ਨਿੱਜੀ ਕਮਰੇ ਵਾਂਗ ਹੀ ਸਤਿਕਾਰਿਆ ਜਾਂਦਾ ਹੈ।',
+        },
+      },
+      {
+        name: { en: 'Langar Hall', pa: 'ਲੰਗਰ ਹਾਲ' },
+        description: {
+          en: 'The community dining hall where free vegetarian meals are served to every visitor, regardless of faith, caste, or background — a living expression of equality and selfless service (seva).',
+          pa: 'ਸਾਂਝਾ ਭੋਜਨ ਹਾਲ ਜਿੱਥੇ ਹਰ ਸੈਲਾਨੀ ਨੂੰ, ਧਰਮ, ਜਾਤ ਜਾਂ ਪਿਛੋਕੜ ਦੀ ਪਰਵਾਹ ਕੀਤੇ ਬਿਨਾਂ, ਮੁਫ਼ਤ ਸ਼ਾਕਾਹਾਰੀ ਭੋਜਨ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ — ਬਰਾਬਰੀ ਅਤੇ ਸੇਵਾ ਦਾ ਜੀਵੰਤ ਪ੍ਰਗਟਾਵਾ।',
+        },
+      },
+      {
+        name: { en: 'Shoe room', pa: 'ਜੋੜਾ ਘਰ' },
+        description: {
+          en: 'The area near the entrance (Joda Ghar) where visitors remove and store their footwear before entering the gurdwara, as a sign of respect and cleanliness.',
+          pa: 'ਪ੍ਰਵੇਸ਼ ਦੁਆਰ ਦੇ ਨੇੜੇ ਦਾ ਸਥਾਨ (ਜੋੜਾ ਘਰ) ਜਿੱਥੇ ਸੈਲਾਨੀ ਗੁਰਦੁਆਰੇ ਵਿੱਚ ਦਾਖਲ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਆਪਣੇ ਜੁੱਤੇ ਉਤਾਰਦੇ ਹਨ।',
+        },
+      },
+    ],
+    etiquetteTitle: { en: 'Etiquette', pa: 'ਮਰਯਾਦਾ' },
+    etiquette: [
+      {
+        title: { en: 'Dress modestly', pa: 'ਸਾਦਗੀ ਨਾਲ ਪਹਿਰਾਵਾ' },
+        description: { en: 'Cover shoulders and legs; avoid overly casual, tight, or revealing clothing.', pa: 'ਮੋਢੇ ਅਤੇ ਲੱਤਾਂ ਢੱਕੋ; ਬਹੁਤ ਜ਼ਿਆਦਾ ਆਮ, ਤੰਗ ਜਾਂ ਖੁੱਲ੍ਹੇ ਕੱਪੜਿਆਂ ਤੋਂ ਬਚੋ।' },
+      },
+      {
+        title: { en: 'Remove socks in the Darbar Sahib', pa: 'ਦਰਬਾਰ ਸਾਹਿਬ ਵਿੱਚ ਜ਼ੁਰਾਬਾਂ ਉਤਾਰੋ' },
+        description: { en: 'In the main Diwan Hall, shoes and socks are typically both removed; practice can vary slightly by gurdwara, so follow local signage.', pa: 'ਮੁੱਖ ਦੀਵਾਨ ਹਾਲ ਵਿੱਚ ਆਮ ਤੌਰ ਤੇ ਜੁੱਤੇ ਅਤੇ ਜ਼ੁਰਾਬਾਂ ਦੋਵੇਂ ਉਤਾਰੇ ਜਾਂਦੇ ਹਨ; ਇਹ ਗੁਰਦੁਆਰੇ ਅਨੁਸਾਰ ਥੋੜ੍ਹਾ ਵੱਖਰਾ ਹੋ ਸਕਦਾ ਹੈ।' },
+      },
+      {
+        title: { en: 'Wash hands before langar and before seconds', pa: 'ਲੰਗਰ ਤੋਂ ਪਹਿਲਾਂ ਅਤੇ ਦੁਬਾਰਾ ਲੈਣ ਤੋਂ ਪਹਿਲਾਂ ਹੱਥ ਧੋਵੋ' },
+        description: { en: 'Wash your hands before eating in the langar hall, and again before returning for a second helping.', pa: 'ਲੰਗਰ ਹਾਲ ਵਿੱਚ ਖਾਣ ਤੋਂ ਪਹਿਲਾਂ ਹੱਥ ਧੋਵੋ, ਅਤੇ ਦੁਬਾਰਾ ਭੋਜਨ ਲੈਣ ਤੋਂ ਪਹਿਲਾਂ ਵੀ।' },
+      },
+      {
+        title: { en: 'Wash hands after the washroom', pa: 'ਵਾਸ਼ਰੂਮ ਤੋਂ ਬਾਅਦ ਹੱਥ ਧੋਵੋ' },
+        description: { en: 'Wash hands thoroughly after using the washroom, before returning to any communal area.', pa: 'ਵਾਸ਼ਰੂਮ ਵਰਤਣ ਤੋਂ ਬਾਅਦ ਕਿਸੇ ਵੀ ਸਾਂਝੇ ਸਥਾਨ ਤੇ ਵਾਪਸ ਆਉਣ ਤੋਂ ਪਹਿਲਾਂ ਚੰਗੀ ਤਰ੍ਹਾਂ ਹੱਥ ਧੋਵੋ।' },
+      },
+      {
+        title: { en: 'Remove shoes in the shoe room', pa: 'ਜੋੜਾ ਘਰ ਵਿੱਚ ਜੁੱਤੇ ਉਤਾਰੋ' },
+        description: { en: 'Remove and store footwear in the designated shoe room before entering the gurdwara premises.', pa: 'ਗੁਰਦੁਆਰੇ ਦੇ ਪਰਿਸਰ ਵਿੱਚ ਦਾਖਲ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਨਿਯਤ ਜੋੜਾ ਘਰ ਵਿੱਚ ਜੁੱਤੇ ਉਤਾਰੋ।' },
+      },
+      {
+        title: { en: 'Cover your head throughout the premises', pa: 'ਪੂਰੇ ਪਰਿਸਰ ਵਿੱਚ ਸਿਰ ਢੱਕੋ' },
+        description: { en: 'Head covering is required throughout the entire gurdwara premises, not just the Diwan Hall. Head coverings are usually available for visitors who don\'t bring their own.', pa: 'ਸਿਰ ਢੱਕਣਾ ਪੂਰੇ ਗੁਰਦੁਆਰਾ ਪਰਿਸਰ ਵਿੱਚ ਜ਼ਰੂਰੀ ਹੈ, ਸਿਰਫ਼ ਦੀਵਾਨ ਹਾਲ ਵਿੱਚ ਨਹੀਂ। ਜਿਨ੍ਹਾਂ ਕੋਲ ਆਪਣਾ ਨਹੀਂ ਹੈ ਉਨ੍ਹਾਂ ਲਈ ਆਮ ਤੌਰ ਤੇ ਸਿਰ ਢੱਕਣ ਵਾਲੇ ਕੱਪੜੇ ਉਪਲਬਧ ਹੁੰਦੇ ਹਨ।' },
+      },
+    ],
+    gurusTitle: { en: 'The Ten Gurus', pa: 'ਦਸ ਗੁਰੂ ਸਾਹਿਬਾਨ' },
+    gurus: [
+      { order: 1, name: { en: 'Guru Nanak Dev Ji', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ' }, years: '1469 – 1539', summary: { en: 'Founder of Sikhi. Born in Talwandi (now Nankana Sahib, Pakistan), he taught belief in one formless God, rejected empty ritual and caste distinction, and undertook long journeys (udasis) sharing this message. He established the twin institutions of sangat (congregation) and langar (community kitchen).', pa: 'ਸਿੱਖੀ ਦੇ ਬਾਨੀ। ਤਲਵੰਡੀ (ਹੁਣ ਨਨਕਾਣਾ ਸਾਹਿਬ) ਵਿੱਚ ਜਨਮੇ, ਉਨ੍ਹਾਂ ਨੇ ਇੱਕ ਨਿਰਾਕਾਰ ਪਰਮਾਤਮਾ ਦੀ ਸਿੱਖਿਆ ਦਿੱਤੀ ਅਤੇ ਜਾਤ-ਭੇਦ ਨੂੰ ਰੱਦ ਕੀਤਾ। ਉਨ੍ਹਾਂ ਨੇ ਸੰਗਤ ਅਤੇ ਲੰਗਰ ਦੀ ਸਥਾਪਨਾ ਕੀਤੀ।' } },
+      { order: 2, name: { en: 'Guru Angad Dev Ji', pa: 'ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ' }, years: '1504 – 1552', summary: { en: 'The second Guru formalized the Gurmukhi script used to write Gurbani, strengthened the langar tradition, and promoted physical fitness and education among Sikhs.', pa: 'ਦੂਜੇ ਗੁਰੂ ਨੇ ਗੁਰਮੁਖੀ ਲਿਪੀ ਨੂੰ ਰਸਮੀ ਰੂਪ ਦਿੱਤਾ, ਲੰਗਰ ਪਰੰਪਰਾ ਨੂੰ ਮਜ਼ਬੂਤ ਕੀਤਾ, ਅਤੇ ਸਰੀਰਕ ਤੰਦਰੁਸਤੀ ਅਤੇ ਸਿੱਖਿਆ ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕੀਤਾ।' } },
+      { order: 3, name: { en: 'Guru Amar Das Ji', pa: 'ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ' }, years: '1479 – 1574', summary: { en: 'The third Guru institutionalized langar so firmly that, according to Sikh tradition, even the Mughal Emperor Akbar sat on the floor to eat before receiving an audience. He opposed sati and purdah, composed Anand Sahib, and organized the growing Sikh community into 22 preaching districts (manjis).', pa: 'ਤੀਜੇ ਗੁਰੂ ਨੇ ਲੰਗਰ ਨੂੰ ਪੱਕੀ ਸੰਸਥਾ ਬਣਾਇਆ। ਉਨ੍ਹਾਂ ਨੇ ਸਤੀ ਅਤੇ ਪਰਦੇ ਦੀ ਪ੍ਰਥਾ ਦਾ ਵਿਰੋਧ ਕੀਤਾ, ਅਨੰਦ ਸਾਹਿਬ ਦੀ ਰਚਨਾ ਕੀਤੀ, ਅਤੇ ਸੰਗਤ ਨੂੰ 22 ਮੰਜੀਆਂ ਵਿੱਚ ਸੰਗਠਿਤ ਕੀਤਾ।' } },
+      { order: 4, name: { en: 'Guru Ram Das Ji', pa: 'ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ' }, years: '1534 – 1581', summary: { en: 'The fourth Guru founded the city of Amritsar and excavated its sacred pool, around which Sri Harmandir Sahib would later be built. He composed the Lavan hymns used in the Anand Karaj, the Sikh wedding ceremony.', pa: 'ਚੌਥੇ ਗੁਰੂ ਨੇ ਅੰਮ੍ਰਿਤਸਰ ਸ਼ਹਿਰ ਦੀ ਸਥਾਪਨਾ ਕੀਤੀ ਅਤੇ ਇਸਦਾ ਪਵਿੱਤਰ ਸਰੋਵਰ ਪੁੱਟਿਆ। ਉਨ੍ਹਾਂ ਨੇ ਲਾਵਾਂ ਦੀ ਰਚਨਾ ਕੀਤੀ, ਜੋ ਅਨੰਦ ਕਾਰਜ ਵਿੱਚ ਵਰਤੀਆਂ ਜਾਂਦੀਆਂ ਹਨ।' } },
+      { order: 5, name: { en: 'Guru Arjan Dev Ji', pa: 'ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ' }, years: '1563 – 1606', summary: { en: 'The fifth Guru compiled the Adi Granth in 1604 — the first version of what would become Guru Granth Sahib Ji — and completed the construction of Sri Harmandir Sahib. He became the first Sikh martyr, executed by Mughal Emperor Jahangir in 1606.', pa: 'ਪੰਜਵੇਂ ਗੁਰੂ ਨੇ 1604 ਵਿੱਚ ਆਦਿ ਗ੍ਰੰਥ ਤਿਆਰ ਕੀਤਾ ਅਤੇ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਦੀ ਉਸਾਰੀ ਪੂਰੀ ਕੀਤੀ। ਉਹ ਪਹਿਲੇ ਸਿੱਖ ਸ਼ਹੀਦ ਬਣੇ, 1606 ਵਿੱਚ ਬਾਦਸ਼ਾਹ ਜਹਾਂਗੀਰ ਦੁਆਰਾ ਸ਼ਹੀਦ ਕੀਤੇ ਗਏ।' } },
+      { order: 6, name: { en: 'Guru Hargobind Sahib Ji', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ' }, years: '1595 – 1644', summary: { en: 'The sixth Guru introduced the principle of Miri-Piri — temporal and spiritual authority held together — wearing two swords and building the Akal Takht, in direct response to Mughal persecution of his father.', pa: 'ਛੇਵੇਂ ਗੁਰੂ ਨੇ ਮੀਰੀ-ਪੀਰੀ ਦਾ ਸਿਧਾਂਤ ਪੇਸ਼ ਕੀਤਾ, ਦੋ ਤਲਵਾਰਾਂ ਪਹਿਨੀਆਂ ਅਤੇ ਅਕਾਲ ਤਖ਼ਤ ਬਣਾਇਆ।' } },
+      { order: 7, name: { en: 'Guru Har Rai Ji', pa: 'ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ' }, years: '1630 – 1661', summary: { en: 'The seventh Guru was known for compassion, maintained a large but non-aggressive army, and established herbal medicine dispensaries, while carefully avoiding direct conflict with the Mughal state.', pa: 'ਸੱਤਵੇਂ ਗੁਰੂ ਦਇਆ ਲਈ ਜਾਣੇ ਜਾਂਦੇ ਸਨ, ਇੱਕ ਵੱਡੀ ਪਰ ਗ਼ੈਰ-ਹਮਲਾਵਰ ਫ਼ੌਜ ਰੱਖੀ, ਅਤੇ ਜੜੀ-ਬੂਟੀਆਂ ਦੇ ਦਵਾਖ਼ਾਨੇ ਸਥਾਪਿਤ ਕੀਤੇ।' } },
+      { order: 8, name: { en: 'Guru Har Krishan Ji', pa: 'ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ' }, years: '1656 – 1664', summary: { en: 'The eighth Guru became Guru at age five, the youngest of the ten. He is remembered for serving and healing the sick during a smallpox epidemic in Delhi, before succumbing to the illness himself at age eight.', pa: 'ਅੱਠਵੇਂ ਗੁਰੂ ਪੰਜ ਸਾਲ ਦੀ ਉਮਰ ਵਿੱਚ ਗੁਰੂ ਬਣੇ। ਦਿੱਲੀ ਵਿੱਚ ਚੇਚਕ ਦੀ ਮਹਾਂਮਾਰੀ ਦੌਰਾਨ ਬਿਮਾਰਾਂ ਦੀ ਸੇਵਾ ਕਰਦੇ ਹੋਏ, ਅੱਠ ਸਾਲ ਦੀ ਉਮਰ ਵਿੱਚ ਖ਼ੁਦ ਇਸ ਬਿਮਾਰੀ ਨਾਲ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ।' } },
+      { order: 9, name: { en: 'Guru Tegh Bahadur Ji', pa: 'ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ' }, years: '1621 – 1675', summary: { en: 'The ninth Guru, known as "Hind di Chadar" (Shield of India), sacrificed his life to defend the religious freedom of Kashmiri Pandits who sought his protection. He was executed by Emperor Aurangzeb in Delhi in 1675 for refusing to convert to Islam and for upholding others\' right to practice their own faith.', pa: 'ਨੌਵੇਂ ਗੁਰੂ, "ਹਿੰਦ ਦੀ ਚਾਦਰ" ਵਜੋਂ ਜਾਣੇ ਜਾਂਦੇ, ਨੇ ਕਸ਼ਮੀਰੀ ਪੰਡਿਤਾਂ ਦੀ ਧਾਰਮਿਕ ਆਜ਼ਾਦੀ ਦੀ ਰਾਖੀ ਲਈ ਆਪਣੀ ਜਾਨ ਵਾਰੀ। 1675 ਵਿੱਚ ਦਿੱਲੀ ਵਿੱਚ ਬਾਦਸ਼ਾਹ ਔਰੰਗਜ਼ੇਬ ਦੁਆਰਾ ਸ਼ਹੀਦ ਕੀਤੇ ਗਏ।' } },
+      { order: 10, name: { en: 'Guru Gobind Singh Ji', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ' }, years: '1666 – 1708', summary: { en: 'The tenth Guru founded the Khalsa on Vaisakhi 1699, gave Sikhs the Panj Kakaar and the names Singh and Kaur, and compiled the final version of Guru Granth Sahib Ji at Damdama Sahib. Before his passing in 1708, he declared Guru Granth Sahib Ji the eternal, living Guru of the Sikhs.', pa: 'ਦਸਵੇਂ ਗੁਰੂ ਨੇ ਵਿਸਾਖੀ 1699 ਨੂੰ ਖ਼ਾਲਸੇ ਦੀ ਸਥਾਪਨਾ ਕੀਤੀ, ਸਿੱਖਾਂ ਨੂੰ ਪੰਜ ਕਕਾਰ ਅਤੇ ਸਿੰਘ-ਕੌਰ ਨਾਮ ਦਿੱਤੇ। 1708 ਵਿੱਚ ਆਪਣੇ ਜੋਤੀ ਜੋਤ ਸਮਾਉਣ ਤੋਂ ਪਹਿਲਾਂ, ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਨੂੰ ਸਦੀਵੀ ਜੀਵੰਤ ਗੁਰੂ ਐਲਾਨਿਆ।' } },
+    ],
+    sahibzaadeTitle: { en: 'The Four Sahibzaade', pa: 'ਚਾਰ ਸਾਹਿਬਜ਼ਾਦੇ' },
+    sahibzaade: [
+      { name: { en: 'Baba Ajit Singh Ji', pa: 'ਬਾਬਾ ਅਜੀਤ ਸਿੰਘ ਜੀ' }, years: '1687 – 1704', summary: { en: 'The eldest son of Guru Gobind Singh Ji, he attained shaheedi fighting at the Battle of Chamkaur Sahib in December 1704, alongside his younger brother.', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਸਭ ਤੋਂ ਵੱਡੇ ਪੁੱਤਰ, ਦਸੰਬਰ 1704 ਵਿੱਚ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦੀ ਪਾਈ।' } },
+      { name: { en: 'Baba Jujhar Singh Ji', pa: 'ਬਾਬਾ ਜੁਝਾਰ ਸਿੰਘ ਜੀ' }, years: '1691 – 1704', summary: { en: 'The second son, he fought and attained shaheedi at the Battle of Chamkaur Sahib alongside his elder brother, facing overwhelming Mughal forces.', pa: 'ਦੂਜੇ ਪੁੱਤਰ, ਆਪਣੇ ਵੱਡੇ ਭਰਾ ਦੇ ਨਾਲ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਲੜਦੇ ਹੋਏ ਸ਼ਹੀਦੀ ਪਾਈ।' } },
+      { name: { en: 'Baba Zorawar Singh Ji', pa: 'ਬਾਬਾ ਜ਼ੋਰਾਵਰ ਸਿੰਘ ਜੀ' }, years: '1696 – 1705', summary: { en: 'The third son, separated from Guru Gobind Singh Ji during the evacuation of Anandpur Sahib, was captured along with his younger brother and grandmother Mata Gujri Ji. Sikh tradition holds that he was martyred at Sirhind in December 1705, at age nine, for refusing to renounce his faith.', pa: 'ਤੀਜੇ ਪੁੱਤਰ, ਅਨੰਦਪੁਰ ਸਾਹਿਬ ਦੀ ਨਿਕਾਸੀ ਦੌਰਾਨ ਵੱਖ ਹੋ ਗਏ, ਆਪਣੇ ਛੋਟੇ ਭਰਾ ਅਤੇ ਦਾਦੀ ਮਾਤਾ ਗੁਜਰੀ ਜੀ ਨਾਲ ਫੜੇ ਗਏ। ਸਿੱਖ ਪਰੰਪਰਾ ਅਨੁਸਾਰ, ਦਸੰਬਰ 1705 ਵਿੱਚ ਸਰਹਿੰਦ ਵਿਖੇ 9 ਸਾਲ ਦੀ ਉਮਰ ਵਿੱਚ ਸ਼ਹੀਦ ਕੀਤੇ ਗਏ।' } },
+      { name: { en: 'Baba Fateh Singh Ji', pa: 'ਬਾਬਾ ਫ਼ਤਿਹ ਸਿੰਘ ਜੀ' }, years: '1699 – 1705', summary: { en: 'The youngest son, captured alongside his brother and grandmother, was martyred with Baba Zorawar Singh Ji at Sirhind at age six, also for refusing to renounce his faith.', pa: 'ਸਭ ਤੋਂ ਛੋਟੇ ਪੁੱਤਰ, ਆਪਣੇ ਭਰਾ ਅਤੇ ਦਾਦੀ ਨਾਲ ਫੜੇ ਗਏ, ਬਾਬਾ ਜ਼ੋਰਾਵਰ ਸਿੰਘ ਜੀ ਦੇ ਨਾਲ ਸਰਹਿੰਦ ਵਿਖੇ 6 ਸਾਲ ਦੀ ਉਮਰ ਵਿੱਚ ਸ਼ਹੀਦ ਕੀਤੇ ਗਏ।' } },
+    ],
+    kakaarsTitle: { en: 'The Five Kakaar', pa: 'ਪੰਜ ਕਕਾਰ' },
+    kakaarsIntro: {
+      en: 'The five articles of faith given by Guru Gobind Singh Ji to every initiated Khalsa Sikh on Vaisakhi 1699, worn at all times.',
+      pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੁਆਰਾ ਵਿਸਾਖੀ 1699 ਨੂੰ ਹਰ ਅੰਮ੍ਰਿਤਧਾਰੀ ਖ਼ਾਲਸਾ ਸਿੱਖ ਨੂੰ ਦਿੱਤੀਆਂ ਪੰਜ ਨਿਸ਼ਾਨੀਆਂ, ਜੋ ਹਰ ਸਮੇਂ ਪਹਿਨੀਆਂ ਜਾਂਦੀਆਂ ਹਨ।',
+    },
+    kakaars: [
+      { name: { en: 'ਕੇਸ', pa: 'ਕੇਸ' }, meaning: { en: 'Uncut hair', pa: 'ਬਿਨਾਂ ਕੱਟੇ ਵਾਲ' }, description: { en: 'Symbolizes acceptance of God\'s will and the Creator\'s natural design, and a life of spiritual devotion.', pa: 'ਪਰਮਾਤਮਾ ਦੀ ਰਜ਼ਾ ਅਤੇ ਕੁਦਰਤੀ ਸਿਰਜਣਾ ਨੂੰ ਸਵੀਕਾਰ ਕਰਨ ਦਾ ਪ੍ਰਤੀਕ।' } },
+      { name: { en: 'ਕੰਘਾ', pa: 'ਕੰਘਾ' }, meaning: { en: 'Wooden comb', pa: 'ਲੱਕੜ ਦੀ ਕੰਘੀ' }, description: { en: 'Symbolizes cleanliness and discipline, used to keep the kesh tidy.', pa: 'ਸਫ਼ਾਈ ਅਤੇ ਅਨੁਸ਼ਾਸਨ ਦਾ ਪ੍ਰਤੀਕ, ਕੇਸਾਂ ਨੂੰ ਸੰਵਾਰਨ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।' } },
+      { name: { en: 'ਕੜਾ', pa: 'ਕੜਾ' }, meaning: { en: 'Steel bracelet', pa: 'ਸਟੀਲ ਦਾ ਕੜਾ' }, description: { en: 'Symbolizes restraint from wrongdoing and an unbroken bond with the Guru.', pa: 'ਗ਼ਲਤ ਕੰਮਾਂ ਤੋਂ ਸੰਜਮ ਅਤੇ ਗੁਰੂ ਨਾਲ ਅਟੁੱਟ ਸੰਬੰਧ ਦਾ ਪ੍ਰਤੀਕ।' } },
+      { name: { en: 'ਕਛਹਿਰਾ', pa: 'ਕਛਹਿਰਾ' }, meaning: { en: 'Cotton undergarment', pa: 'ਸੂਤੀ ਅੰਦਰੂਨੀ ਵਸਤਰ' }, description: { en: 'Symbolizes self-control, moral character, and readiness for action.', pa: 'ਸੰਜਮ, ਨੈਤਿਕ ਕਿਰਦਾਰ ਅਤੇ ਕਾਰਵਾਈ ਲਈ ਤਿਆਰੀ ਦਾ ਪ੍ਰਤੀਕ।' } },
+      { name: { en: 'ਕਿਰਪਾਨ', pa: 'ਕਿਰਪਾਨ' }, meaning: { en: 'Ceremonial sword', pa: 'ਰਸਮੀ ਤਲਵਾਰ' }, description: { en: 'Symbolizes the duty to defend justice, the oppressed, and righteousness (ਧਰਮ).', pa: 'ਨਿਆਂ, ਦੱਬੇ-ਕੁਚਲਿਆਂ ਅਤੇ ਧਰਮ ਦੀ ਰਾਖੀ ਦੇ ਫ਼ਰਜ਼ ਦਾ ਪ੍ਰਤੀਕ।' } },
+    ],
+    introTitle: { en: 'Introduction to Sikhi', pa: 'ਸਿੱਖੀ ਦੀ ਜਾਣ-ਪਛਾਣ' },
+    whatIsSikhi: {
+      en: 'Sikhi is a distinct, monotheistic faith centered on belief in one formless God (ੴ, Ik Onkar) and the teachings of Guru Nanak Dev Ji and the nine Gurus who followed him, culminating in the eternal Guru Granth Sahib Ji.',
+      pa: 'ਸਿੱਖੀ ਇੱਕ ਵੱਖਰਾ, ਇੱਕ-ਈਸ਼ਵਰਵਾਦੀ ਧਰਮ ਹੈ, ਜੋ ਇੱਕ ਨਿਰਾਕਾਰ ਪਰਮਾਤਮਾ (ੴ, ਇੱਕ ਓਅੰਕਾਰ) ਅਤੇ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਤੋਂ ਲੈ ਕੇ ਨੌਂ ਹੋਰ ਗੁਰੂ ਸਾਹਿਬਾਨ ਦੀਆਂ ਸਿੱਖਿਆਵਾਂ ਤੇ ਕੇਂਦ੍ਰਿਤ ਹੈ, ਜੋ ਸਦੀਵੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਵਿੱਚ ਸਮਾਪਤ ਹੁੰਦਾ ਹੈ।',
+    },
+    founding: {
+      en: 'Sikhi was founded in the Punjab region of South Asia in 1469, with the birth and teachings of Guru Nanak Dev Ji in Talwandi (now Nankana Sahib, Pakistan).',
+      pa: 'ਸਿੱਖੀ ਦੀ ਸਥਾਪਨਾ 1469 ਵਿੱਚ ਦੱਖਣੀ ਏਸ਼ੀਆ ਦੇ ਪੰਜਾਬ ਖੇਤਰ ਵਿੱਚ, ਤਲਵੰਡੀ (ਹੁਣ ਨਨਕਾਣਾ ਸਾਹਿਬ, ਪਾਕਿਸਤਾਨ) ਵਿੱਚ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਦੇ ਜਨਮ ਅਤੇ ਸਿੱਖਿਆਵਾਂ ਨਾਲ ਹੋਈ।',
+    },
+    sevaSimran: {
+      en: 'Seva (selfless service) and simran (remembrance of God through meditation) sit at the heart of daily Sikh practice. Seva dissolves ego by serving others without expectation of reward; simran keeps the mind anchored to the Divine amid worldly life. Together they are considered inseparable — service without remembrance can become mere activity, and remembrance without service can become mere withdrawal.',
+      pa: 'ਸੇਵਾ (ਨਿਸ਼ਕਾਮ ਸੇਵਾ) ਅਤੇ ਸਿਮਰਨ (ਸਿਮਰਨ ਰਾਹੀਂ ਪਰਮਾਤਮਾ ਦੀ ਯਾਦ) ਰੋਜ਼ਾਨਾ ਸਿੱਖ ਅਭਿਆਸ ਦੇ ਕੇਂਦਰ ਵਿੱਚ ਹਨ। ਸੇਵਾ ਬਿਨਾਂ ਕਿਸੇ ਇਨਾਮ ਦੀ ਆਸ ਤੋਂ ਦੂਜਿਆਂ ਦੀ ਸੇਵਾ ਕਰਕੇ ਹਉਮੈ ਨੂੰ ਖ਼ਤਮ ਕਰਦੀ ਹੈ; ਸਿਮਰਨ ਮਨ ਨੂੰ ਪਰਮਾਤਮਾ ਨਾਲ ਜੋੜੀ ਰੱਖਦਾ ਹੈ। ਦੋਵੇਂ ਇੱਕ-ਦੂਜੇ ਤੋਂ ਅਟੁੱਟ ਮੰਨੇ ਜਾਂਦੇ ਹਨ।',
+    },
+    pillarsTitle: { en: 'The Three Pillars', pa: 'ਤਿੰਨ ਥੰਮ੍ਹ' },
+    pillars: [
+      {
+        term: { en: 'ਨਾਮ ਜਪਣਾ', pa: 'ਨਾਮ ਜਪਣਾ' },
+        description: { en: 'Naam Japna — meditating on and remembering God\'s name, keeping the Divine present in every thought and action.', pa: 'ਨਾਮ ਜਪਣਾ — ਪਰਮਾਤਮਾ ਦੇ ਨਾਮ ਦਾ ਸਿਮਰਨ ਕਰਨਾ, ਹਰ ਸੋਚ ਅਤੇ ਕਾਰਜ ਵਿੱਚ ਪਰਮਾਤਮਾ ਨੂੰ ਹਾਜ਼ਰ ਰੱਖਣਾ।' },
+      },
+      {
+        term: { en: 'ਵੰਡ ਕੇ ਛਕਣਾ', pa: 'ਵੰਡ ਕੇ ਛਕਣਾ' },
+        description: { en: 'Vand Ke Chhakna — sharing what one has with others, most visibly expressed through langar.', pa: 'ਵੰਡ ਕੇ ਛਕਣਾ — ਆਪਣੀ ਕਮਾਈ ਦੂਜਿਆਂ ਨਾਲ ਵੰਡਣਾ, ਜੋ ਸਭ ਤੋਂ ਵੱਧ ਲੰਗਰ ਰਾਹੀਂ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ।' },
+      },
+      {
+        term: { en: 'ਕਿਰਤ ਕਰਨੀ', pa: 'ਕਿਰਤ ਕਰਨੀ' },
+        description: { en: 'Kirat Karni — earning an honest living through honest work, rejecting exploitation or dependence.', pa: 'ਕਿਰਤ ਕਰਨੀ — ਇਮਾਨਦਾਰ ਮਿਹਨਤ ਰਾਹੀਂ ਸੱਚੀ ਕਮਾਈ ਕਰਨੀ, ਸ਼ੋਸ਼ਣ ਜਾਂ ਨਿਰਭਰਤਾ ਨੂੰ ਰੱਦ ਕਰਨਾ।' },
+      },
+    ],
+    gurbaniTitle: { en: 'Gurbani', pa: 'ਗੁਰਬਾਣੀ' },
+    gurbaniIntro: {
+      en: 'Four widely-known shabad from Sri Guru Granth Sahib Ji, chosen for their universally standardized text and Ang across printed editions. This display could not reach the live BaniDB API for programmatic cross-verification in this environment — the text below should still be checked against banidb.com by a scholar reviewer before being treated as authoritative.',
+      pa: 'ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਤੋਂ ਚਾਰ ਵਿਆਪਕ ਤੌਰ ਤੇ ਜਾਣੇ-ਪਛਾਣੇ ਸ਼ਬਦ, ਜੋ ਛਾਪੇ ਸੰਸਕਰਣਾਂ ਵਿੱਚ ਸਰਵ ਵਿਆਪਕ ਤੌਰ ਤੇ ਮਿਆਰੀ ਪਾਠ ਅਤੇ ਅੰਗ ਲਈ ਚੁਣੇ ਗਏ ਹਨ। ਇਸ ਵਾਤਾਵਰਣ ਵਿੱਚ BaniDB ਨਾਲ ਸਿੱਧੀ ਪੁਸ਼ਟੀ ਸੰਭਵ ਨਹੀਂ ਸੀ — ਹੇਠਲਾ ਪਾਠ ਵਿਦਵਤ ਸਮੀਖਿਅਕ ਦੁਆਰਾ banidb.com ਨਾਲ ਜਾਂਚਿਆ ਜਾਣਾ ਚਾਹੀਦਾ ਹੈ।',
+    },
+    shabads: [
+      {
+        gurmukhi: 'ੴ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ ਅਕਾਲ ਮੂਰਤਿ ਅਜੂਨੀ ਸੈਭੰ ਗੁਰ ਪ੍ਰਸਾਦਿ ॥',
+        translation: { en: 'One Universal Creator. Truth is the Name. Creative Being, without fear, without hatred. Image of the Undying, beyond birth, self-existent. Known by the Guru\'s grace.', pa: 'ਇੱਕ ਸਰਬ-ਵਿਆਪਕ ਸਿਰਜਣਹਾਰ। ਸਤਿ ਹੀ ਨਾਮ ਹੈ। ਸਿਰਜਣਹਾਰ, ਭੈ ਤੋਂ ਰਹਿਤ, ਵੈਰ ਤੋਂ ਰਹਿਤ। ਅਕਾਲ ਮੂਰਤਿ, ਜਨਮ ਤੋਂ ਪਰ੍ਹੇ, ਸੈਭੰ। ਗੁਰੂ ਦੀ ਕਿਰਪਾ ਨਾਲ ਜਾਣਿਆ ਜਾਂਦਾ ਹੈ।' },
+        ang: 1,
+        raag: 'None (Mool Mantar, opening of Japji Sahib)',
+        author: { en: 'Guru Nanak Dev Ji', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ' },
+        verificationNote: {
+          en: 'The Mool Mantar universally opens every printed edition of Guru Granth Sahib Ji at Ang 1 — pending final BaniDB cross-check.',
+          pa: 'ਮੂਲ ਮੰਤਰ ਹਰ ਛਾਪੇ ਸੰਸਕਰਣ ਵਿੱਚ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੇ ਅੰਗ 1 ਤੇ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ — ਅੰਤਿਮ BaniDB ਜਾਂਚ ਬਾਕੀ ਹੈ।',
+        },
+      },
+      {
+        gurmukhi: 'ਸੋ ਦਰੁ ਤੇਰਾ ਕੇਹਾ ਸੋ ਘਰੁ ਕੇਹਾ ਜਿਤੁ ਬਹਿ ਸਰਬ ਸਮਾਲੇ ॥',
+        translation: { en: 'Where is that Gate of Yours, and where is that Home, in which You sit and take care of all?', pa: 'ਉਹ ਦਰਵਾਜ਼ਾ ਕਿਹੋ ਜਿਹਾ ਹੈ, ਉਹ ਘਰ ਕਿਹੋ ਜਿਹਾ ਹੈ, ਜਿੱਥੇ ਬੈਠ ਕੇ ਤੂੰ ਸਭ ਦੀ ਸੰਭਾਲ ਕਰਦਾ ਹੈਂ?' },
+        ang: 8,
+        raag: 'Raag Asa',
+        author: { en: 'Guru Nanak Dev Ji', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ' },
+        verificationNote: {
+          en: 'Opening line of So Dar, part of the daily Rehras Sahib recitation — pending final BaniDB cross-check.',
+          pa: 'ਸੋ ਦਰੁ ਦੀ ਪਹਿਲੀ ਪੰਕਤੀ, ਰੋਜ਼ਾਨਾ ਰਹਿਰਾਸ ਸਾਹਿਬ ਦਾ ਹਿੱਸਾ — ਅੰਤਿਮ BaniDB ਜਾਂਚ ਬਾਕੀ ਹੈ।',
+        },
+      },
+      {
+        gurmukhi: 'ਜੈ ਘਰਿ ਕੀਰਤਿ ਆਖੀਐ ਕਰਤੇ ਕਾ ਹੋਇ ਬੀਚਾਰੋ ॥ ਤਿਤੁ ਘਰਿ ਗਾਵਹੁ ਸੋਹਿਲਾ ਸਿਵਰਿਹੁ ਸਿਰਜਣਹਾਰੋ ॥੧॥',
+        translation: { en: 'In that house where the Creator\'s praises are spoken and reflected upon — in that house, sing the song of joy, and remember the Creator Lord. ||1||', pa: 'ਜਿਸ ਘਰ ਵਿੱਚ ਕਰਤੇ ਦੀ ਕੀਰਤੀ ਆਖੀ ਅਤੇ ਵਿਚਾਰੀ ਜਾਵੇ — ਉਸ ਘਰ ਵਿੱਚ ਸੋਹਿਲਾ ਗਾਓ, ਸਿਰਜਣਹਾਰ ਨੂੰ ਯਾਦ ਕਰੋ। ॥੧॥' },
+        ang: 12,
+        raag: 'Raag Gauri Deepki',
+        author: { en: 'Guru Nanak Dev Ji', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ' },
+        verificationNote: {
+          en: 'Opening verse of Kirtan Sohila, the evening prayer recited before sleep — pending final BaniDB cross-check.',
+          pa: 'ਕੀਰਤਨ ਸੋਹਿਲਾ ਦੀ ਪਹਿਲੀ ਤੁਕ, ਸੌਣ ਤੋਂ ਪਹਿਲਾਂ ਪੜ੍ਹੀ ਜਾਂਦੀ ਸ਼ਾਮ ਦੀ ਅਰਦਾਸ — ਅੰਤਿਮ BaniDB ਜਾਂਚ ਬਾਕੀ ਹੈ।',
+        },
+      },
+      {
+        gurmukhi: 'ਅਨੰਦੁ ਭਇਆ ਮੇਰੀ ਮਾਏ ਸਤਿਗੁਰੂ ਮੈ ਪਾਇਆ ॥ ਸਤਿਗੁਰੁ ਤ ਪਾਇਆ ਸਹਜ ਸੇਤੀ ਮਨਿ ਵਜੀਆ ਵਾਧਾਈਆ ॥',
+        translation: { en: 'I am in bliss, O my mother, for I have found my True Guru. I have found the True Guru with intuitive ease, and my mind vibrates with the music of celebration.', pa: 'ਅਨੰਦ ਹੋਇਆ ਹੈ, ਮੇਰੀਏ ਮਾਏ, ਮੈਂ ਸਤਿਗੁਰੂ ਪਾ ਲਿਆ ਹੈ। ਸਤਿਗੁਰੂ ਸਹਿਜ ਨਾਲ ਪਾਇਆ, ਮਨ ਵਿੱਚ ਵਧਾਈਆਂ ਵੱਜੀਆਂ।' },
+        ang: 917,
+        raag: 'Raag Ramkali',
+        author: { en: 'Guru Amar Das Ji', pa: 'ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ' },
+        verificationNote: {
+          en: 'Opening verse of Anand Sahib — pending final BaniDB cross-check.',
+          pa: 'ਅਨੰਦ ਸਾਹਿਬ ਦੀ ਪਹਿਲੀ ਤੁਕ — ਅੰਤਿਮ BaniDB ਜਾਂਚ ਬਾਕੀ ਹੈ।',
+        },
+      },
+    ],
+  },
   quiz: {
     intro: { en: 'Quick, polished recall rounds help visitors reinforce names, places, and significance before moving on.', pa: 'ਛੋਟੇ ਨਿੱਖਰੇ ਯਾਦਗਾਰੀ ਰਾਊਂਡ ਨਾਮਾਂ, ਥਾਵਾਂ ਅਤੇ ਮਹੱਤਵ ਨੂੰ ਅੱਗੇ ਵਧਣ ਤੋਂ ਪਹਿਲਾਂ ਮਜ਼ਬੂਤ ਕਰਦੇ ਹਨ।' },
     questionsPerRound: 5,

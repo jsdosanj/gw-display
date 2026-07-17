@@ -81,6 +81,7 @@ const icons: Record<View, string> = {
   pyare: '⚔️',
   takhts: '🕌',
   quiz: '✨',
+  learn: '📖',
   about: 'ℹ️',
   resources: '🌐',
   leaflets: '📄',
@@ -189,7 +190,7 @@ function renderHeader(): void {
 }
 
 function renderNav(): void {
-  const views: View[] = ['home', 'pyare', 'takhts', 'quiz', 'about', 'resources', 'leaflets'];
+  const views: View[] = ['home', 'pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
 
   bottomNav.innerHTML = `
     <div class="glass-header flex min-h-20 gap-2 overflow-x-auto px-2 pt-2 md:grid md:min-h-24 md:grid-cols-7 md:gap-2 md:overflow-visible md:px-5 md:py-2">
@@ -739,6 +740,149 @@ function renderTakhts(): string {
   `;
 }
 
+function renderLearn(): string {
+  const learn = content.learnSikhi;
+
+  return `
+    <div class="grid gap-6">
+      <section class="glass-panel p-8 md:p-10">
+        <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(learn.title)}</h2>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.intro)}</p>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.gurdwaraRoomsTitle)}</h3>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          ${learn.gurdwaraRooms
+            .map(
+              (room) => `
+                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                  <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(room.name)}</h4>
+                  <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(room.description)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.etiquetteTitle)}</h3>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          ${learn.etiquette
+            .map(
+              (item) => `
+                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                  <h4 class="text-sm font-semibold uppercase tracking-[0.18em] text-gold-300 ${classForLanguage()}">${text(item.title)}</h4>
+                  <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(item.description)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.gurusTitle)}</h3>
+        <div class="mt-6 grid gap-4">
+          ${learn.gurus
+            .map(
+              (guru) => `
+                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 flex gap-4">
+                  <span class="shrink-0 flex h-10 w-10 items-center justify-center rounded-full border border-gold-300/30 bg-gold-400/10 text-sm font-semibold text-gold-300">${guru.order}</span>
+                  <div>
+                    <h4 class="text-base font-semibold text-white ${classForLanguage()}">${text(guru.name)} <span class="font-normal text-cloud-400">— ${guru.years}</span></h4>
+                    <p class="mt-2 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(guru.summary)}</p>
+                  </div>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.sahibzaadeTitle)}</h3>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          ${learn.sahibzaade
+            .map(
+              (child) => `
+                <article class="rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5">
+                  <h4 class="text-base font-semibold text-white ${classForLanguage()}">${text(child.name)} <span class="font-normal text-cloud-400">— ${child.years}</span></h4>
+                  <p class="mt-2 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(child.summary)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.kakaarsTitle)}</h3>
+        <p class="mt-3 max-w-3xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.kakaarsIntro)}</p>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+          ${learn.kakaars
+            .map(
+              (kakaar) => `
+                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 text-center">
+                  <p class="gurmukhi text-3xl font-semibold text-gold-300">${text(kakaar.name)}</p>
+                  <p class="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-cloud-400">${text(kakaar.meaning)}</p>
+                  <p class="mt-3 text-sm leading-6 text-cloud-200 ${classForLanguage()}">${text(kakaar.description)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.introTitle)}</h3>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.whatIsSikhi)}</p>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.founding)}</p>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.sevaSimran)}</p>
+        <h4 class="mt-8 text-lg font-semibold text-white ${classForLanguage()}">${text(learn.pillarsTitle)}</h4>
+        <div class="mt-4 grid gap-4 md:grid-cols-3">
+          ${learn.pillars
+            .map(
+              (pillar) => `
+                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                  <p class="gurmukhi text-xl font-semibold text-gold-300">${text(pillar.term)}</p>
+                  <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(pillar.description)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.gurbaniTitle)}</h3>
+        <p class="mt-4 max-w-3xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.gurbaniIntro)}</p>
+        <div class="mt-6 grid gap-5">
+          ${learn.shabads
+            .map(
+              (shabad) => `
+                <article class="rounded-[24px] border border-gold-300/20 bg-gold-400/5 p-6">
+                  <p class="gurmukhi text-2xl leading-relaxed text-white">${shabad.gurmukhi}</p>
+                  <p class="mt-4 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(shabad.translation)}</p>
+                  <div class="mt-4 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-gold-300">
+                    <span>Ang ${shabad.ang}</span>
+                    <span>·</span>
+                    <span>${shabad.raag}</span>
+                    <span>·</span>
+                    <span class="${classForLanguage()}">${text(shabad.author)}</span>
+                  </div>
+                  <p class="mt-4 text-xs italic leading-6 text-cloud-400 ${classForLanguage()}">${text(shabad.verificationNote)}</p>
+                </article>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+    </div>
+  `;
+}
+
 function renderAbout(): string {
   return `
     <div class="grid gap-6">
@@ -1070,6 +1214,9 @@ function renderView(): void {
       break;
     case 'takhts':
       viewContent.innerHTML = renderTakhts();
+      break;
+    case 'learn':
+      viewContent.innerHTML = renderLearn();
       break;
     case 'about':
       viewContent.innerHTML = renderAbout();
