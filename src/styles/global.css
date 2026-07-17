@@ -365,6 +365,30 @@ button {
   @apply rounded-[24px] border border-gold-300/20 bg-gold-400/6 p-4;
 }
 
+/* Detail card grid for the Panj Pyare / Panj Takht profile panels — stacks
+   on phones, but spreads into columns on landscape tablets and desktop so
+   wide screens aren't wasted on one long vertical scroll. */
+.detail-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .detail-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .detail-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.detail-card {
+  min-width: 0;
+}
+
 .storyline-step {
   @apply flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.02] px-3 py-3 text-left text-sm text-cloud-200 transition duration-200 ease-out;
 }
