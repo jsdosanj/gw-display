@@ -42,6 +42,7 @@ const mainShell = requireElement('main-shell');
 const header = requireElement('app-header');
 const viewContent = requireElement('view-content');
 const bottomNav = requireElement('bottom-nav');
+const viewAnnouncer = requireElement('view-announcer');
 
 let state = createInitialState(content);
 let inactivityTimer = 0;
@@ -93,6 +94,60 @@ function text(value: LocalizedText, language = state.language): string {
 
 function classForLanguage(language = state.language): string {
   return language === 'pa' ? 'gurmukhi' : '';
+}
+
+function escapeAttr(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
+const speechLangCodes: Record<Language, string> = {
+  en: 'en-US',
+  pa: 'pa-IN',
+  hi: 'hi-IN',
+  es: 'es-ES',
+  ar: 'ar-SA',
+};
+
+function showTtsNotice(buttonEl: HTMLElement, message: string): void {
+  buttonEl.parentElement?.querySelector('.tts-notice')?.remove();
+  const notice = document.createElement('p');
+  notice.className = 'tts-notice';
+  notice.setAttribute('role', 'status');
+  notice.textContent = message;
+  buttonEl.insertAdjacentElement('afterend', notice);
+  window.setTimeout(() => notice.remove(), 5000);
+}
+
+function speakText(value: string, language: Language, buttonEl: HTMLElement): void {
+  if (!('speechSynthesis' in window)) {
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const voices = window.speechSynthesis.getVoices();
+  const matchingVoice = voices.find((voice) => voice.lang.toLowerCase().startsWith(language));
+
+  // English works reliably everywhere; Punjabi voices are not installed on
+  // most devices, so tell the visitor instead of speaking with the wrong
+  // language's pronunciation rules.
+  if (language === 'pa' && !matchingVoice) {
+    showTtsNotice(buttonEl, text(content.ui.labels.ttsNoPunjabiVoice));
+    return;
+  }
+
+  const utterance = new SpeechSynthesisUtterance(value);
+  utterance.lang = speechLangCodes[language];
+  if (matchingVoice) {
+    utterance.voice = matchingVoice;
+  }
+  window.speechSynthesis.speak(utterance);
+}
+
+function renderListenButton(payload: LocalizedText): string {
+  const value = text(payload);
+  const label = text(content.ui.labels.ttsListen);
+  return `<button type="button" class="listen-btn" data-tts-text="${escapeAttr(value)}" data-tts-lang="${state.language}" aria-label="${label}">🔊 <span class="${classForLanguage()}">${label}</span></button>`;
 }
 
 function applyDocumentDirection(language: Language): void {
@@ -174,7 +229,7 @@ function renderHeader(): void {
   header.innerHTML = `
     <div class="glass-header flex min-h-20 items-center justify-between px-4 py-2 md:min-h-24 md:px-8 md:py-0">
       <div class="flex min-w-0 items-center gap-4">
-        <button type="button" data-nav="home" class="flex h-14 w-14 items-center justify-center rounded-full border border-gold-300/30 bg-white/5 text-2xl text-gold-300 transition active:scale-[0.98]">☬</button>
+        <button type="button" data-nav="home" aria-label="${text(content.ui.nav.home)}" class="flex h-14 w-14 items-center justify-center rounded-full border border-gold-300/30 bg-white/5 text-2xl text-gold-300 transition active:scale-[0.98]">☬</button>
         <div class="min-w-0">
           <p class="truncate text-xs font-semibold uppercase tracking-[0.22em] text-cloud-400">${text(content.ui.experienceLabel)}</p>
           <h2 class="truncate text-xl font-semibold text-white md:text-2xl ${classForLanguage()}">${text(copy.title)}</h2>
@@ -361,13 +416,13 @@ function renderFaqSection(): string {
           .map(
             (item, index) => `
               <div class="faq-item" data-open="${openFaqIndex === index}">
-                <button type="button" data-faq-toggle="${index}" class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left">
+                <button type="button" data-faq-toggle="${index}" aria-expanded="${openFaqIndex === index}" aria-controls="faq-answer-${index}" class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left">
                   <span class="text-base font-semibold text-white ${classForLanguage()}">${text(item.question)}</span>
-                  <span class="text-gold-300">${openFaqIndex === index ? '−' : '+'}</span>
+                  <span class="text-gold-300" aria-hidden="true">${openFaqIndex === index ? '−' : '+'}</span>
                 </button>
                 ${
                   openFaqIndex === index
-                    ? `<p class="px-5 pb-5 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(item.answer)}</p>`
+                    ? `<p id="faq-answer-${index}" class="px-5 pb-5 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(item.answer)}</p>`
                     : ''
                 }
               </div>
@@ -486,7 +541,10 @@ function renderPyare(): string {
 
   const storyHtml = `
     <div class="story-panel mt-6">
-      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+        ${renderListenButton(selected.story ?? selected.details)}
+      </div>
       <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.story ?? selected.details)}</p>
     </div>
   `;
@@ -640,7 +698,10 @@ function renderTakhts(): string {
 
   const storyHtml = selected.story
     ? `<div class="story-panel mt-6">
-         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+         <div class="flex flex-wrap items-center justify-between gap-3">
+           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+           ${renderListenButton(selected.story)}
+         </div>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.story)}</p>
        </div>`
     : '';
@@ -746,7 +807,10 @@ function renderLearn(): string {
   return `
     <div class="grid gap-6">
       <section class="glass-panel p-8 md:p-10">
-        <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(learn.title)}</h2>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(learn.title)}</h2>
+          ${renderListenButton(learn.intro)}
+        </div>
         <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.intro)}</p>
       </section>
 
@@ -836,7 +900,10 @@ function renderLearn(): string {
       </section>
 
       <section class="glass-panel p-8 md:p-10">
-        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.introTitle)}</h3>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.introTitle)}</h3>
+          ${renderListenButton(learn.whatIsSikhi)}
+        </div>
         <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.whatIsSikhi)}</p>
         <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.founding)}</p>
         <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.sevaSimran)}</p>
@@ -863,7 +930,10 @@ function renderLearn(): string {
             .map(
               (shabad) => `
                 <article class="rounded-[24px] border border-gold-300/20 bg-gold-400/5 p-6">
-                  <p class="gurmukhi text-2xl leading-relaxed text-white">${shabad.gurmukhi}</p>
+                  <div class="flex flex-wrap items-start justify-between gap-3">
+                    <p class="gurmukhi text-2xl leading-relaxed text-white">${shabad.gurmukhi}</p>
+                    ${renderListenButton(shabad.translation)}
+                  </div>
                   <p class="mt-4 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(shabad.translation)}</p>
                   <div class="mt-4 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-gold-300">
                     <span>Ang ${shabad.ang}</span>
@@ -887,7 +957,10 @@ function renderAbout(): string {
   return `
     <div class="grid gap-6">
       <section class="glass-panel p-8 md:p-10">
-        <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.about.title)}</h2>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.about.title)}</h2>
+          ${renderListenButton(content.about.partnerships)}
+        </div>
         <div class="mt-6 rounded-[24px] border border-gold-300/25 bg-gold-400/8 p-6">
           <p class="text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.collaboration)}</p>
         </div>
@@ -998,8 +1071,10 @@ function renderResources(): string {
         <div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2" id="resource-carousel-dots">
           ${liveSites
             .map(
-              (_, index) => `
-                <button type="button" data-carousel-dot="${index}" class="h-2 w-2 rounded-full transition ${index === resourceCarouselIndex ? 'bg-gold-400' : 'bg-white/30'}"></button>
+              (site, index) => `
+                <button type="button" data-carousel-dot="${index}" aria-label="${text(content.ui.labels.livePreviews)}: ${site.title}" aria-current="${index === resourceCarouselIndex}" class="flex h-6 w-6 items-center justify-center">
+                  <span class="h-2 w-2 rounded-full transition ${index === resourceCarouselIndex ? 'bg-gold-400' : 'bg-white/30'}"></span>
+                </button>
               `,
             )
             .join('')}
@@ -1170,8 +1245,10 @@ function updateResourceCarousel(): void {
   const dots = document.querySelectorAll<HTMLElement>('[data-carousel-dot]');
   dots.forEach((dot) => {
     const isActive = Number(dot.dataset.carouselDot) === resourceCarouselIndex;
-    dot.classList.toggle('bg-gold-400', isActive);
-    dot.classList.toggle('bg-white/30', !isActive);
+    dot.setAttribute('aria-current', String(isActive));
+    const dotMarker = dot.querySelector('span');
+    dotMarker?.classList.toggle('bg-gold-400', isActive);
+    dotMarker?.classList.toggle('bg-white/30', !isActive);
   });
 }
 
@@ -1322,6 +1399,8 @@ function scheduleInactivityReset(): void {
   }, content.settings.timeoutSeconds * 1000);
 }
 
+let lastAnnouncedView: View | null = null;
+
 function render(): void {
   renderAttract();
   renderHeader();
@@ -1336,6 +1415,12 @@ function render(): void {
     attractScreen.classList.remove('hidden');
     mainShell.classList.add('hidden');
     mainShell.classList.remove('flex');
+  }
+
+  if (state.awake && state.view !== lastAnnouncedView) {
+    lastAnnouncedView = state.view;
+    viewAnnouncer.textContent = text(content.sections[state.view].title);
+    viewContent.focus({ preventScroll: true });
   }
 }
 
@@ -1352,7 +1437,13 @@ document.addEventListener('pointerdown', () => {
   handleUserWake();
 });
 
-document.addEventListener('keydown', () => {
+document.addEventListener('keydown', (event) => {
+  // Tab is pure focus navigation, not an "I want to engage" gesture — waking
+  // (and re-rendering) on it would yank a keyboard user's focus mid-navigation
+  // before they ever reach the visible "Begin Experience" button.
+  if (event.key === 'Tab') {
+    return;
+  }
   handleUserWake();
 });
 
@@ -1444,6 +1535,13 @@ document.addEventListener('click', (event) => {
     const index = Number(faqTarget.dataset.faqToggle);
     openFaqIndex = openFaqIndex === index ? null : index;
     render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const ttsTarget = target.closest<HTMLElement>('[data-tts-text]');
+  if (ttsTarget?.dataset.ttsText) {
+    speakText(ttsTarget.dataset.ttsText, (ttsTarget.dataset.ttsLang as Language | undefined) ?? state.language, ttsTarget);
     scheduleInactivityReset();
     return;
   }

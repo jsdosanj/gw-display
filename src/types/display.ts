@@ -239,6 +239,8 @@ export interface DisplayContent {
       areaHistory: LocalizedText;
       localImpact: LocalizedText;
       embedUnavailable: LocalizedText;
+      ttsListen: LocalizedText;
+      ttsNoPunjabiVoice: LocalizedText;
     };
   };
   home: {

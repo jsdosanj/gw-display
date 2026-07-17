@@ -130,6 +130,8 @@ const displayContent: DisplayContent = {
       areaHistory: { en: 'History of the surrounding area', pa: 'ਆਲੇ-ਦੁਆਲੇ ਦੇ ਇਲਾਕੇ ਦਾ ਇਤਿਹਾਸ' },
       localImpact: { en: 'Impact on the local area', pa: 'ਸਥਾਨਕ ਇਲਾਕੇ ਤੇ ਪ੍ਰਭਾਵ' },
       embedUnavailable: { en: 'This site cannot be embedded here — view it in your browser instead.', pa: 'ਇਹ ਸਾਈਟ ਇੱਥੇ ਏਮਬੈਡ ਨਹੀਂ ਹੋ ਸਕਦੀ — ਇਸਨੂੰ ਆਪਣੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਵੇਖੋ।' },
+      ttsListen: { en: 'Listen', pa: 'ਸੁਣੋ' },
+      ttsNoPunjabiVoice: { en: 'No Punjabi voice is available on this device — showing text only.', pa: 'ਇਸ ਡਿਵਾਈਸ ਤੇ ਪੰਜਾਬੀ ਆਵਾਜ਼ ਉਪਲਬਧ ਨਹੀਂ ਹੈ — ਸਿਰਫ਼ ਪਾਠ ਦਿਖਾਇਆ ਜਾ ਰਿਹਾ ਹੈ।' },
     },
   },
   home: {

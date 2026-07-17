@@ -3,14 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Panj Pyare and Panj Takht Display">
+  <a href="#view-content" class="skip-link">Skip to main content</a>
   <div id="app-root">
     <section id="attract-screen"></section>
     <main id="main-shell" class="hidden flex-col">
       <header id="app-header" class="shrink-0"></header>
-      <section id="view-content" class="fade-mask flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8"></section>
-      <nav id="bottom-nav" class="shrink-0"></nav>
+      <section id="view-content" class="fade-mask flex-1 overflow-y-auto px-4 py-4 md:px-8 md:py-8" tabindex="-1" aria-label="Main content"></section>
+      <nav id="bottom-nav" class="shrink-0" aria-label="Primary"></nav>
     </main>
   </div>
+  <div id="view-announcer" class="sr-only" aria-live="polite" role="status"></div>
 
   <script>
   import "../scripts/kiosk.ts";
