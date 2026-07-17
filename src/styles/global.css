@@ -405,6 +405,28 @@ button {
     linear-gradient(135deg, rgba(5, 11, 20, 0.95) 0%, rgba(9, 19, 34, 0.92) 52%, rgba(228, 187, 94, 0.4) 100%);
 }
 
+/* Takht photographs are buildings, not faces — a "show the important bit"
+   crop doesn't apply the way it does for portraits, and the five source
+   photos span very different aspect ratios (one square, one tall portrait,
+   three landscape). Show the whole photograph uncropped (letterboxed
+   against the gradient) instead of cover-cropping an arbitrary slice of
+   whichever Takht happens to be widest or tallest. */
+.art-panel--full-photo {
+  min-height: 22rem;
+}
+
+.art-panel--full-photo::before {
+  background-size: contain, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+}
+
+@media (min-width: 768px) {
+  .art-panel--full-photo {
+    min-height: 28rem;
+  }
+}
+
 .art-panel__glow {
   position: absolute;
   inset: auto -20% -56% -10%;

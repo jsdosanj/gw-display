@@ -486,12 +486,19 @@ function renderFeatureCard(feature: HomeFeature): string {
   `;
 }
 
-function renderArtworkPanel(imagePath: string, title: string, eyebrow: string, imageAlt: string): string {
+function renderArtworkPanel(
+  imagePath: string,
+  title: string,
+  eyebrow: string,
+  imageAlt: string,
+  variant: 'portrait' | 'full-photo' = 'portrait',
+): string {
   const imageStyle = imagePath ? `style="--art-image:url('${asset(imagePath)}');"` : '';
   const imageRole = imagePath ? `role="img" aria-label="${imageAlt}"` : '';
+  const variantClass = variant === 'full-photo' ? ' art-panel--full-photo' : '';
 
   return `
-    <div class="art-panel mb-6" data-has-image="${String(Boolean(imagePath))}" ${imageStyle} ${imageRole}>
+    <div class="art-panel${variantClass} mb-6" data-has-image="${String(Boolean(imagePath))}" ${imageStyle} ${imageRole}>
       <div class="art-panel__glow"></div>
       <div class="relative z-10">
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300">${eyebrow}</p>
@@ -961,7 +968,7 @@ function renderTakhts(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title), `Photograph of ${text(selected.name, 'en')} in ${text(selected.location, 'en')}`)}
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title), `Photograph of ${text(selected.name, 'en')} in ${text(selected.location, 'en')}`, 'full-photo')}
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
           <h3 class="mt-2 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
