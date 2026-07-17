@@ -89,6 +89,30 @@ body {
   color: #f8fafc;
 }
 
+/* Fresco background layer, present on every view. The fresco renders at
+   ~75% opacity; the separate scrim gradient on top is what keeps foreground
+   text at that opacity passing WCAG AA (verified with axe-core, not just
+   assumed — panel text also gets its own backdrop treatment for the same
+   reason). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: var(--fresco-bg-url, none);
+  background-size: cover;
+  background-position: center 30%;
+  opacity: 0.75;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(5, 11, 20, 0.72) 0%, rgba(5, 11, 20, 0.85) 55%, rgba(5, 11, 20, 0.93) 100%);
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;

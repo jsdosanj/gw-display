@@ -27,6 +27,18 @@ import type {
 
 const content: DisplayContent = displayContent;
 
+// Astro serves this site under the "/gw-display" base path (see
+// astro.config.mjs), but content data stores root-relative asset paths like
+// "/assets/images/x.jpeg" for readability. Without this, every image 404s
+// once deployed — reproduced and confirmed against the dev server directly.
+const BASE_URL = import.meta.env.BASE_URL;
+
+function asset(path: string): string {
+  return `${BASE_URL.replace(/\/$/, '')}${path}`;
+}
+
+document.documentElement.style.setProperty('--fresco-bg-url', `url('${asset('/assets/images/sikh-fresco-·-restoration-3-restored.png')}')`);
+
 function requireElement(id: string): HTMLElement {
   const element = document.getElementById(id);
 
@@ -157,7 +169,7 @@ function applyDocumentDirection(language: Language): void {
 
 function renderAttract(): void {
   attractScreen.innerHTML = `
-    <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12" style="background-image:url('/assets/images/IMG_3198.jpeg');background-size:cover;background-position:center;">
+    <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12" style="background-image:url('${asset('/assets/images/IMG_3198.jpeg')}');background-size:cover;background-position:center;">
       <div class="absolute inset-0 bg-night-950/80"></div>
       <div class="attract-halo absolute h-[32rem] w-[32rem] rounded-full bg-gold-400/18 blur-3xl"></div>
       <div class="float-slow absolute left-[12%] top-[18%] h-32 w-32 rounded-full bg-sky-400/12 blur-3xl"></div>
@@ -286,7 +298,7 @@ function renderFeatureCard(feature: HomeFeature): string {
 }
 
 function renderArtworkPanel(imagePath: string, title: string, eyebrow: string, imageAlt: string): string {
-  const imageStyle = imagePath ? `style="--art-image:url('${imagePath}');"` : '';
+  const imageStyle = imagePath ? `style="--art-image:url('${asset(imagePath)}');"` : '';
   const imageRole = imagePath ? `role="img" aria-label="${imageAlt}"` : '';
 
   return `
@@ -483,7 +495,7 @@ function renderHome(): string {
             <h3 class="mt-4 max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl ${classForLanguage()}">${text(content.home.heroTitle)}</h3>
             <p class="mt-6 max-w-3xl text-lg leading-8 text-cloud-200 ${classForLanguage()}">${text(content.home.heroDescription)}</p>
           </div>
-          <img src="/assets/images/IMG_8284.jpeg" alt="Ten Sikh Gurus — traditional painting" class="hidden md:block w-56 rounded-[20px] object-cover opacity-80" style="aspect-ratio:4/3;" />
+          <img src="${asset('/assets/images/IMG_8284.jpeg')}" alt="Ten Sikh Gurus — traditional painting" class="hidden md:block w-56 rounded-[20px] object-cover opacity-80" style="aspect-ratio:4/3;" />
         </div>
       </section>
 
@@ -494,7 +506,7 @@ function renderHome(): string {
           ${content.home.differentiationCards
             .map(
               (card) => `
-                <button type="button" data-home-target="${card.id}" class="art-panel text-left transition duration-200 hover:border-gold-300/40 active:scale-[0.99]" data-has-image="true" style="--art-image:url('${card.imagePath}');">
+                <button type="button" data-home-target="${card.id}" class="art-panel text-left transition duration-200 hover:border-gold-300/40 active:scale-[0.99]" data-has-image="true" style="--art-image:url('${asset(card.imagePath)}');">
                   <div class="art-panel__glow"></div>
                   <div class="relative z-10">
                     <h4 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(card.title)}</h4>
@@ -597,7 +609,7 @@ function renderPyare(): string {
           .map(
             (item, index) => `
               <button type="button" data-pyara="${item.id}" class="silhouette-avatar" data-active="${item.id === selected.id}" aria-label="${text(item.name)}">
-                <img src="${item.silhouettePath}" alt="${text(item.name)}" class="silhouette-avatar__img" />
+                <img src="${asset(item.silhouettePath)}" alt="${text(item.name)}" class="silhouette-avatar__img" />
                 <span class="silhouette-avatar__number">${index + 1}</span>
                 <span class="silhouette-avatar__name ${classForLanguage()}">${text(item.name).replace(/Bhai /g, '').replace(/ Ji$/, '')}</span>
               </button>
@@ -753,7 +765,7 @@ function renderTakhts(): string {
           .map(
             (takht, index) => `
               <button type="button" data-takht="${takht.id}" class="silhouette-avatar" data-active="${takht.id === selected.id}" aria-label="${text(takht.name)}">
-                <img src="${takht.silhouettePath ?? '/assets/images/gurdwara-silhouette.svg'}" alt="${text(takht.name)}" class="silhouette-avatar__img" />
+                <img src="${asset(takht.silhouettePath ?? '/assets/images/gurdwara-silhouette.svg')}" alt="${text(takht.name)}" class="silhouette-avatar__img" />
                 <span class="silhouette-avatar__number">${index + 1}</span>
                 <span class="silhouette-avatar__name ${classForLanguage()}">${text(takht.name).replace(/Takht Sri |Sri |Takht /g, '').replace(/ Sahib$/, '')}</span>
               </button>
@@ -1041,7 +1053,7 @@ function renderResources(): string {
                     title="${site.title}"
                     data-iframe-slot="${site.id}"
                   ></iframe>
-                  <div class="resource-fallback-panel" data-fallback-slot="${site.id}" hidden ${resourceBanners[site.id] ? `style="--art-image:url('${resourceBanners[site.id]}');"` : ''}>
+                  <div class="resource-fallback-panel" data-fallback-slot="${site.id}" hidden ${resourceBanners[site.id] ? `style="--art-image:url('${asset(resourceBanners[site.id])}');"` : ''}>
                     <div class="resource-fallback-panel__glow"></div>
                     <div class="relative z-10 flex h-full flex-col items-start justify-end p-6 md:p-8">
                       <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
@@ -1086,7 +1098,7 @@ function renderResources(): string {
           .map(
             (site) => `
               <article class="resource-card">
-                ${resourceBanners[site.id] ? `<img src="${resourceBanners[site.id]}" alt="${site.title} banner" class="w-full object-cover" style="height:6rem;border-radius:28px 28px 0 0;" loading="lazy" decoding="async" />` : ''}
+                ${resourceBanners[site.id] ? `<img src="${asset(resourceBanners[site.id])}" alt="${site.title} banner" class="w-full object-cover" style="height:6rem;border-radius:28px 28px 0 0;" loading="lazy" decoding="async" />` : ''}
                 <div class="resource-card__qr">
                   ${qrDataUrls[site.id] ? `<img src="${qrDataUrls[site.id]}" alt="QR code for ${site.title}" class="resource-card__qr-img" width="80" height="80" />` : '<div class="resource-card__qr-placeholder">QR</div>'}
                 </div>
@@ -1114,7 +1126,7 @@ function renderLeaflets(): string {
       <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.leaflets.title)}</h2>
       <p class="intro mx-auto mt-4 max-w-2xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.leaflets.intro)}</p>
       <div class="leaflet-hero my-8 overflow-hidden rounded-[20px]">
-        <img src="/assets/images/sikh-fresco-·-restoration-3-restored.png" alt="Restored Sikh fresco artwork" class="mx-auto max-h-48 w-full object-cover object-top" decoding="async" />
+        <img src="${asset('/assets/images/sikh-fresco-·-restoration-3-restored.png')}" alt="Restored Sikh fresco artwork" class="mx-auto max-h-48 w-full object-cover object-top" decoding="async" />
       </div>
       <p class="text-base text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.leafletsHelper)}</p>
       <a href="${content.leaflets.hubUrl}" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.leaflets.cta)}</a>
