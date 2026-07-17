@@ -9,13 +9,6 @@ export interface LocalizedText {
   ar?: string;
 }
 
-export interface ReviewMeta {
-  label: LocalizedText;
-  detail: LocalizedText;
-  provenance: 'created-by-ai' | 'legacy-migration';
-  status: 'pending-scholar-review' | 'reviewed';
-}
-
 export interface ViewCopy {
   title: LocalizedText;
   subtitle: LocalizedText;
@@ -185,7 +178,6 @@ export interface DisplayContent {
   settings: {
     timeoutSeconds: number;
   };
-  review: ReviewMeta;
   sections: Record<View, ViewCopy>;
   ui: {
     experienceLabel: LocalizedText;
@@ -198,8 +190,6 @@ export interface DisplayContent {
     languageLabel: LocalizedText;
     languages: Record<Language, string>;
     reset: LocalizedText;
-    reviewHeading: LocalizedText;
-    reviewAction: LocalizedText;
     labels: {
       birthName: LocalizedText;
       birthDeath: LocalizedText;
@@ -236,7 +226,6 @@ export interface DisplayContent {
       shaheedi: LocalizedText;
       jathedaar: LocalizedText;
       visitorsInfo: LocalizedText;
-      aiTranslationDisclaimer: LocalizedText;
       openInBrowser: LocalizedText;
       visitSite: LocalizedText;
       takhtsIntro: LocalizedText;

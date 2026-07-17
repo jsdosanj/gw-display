@@ -4,22 +4,10 @@ const displayContent: DisplayContent = {
   settings: {
     timeoutSeconds: 120,
   },
-  review: {
-    provenance: 'created-by-ai',
-    status: 'pending-scholar-review',
-    label: {
-      en: 'Created by AI • Pending scholar review',
-      pa: 'ਏਆਈ ਦੁਆਰਾ ਤਿਆਰ ਕੀਤਾ • ਵਿਦਵਤ ਸਮੀਖਿਆ ਬਾਕੀ',
-    },
-    detail: {
-      en: 'Historical summaries in this display must be verified by the scholar review board before being treated as authoritative teaching material.',
-      pa: 'ਇਸ ਪ੍ਰਦਰਸ਼ਨੀ ਦੇ ਇਤਿਹਾਸਕ ਸਾਰਾਂਸ਼ਾਂ ਨੂੰ ਅਧਿਕਾਰਕ ਸਿੱਖਿਆ ਸਮੱਗਰੀ ਵਜੋਂ ਵਰਤੋਂ ਤੋਂ ਪਹਿਲਾਂ ਵਿਦਵਤ ਸਮੀਖਿਆ ਬੋਰਡ ਵੱਲੋਂ ਪ੍ਰਮਾਣਿਤ ਕੀਤਾ ਜਾਣਾ ਲਾਜ਼ਮੀ ਹੈ।',
-    },
-  },
   sections: {
     home: {
       title: { en: 'Legacy of the Khalsa', pa: 'ਖ਼ਾਲਸੇ ਦੀ ਵਿਰਾਸਤ' },
-      subtitle: { en: 'A premium bilingual museum-style display experience', pa: 'ਇੱਕ ਉੱਚ-ਪੱਧਰੀ ਦੋਭਾਸ਼ੀ ਮਿਊਜ਼ੀਅਮ-ਸ਼ੈਲੀ ਪ੍ਰਦਰਸ਼ਨੀ ਅਨੁਭਵ' },
+      subtitle: { en: 'Five centuries of faith, courage, and sacrifice — brought to life for every visitor', pa: 'ਪੰਜ ਸਦੀਆਂ ਦੀ ਸ਼ਰਧਾ, ਹਿੰਮਤ ਅਤੇ ਕੁਰਬਾਨੀ — ਹਰ ਸੈਲਾਨੀ ਲਈ ਸਾਕਾਰ' },
     },
     pyare: {
       title: { en: 'Panj Pyare', pa: 'ਪੰਜ ਪਿਆਰੇ' },
@@ -31,15 +19,15 @@ const displayContent: DisplayContent = {
     },
     quiz: {
       title: { en: 'Interactive Quiz', pa: 'ਇੰਟਰਐਕਟਿਵ ਕਵਿਜ਼' },
-      subtitle: { en: 'A touch-friendly learning mode for families, students, and sangat', pa: 'ਪਰਿਵਾਰਾਂ, ਵਿਦਿਆਰਥੀਆਂ ਅਤੇ ਸੰਗਤ ਲਈ ਟਚ-ਦੋਸਤ ਸਿੱਖਣ ਮੋਡ' },
+      subtitle: { en: 'Three levels to test and deepen what you know, from a first visit to a lifetime in the sangat', pa: 'ਪਹਿਲੀ ਫੇਰੀ ਤੋਂ ਲੈ ਕੇ ਸੰਗਤ ਵਿੱਚ ਸਾਰੀ ਉਮਰ ਤੱਕ, ਆਪਣੇ ਗਿਆਨ ਨੂੰ ਪਰਖਣ ਅਤੇ ਗਹਿਰਾ ਕਰਨ ਲਈ ਤਿੰਨ ਪੱਧਰ' },
     },
     learn: {
       title: { en: 'Learn About Sikhi', pa: 'ਸਿੱਖੀ ਬਾਰੇ ਜਾਣੋ' },
       subtitle: { en: 'Gurdwara etiquette, the Gurus, the Kakaars, and sacred Gurbani', pa: 'ਗੁਰਦੁਆਰਾ ਮਰਯਾਦਾ, ਗੁਰੂ ਸਾਹਿਬਾਨ, ਕਕਾਰ ਅਤੇ ਪਵਿੱਤਰ ਗੁਰਬਾਣੀ' },
     },
     about: {
-      title: { en: 'About', pa: 'ਸਾਡੇ ਬਾਰੇ' },
-      subtitle: { en: 'Collaboration, quality standards, and project direction', pa: 'ਸਹਿਯੋਗ, ਗੁਣਵੱਤਾ ਮਾਪਦੰਡ ਅਤੇ ਪ੍ਰੋਜੈਕਟ ਦੀ ਦਿਸ਼ਾ' },
+      title: { en: 'About This Display', pa: 'ਇਸ ਪ੍ਰਦਰਸ਼ਨੀ ਬਾਰੇ' },
+      subtitle: { en: 'How this experience was built, who we are proud to stand alongside, and where it goes next', pa: 'ਇਹ ਅਨੁਭਵ ਕਿਵੇਂ ਬਣਾਇਆ ਗਿਆ, ਅਸੀਂ ਕਿਸ ਦੇ ਨਾਲ ਖੜ੍ਹੇ ਹੋਣ ਤੇ ਮਾਣ ਮਹਿਸੂਸ ਕਰਦੇ ਹਾਂ, ਅਤੇ ਅੱਗੇ ਇਹ ਕਿੱਥੇ ਜਾਵੇਗਾ' },
     },
     resources: {
       title: { en: 'Resources', pa: 'ਸਰੋਤ' },
@@ -79,8 +67,6 @@ const displayContent: DisplayContent = {
       ar: 'العربية',
     },
     reset: { en: 'Reset display', pa: 'ਪ੍ਰਦਰਸ਼ਨੀ ਰੀਸੈੱਟ ਕਰੋ' },
-    reviewHeading: { en: 'Scholar review status', pa: 'ਵਿਦਵਤ ਸਮੀਖਿਆ ਦੀ ਸਥਿਤੀ' },
-    reviewAction: { en: 'Human review required before authoritative use', pa: 'ਅਧਿਕਾਰਕ ਵਰਤੋਂ ਤੋਂ ਪਹਿਲਾਂ ਮਨੁੱਖੀ ਸਮੀਖਿਆ ਲਾਜ਼ਮੀ ਹੈ' },
     labels: {
       birthName: { en: 'Birth name', pa: 'ਜਨਮ ਨਾਮ' },
       birthDeath: { en: 'Birth & shaheedi', pa: 'ਜਨਮ ਅਤੇ ਸ਼ਹੀਦੀ' },
@@ -117,7 +103,6 @@ const displayContent: DisplayContent = {
       shaheedi: { en: 'Shaheedi', pa: 'ਸ਼ਹੀਦੀ' },
       jathedaar: { en: 'Current Jathedar', pa: 'ਮੌਜੂਦਾ ਜਥੇਦਾਰ' },
       visitorsInfo: { en: 'Visitor information', pa: 'ਸੈਲਾਨੀ ਜਾਣਕਾਰੀ' },
-      aiTranslationDisclaimer: { en: 'Translations to Hindi, Spanish, and Arabic are AI-generated and pending human review.', pa: 'ਹਿੰਦੀ, ਸਪੈਨਿਸ਼ ਅਤੇ ਅਰਬੀ ਅਨੁਵਾਦ ਏਆਈ ਦੁਆਰਾ ਤਿਆਰ ਕੀਤੇ ਗਏ ਹਨ ਅਤੇ ਮਨੁੱਖੀ ਸਮੀਖਿਆ ਅਧੀਨ ਹਨ।', hi: 'हिंदी, स्पेनिश और अरबी अनुवाद AI द्वारा तैयार किए गए हैं और मानव समीक्षा के अधीन हैं।', es: 'Las traducciones al hindi, español y árabe son generadas por IA y están pendientes de revisión humana.', ar: 'الترجمات إلى الهندية والإسبانية والعربية مولّدة بالذكاء الاصطناعي وقيد مراجعة بشرية.' },
       openInBrowser: { en: 'Open in browser', pa: 'ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਖੋਲ੍ਹੋ' },
       visitSite: { en: 'Visit site', pa: 'ਸਾਈਟ ਵੇਖੋ' },
       takhtsIntro: { en: 'The Panj Takht (Five Thrones) are the five most sacred seats of Sikh institutional authority. Each Takht holds supreme significance in the Sikh world — governing doctrine, issuing binding decrees (hukamnamas), and marking pivotal moments in Sikh history. They span the geography of South Asia, from Punjab to Bihar, Deccan to Karnataka.', pa: 'ਪੰਜ ਤਖ਼ਤ ਸਿੱਖ ਸੰਸਥਾਗਤ ਅਧਿਕਾਰ ਦੇ ਸਭ ਤੋਂ ਪਵਿੱਤਰ ਪੰਜ ਅਸਥਾਨ ਹਨ। ਹਰ ਤਖ਼ਤ ਸਿੱਖ ਜਗਤ ਵਿੱਚ ਸਰਵੋੱਚ ਮਹੱਤਵ ਰੱਖਦਾ ਹੈ।' },
@@ -208,7 +193,7 @@ const displayContent: DisplayContent = {
     ],
   },
   about: {
-    title: { en: 'About this project', pa: 'ਇਸ ਪ੍ਰੋਜੈਕਟ ਬਾਰੇ' },
+    title: { en: 'The Story Behind This Display', pa: 'ਇਸ ਪ੍ਰਦਰਸ਼ਨੀ ਦੀ ਕਹਾਣੀ' },
     collaboration: {
       en: 'This display was collaborated on by the Mata Gujri Ji Group from the San Jose Gurmat Camp in July 2026.',
       pa: 'ਇਹ ਪ੍ਰਦਰਸ਼ਨੀ ਜੁਲਾਈ 2026 ਵਿੱਚ ਸੈਨ ਹੋਜੇ ਗੁਰਮਤ ਕੈਂਪ ਦੇ ਮਾਤਾ ਗੁਜਰੀ ਜੀ ਗਰੁੱਪ ਦੇ ਸਹਿਯੋਗ ਨਾਲ ਤਿਆਰ ਕੀਤੀ ਗਈ।',
