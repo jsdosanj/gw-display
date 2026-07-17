@@ -2,15 +2,19 @@ import QRCode from 'qrcode';
 import displayContent from '../data/display-content';
 import {
   advanceQuiz,
+  backToQuizLevels,
   createInitialState,
+  getActiveQuizQuestions,
   getQuizScore,
   isQuizComplete,
   navigate,
   resetForInactivity,
   restartQuiz,
   selectPyara,
+  selectQuizLevel,
   selectTakht,
   setLanguage,
+  startQuiz,
   submitQuizAnswer,
   wakeKiosk,
 } from '../lib/kiosk-state';
@@ -20,6 +24,7 @@ import type {
   Language,
   LocalizedText,
   PanjPyaraProfile,
+  QuizLevel,
   QuizQuestion,
   TakhtProfile,
   View,
@@ -1182,22 +1187,104 @@ function quizState(question: QuizQuestion, optionIndex: number): 'default' | 'se
 }
 
 function currentQuizTotal(): number {
-  return Math.min(content.quiz.questionsPerRound, state.quizQuestionOrder.length);
+  return Math.min(state.quizCount, state.quizQuestionOrder.length);
+}
+
+const quizLevelIcons: Record<QuizLevel, string> = {
+  beginner: '🌱',
+  intermediate: '🪔',
+  advanced: '🗡️',
+};
+
+function renderProgressRing(fraction: number, centerLabel: string): string {
+  const radius = 52;
+  const circumference = 2 * Math.PI * radius;
+  const clamped = Math.max(0, Math.min(1, fraction));
+  const offset = circumference * (1 - clamped);
+
+  return `
+    <div class="quiz-ring" role="img" aria-label="${centerLabel}">
+      <svg viewBox="0 0 120 120" width="88" height="88" aria-hidden="true">
+        <circle class="quiz-ring__track" cx="60" cy="60" r="${radius}" />
+        <circle
+          class="quiz-ring__progress"
+          cx="60" cy="60" r="${radius}"
+          style="stroke-dasharray:${circumference};stroke-dashoffset:${offset};"
+        />
+      </svg>
+      <span class="quiz-ring__label" aria-hidden="true">${centerLabel}</span>
+    </div>
+  `;
+}
+
+function renderQuizLevelSelect(): string {
+  const levels: QuizLevel[] = ['beginner', 'intermediate', 'advanced'];
+
+  return `
+    <article class="glass-panel p-8 text-center md:p-12">
+      <p class="quiz-step-label ${classForLanguage()}">${text(content.ui.labels.chooseLevelStep)}</p>
+      <h3 class="mt-3 text-3xl font-semibold text-white md:text-4xl ${classForLanguage()}">${text(content.ui.labels.chooseLevelTitle)}</h3>
+      <p class="mx-auto mt-4 max-w-2xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.quiz.intro)}</p>
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        ${levels
+          .map((level) => {
+            const meta = content.quiz.levelMeta[level];
+            return `
+              <button type="button" class="quiz-level-card" data-quiz-level="${level}">
+                <span class="quiz-level-card__icon" aria-hidden="true">${quizLevelIcons[level]}</span>
+                <span class="quiz-level-card__title ${classForLanguage()}">${text(meta.title)}</span>
+                <span class="quiz-level-card__desc ${classForLanguage()}">${text(meta.description)}</span>
+              </button>
+            `;
+          })
+          .join('')}
+      </div>
+    </article>
+  `;
+}
+
+function renderQuizCountSelect(): string {
+  const level = state.quizLevel;
+  const meta = level ? content.quiz.levelMeta[level] : null;
+
+  return `
+    <article class="glass-panel p-8 text-center md:p-12">
+      <button type="button" data-action="quiz-back-to-levels" class="quiz-back-btn ${classForLanguage()}">
+        <span aria-hidden="true">←</span> ${text(content.ui.labels.backButton)}
+      </button>
+      <p class="quiz-step-label mt-4 ${classForLanguage()}">${text(content.ui.labels.chooseCountStep)}</p>
+      <h3 class="mt-3 text-3xl font-semibold text-white md:text-4xl ${classForLanguage()}">${text(content.ui.labels.chooseCountTitle)}</h3>
+      ${meta ? `<p class="mt-4 text-base text-gold-300 ${classForLanguage()}">${quizLevelIcons[level as QuizLevel]} ${text(meta.title)}</p>` : ''}
+      <div class="mx-auto mt-10 grid max-w-xl gap-5 sm:grid-cols-2">
+        ${content.quiz.countOptions
+          .map(
+            (option) => `
+              <button type="button" class="quiz-count-card" data-quiz-count="${option.count}">
+                <span class="quiz-count-card__number">${option.count}</span>
+                <span class="quiz-count-card__label ${classForLanguage()}">${text(option.label)}</span>
+              </button>
+            `,
+          )
+          .join('')}
+      </div>
+    </article>
+  `;
 }
 
 function renderQuizQuestion(question: QuizQuestion): string {
   const total = currentQuizTotal();
+  const fraction = (state.quizIndex + 1) / total;
 
   return `
     <article class="glass-panel p-8 md:p-10">
-      <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.quizProgress)} ${state.quizIndex + 1} / ${total}</p>
-        <div class="h-2 w-full max-w-xs overflow-hidden rounded-full bg-white/8">
-          <div class="h-full rounded-full bg-gold-400 transition duration-300" style="width:${((state.quizIndex + 1) / total) * 100}%"></div>
+      <div class="mb-6 flex flex-wrap items-center justify-between gap-5">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.quizProgress)} ${state.quizIndex + 1} / ${total}</p>
+          ${state.quizLevel ? `<p class="mt-1 text-sm text-cloud-400 ${classForLanguage()}">${quizLevelIcons[state.quizLevel]} ${text(content.quiz.levelMeta[state.quizLevel].title)}</p>` : ''}
         </div>
+        ${renderProgressRing(fraction, `${state.quizIndex + 1}/${total}`)}
       </div>
       <h3 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(question.prompt)}</h3>
-      <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.quiz.intro)}</p>
       <div class="mt-8 grid gap-4">
         ${question.options
           .map(
@@ -1232,8 +1319,9 @@ function renderQuizQuestion(question: QuizQuestion): string {
 }
 
 function renderRecapCard(): string {
+  const questions = getActiveQuizQuestions(state, content);
   const topics = state.quizQuestionOrder
-    .map((questionIndex) => content.quiz.questions[questionIndex])
+    .map((questionIndex) => questions[questionIndex])
     .filter((question): question is QuizQuestion => Boolean(question));
 
   return `
@@ -1252,17 +1340,49 @@ function renderRecapCard(): string {
   `;
 }
 
+type ScoreTier = 'perfect' | 'excellent' | 'good' | 'try-again';
+
+function scoreTier(score: number, total: number): ScoreTier {
+  if (total === 0) {
+    return 'try-again';
+  }
+  const ratio = score / total;
+  if (score === total) {
+    return 'perfect';
+  }
+  if (ratio >= 0.8) {
+    return 'excellent';
+  }
+  if (ratio >= 0.5) {
+    return 'good';
+  }
+  return 'try-again';
+}
+
+const scoreTierMessage: Record<ScoreTier, LocalizedText> = {
+  perfect: content.ui.labels.perfectScore,
+  excellent: content.ui.labels.excellentScore,
+  good: content.ui.labels.goodScore,
+  'try-again': content.ui.labels.tryAgainScore,
+};
+
 function renderQuizResults(): string {
   const score = getQuizScore(state, content);
   const total = currentQuizTotal();
+  const tier = scoreTier(score, total);
 
   return `
     <article class="glass-panel p-8 text-center md:p-12">
       <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.sections.quiz.title)}</p>
-      <h3 class="mt-5 text-5xl font-semibold text-white">${score} / ${total}</h3>
+      <div class="mx-auto mt-6 flex justify-center">
+        ${renderProgressRing(total === 0 ? 0 : score / total, `${score}/${total}`)}
+      </div>
       <p class="mt-4 text-xl text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.yourScore)}</p>
-      <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${score === total ? text(content.ui.labels.perfectScore) : text(content.ui.labels.replayPrompt)}</p>
-      <button type="button" data-action="restart-quiz" class="mt-8 rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98]">${text(content.ui.labels.restartQuiz)}</button>
+      <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(scoreTierMessage[tier])}</p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <button type="button" data-action="restart-quiz" class="rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.tryAgainButton)}</button>
+        <button type="button" data-action="change-level" class="rounded-full border border-white/15 bg-white/[0.04] px-6 py-4 text-base font-semibold text-cloud-200 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.changeLevel)}</button>
+      </div>
       ${renderRecapCard()}
     </article>
   `;
@@ -1404,15 +1524,24 @@ function renderView(): void {
       viewContent.innerHTML = renderLeaflets();
       break;
     case 'quiz': {
-      if (isQuizComplete(state, content)) {
+      if (state.quizPhase === 'level') {
+        viewContent.innerHTML = renderQuizLevelSelect();
+        break;
+      }
+      if (state.quizPhase === 'count') {
+        viewContent.innerHTML = renderQuizCountSelect();
+        break;
+      }
+      if (isQuizComplete(state)) {
         viewContent.innerHTML = renderQuizResults();
         if (getQuizScore(state, content) === currentQuizTotal() && !hasCelebratedPerfect) {
           hasCelebratedPerfect = true;
           launchConfetti();
         }
       } else {
+        const questions = getActiveQuizQuestions(state, content);
         const questionIndex = state.quizQuestionOrder[state.quizIndex];
-        const question = questionIndex === undefined ? undefined : content.quiz.questions[questionIndex];
+        const question = questionIndex === undefined ? undefined : questions[questionIndex];
         if (!question) {
           viewContent.innerHTML = renderQuizResults();
           break;
@@ -1603,6 +1732,37 @@ document.addEventListener('click', (event) => {
     resourceCarouselIndex = Number(carouselDotTarget.dataset.carouselDot);
     updateResourceCarousel();
     setupResourceCarousel();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const levelTarget = target.closest<HTMLElement>('[data-quiz-level]');
+  if (levelTarget?.dataset.quizLevel) {
+    state = selectQuizLevel(state, levelTarget.dataset.quizLevel as QuizLevel);
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const countTarget = target.closest<HTMLElement>('[data-quiz-count]');
+  if (countTarget?.dataset.quizCount) {
+    state = startQuiz(state, content, Number(countTarget.dataset.quizCount));
+    hasCelebratedPerfect = false;
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  if (target.closest('[data-action="quiz-back-to-levels"]')) {
+    state = backToQuizLevels(state);
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  if (target.closest('[data-action="change-level"]')) {
+    state = backToQuizLevels(state);
+    render();
     scheduleInactivityReset();
     return;
   }

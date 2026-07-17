@@ -84,11 +84,18 @@ export interface TakhtProfile {
   localImpact?: LocalizedText;
 }
 
+export type QuizLevel = 'beginner' | 'intermediate' | 'advanced';
+
 export interface QuizQuestion {
   prompt: LocalizedText;
   options: LocalizedText[];
   correctIndex: number;
   insight: LocalizedText;
+}
+
+export interface QuizLevelMeta {
+  title: LocalizedText;
+  description: LocalizedText;
 }
 
 export interface FaqItem {
@@ -206,7 +213,17 @@ export interface DisplayContent {
       restartQuiz: LocalizedText;
       yourScore: LocalizedText;
       perfectScore: LocalizedText;
+      excellentScore: LocalizedText;
+      goodScore: LocalizedText;
+      tryAgainScore: LocalizedText;
       replayPrompt: LocalizedText;
+      chooseLevelTitle: LocalizedText;
+      chooseLevelStep: LocalizedText;
+      chooseCountTitle: LocalizedText;
+      chooseCountStep: LocalizedText;
+      backButton: LocalizedText;
+      changeLevel: LocalizedText;
+      tryAgainButton: LocalizedText;
       correctAnswer: LocalizedText;
       reviewPanel: LocalizedText;
       story: LocalizedText;
@@ -288,8 +305,9 @@ export interface DisplayContent {
   learnSikhi: LearnSikhiContent;
   quiz: {
     intro: LocalizedText;
-    questionsPerRound: number;
-    questions: QuizQuestion[];
+    levelMeta: Record<QuizLevel, QuizLevelMeta>;
+    countOptions: { count: number; label: LocalizedText }[];
+    levels: Record<QuizLevel, QuizQuestion[]>;
   };
   faq: FaqItem[];
   timeline: TimelineEvent[];
