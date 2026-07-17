@@ -719,12 +719,12 @@ function renderAbout(): string {
       </section>
 
       <section class="glass-panel p-8 md:p-10">
-        <h3 class="text-xl font-semibold text-white">Gurmat Camp — July 2026</h3>
-        <p class="mt-2 text-sm text-cloud-300">Design planning and content brainstorming from the San Jose Gurmat Camp collaboration session.</p>
+        <h3 class="text-xl font-semibold text-white ${classForLanguage()}">Gurmat Camp — July 2026</h3>
+        <p class="mt-2 text-sm text-cloud-300 ${classForLanguage()}">Design planning and content brainstorming from the San Jose Gurmat Camp collaboration session.</p>
         <div class="mt-6 grid gap-4 md:grid-cols-3">
-          <img src="/assets/images/IMG_1402.jpeg" alt="Whiteboard: 5 Takhts and 5 Pyare content outline" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" />
-          <img src="/assets/images/IMG_1404.jpeg" alt="Whiteboard: Layout wireframes for modules" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" />
-          <img src="/assets/images/IMG_1405.jpeg" alt="Whiteboard: Content and design planning" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" />
+          <img src="/assets/images/IMG_1402.jpeg" alt="Whiteboard: 5 Takhts and 5 Pyare content outline" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
+          <img src="/assets/images/IMG_1404.jpeg" alt="Whiteboard: Layout wireframes for modules" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
+          <img src="/assets/images/IMG_1405.jpeg" alt="Whiteboard: Content and design planning" class="w-full rounded-[16px] object-cover" style="aspect-ratio:4/3;" loading="lazy" decoding="async" />
         </div>
       </section>
 
@@ -834,7 +834,7 @@ function renderResources(): string {
           .map(
             (site) => `
               <article class="resource-card">
-                ${resourceBanners[site.id] ? `<img src="${resourceBanners[site.id]}" alt="${site.title} banner" class="w-full object-cover" style="height:6rem;border-radius:28px 28px 0 0;" />` : ''}
+                ${resourceBanners[site.id] ? `<img src="${resourceBanners[site.id]}" alt="${site.title} banner" class="w-full object-cover" style="height:6rem;border-radius:28px 28px 0 0;" loading="lazy" decoding="async" />` : ''}
                 <div class="resource-card__qr">
                   ${qrDataUrls[site.id] ? `<img src="${qrDataUrls[site.id]}" alt="QR code for ${site.title}" class="resource-card__qr-img" width="80" height="80" />` : '<div class="resource-card__qr-placeholder">QR</div>'}
                 </div>
@@ -862,7 +862,7 @@ function renderLeaflets(): string {
       <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.leaflets.title)}</h2>
       <p class="intro mx-auto mt-4 max-w-2xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.leaflets.intro)}</p>
       <div class="leaflet-hero my-8 overflow-hidden rounded-[20px]">
-        <img src="/assets/images/sikh-fresco-·-restoration-3-restored.png" alt="Restored Sikh fresco artwork" class="mx-auto max-h-48 w-full object-cover object-top" />
+        <img src="/assets/images/sikh-fresco-·-restoration-3-restored.png" alt="Restored Sikh fresco artwork" class="mx-auto max-h-48 w-full object-cover object-top" decoding="async" />
       </div>
       <p class="text-base text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.leafletsHelper)}</p>
       <a href="${content.leaflets.hubUrl}" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.leaflets.cta)}</a>
