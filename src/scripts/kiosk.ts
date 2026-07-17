@@ -66,7 +66,11 @@ async function initQrCodes(): Promise<void> {
   }
 }
 
-void initQrCodes();
+void initQrCodes().then(() => {
+  if (state.awake && (state.view === 'resources' || state.view === 'leaflets')) {
+    renderView();
+  }
+});
 
 const icons: Record<View, string> = {
   home: '🏛️',
@@ -117,7 +121,7 @@ function renderAttract(): void {
           </div>
           <div class="glass-panel flex flex-col justify-between gap-5 p-6">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.28em] text-gold-300">Built in Collaboration With</p>
+              <p class="text-xs font-semibold uppercase tracking-[0.28em] text-gold-300">${text(content.ui.labels.collaborationWith)}</p>
               <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.home.collaborationBanner)}</p>
             </div>
             <button type="button" data-action="start" class="rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 shadow-lg shadow-gold-400/20 transition active:scale-[0.98]">${text(content.ui.attractButton)}</button>
@@ -754,7 +758,7 @@ function renderResources(): string {
       <section class="glass-panel relative overflow-hidden p-0" style="min-height:28rem;">
         <div class="resource-live-header">
           <span class="resource-live-dot"></span>
-          <span class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300">Live Previews</span>
+          <span class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300">${text(content.ui.labels.livePreviews)}</span>
         </div>
         <div
           id="resource-carousel-track"
@@ -769,7 +773,7 @@ function renderResources(): string {
                     src="${site.url}"
                     class="resource-iframe"
                     loading="lazy"
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                    sandbox="allow-scripts"
                     title="${site.title}"
                   ></iframe>
                   <div class="resource-card__overlay p-6 md:p-8">
@@ -781,7 +785,7 @@ function renderResources(): string {
                       </div>
                       <div class="qr-badge">
                         ${qrDataUrls[site.id] ? `<img src="${qrDataUrls[site.id]}" alt="QR code for ${site.title}" class="qr-badge__img" width="80" height="80" />` : ''}
-                        <p class="qr-badge__hint">Scan to visit</p>
+                        <p class="qr-badge__hint">${text(content.ui.labels.scanToVisit)}</p>
                       </div>
                     </div>
                   </div>

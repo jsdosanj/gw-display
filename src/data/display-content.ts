@@ -115,6 +115,9 @@ const displayContent: DisplayContent = {
       faqTitle: { en: 'Frequently Asked Questions', pa: 'ਅਕਸਰ ਪੁੱਛੇ ਜਾਂਦੇ ਸਵਾਲ' },
       leafletsHelper: { en: 'Access the full Basics of Sikhi leaflet library:', pa: 'ਬੇਸਿਕਸ ਆਫ ਸਿੱਖੀ ਲੀਫਲੈਟ ਲਾਇਬ੍ਰੇਰੀ ਤੱਕ ਪਹੁੰਚ ਕਰੋ:' },
       recapTitle: { en: 'What you learned', pa: 'ਤੁਸੀਂ ਕੀ ਸਿੱਖਿਆ' },
+      collaborationWith: { en: 'Built in Collaboration With', pa: 'ਸਾਂਝੇ ਤੌਰ ਤੇ ਬਣਾਇਆ' },
+      livePreviews: { en: 'Live Previews', pa: 'ਲਾਈਵ ਝਲਕ' },
+      scanToVisit: { en: 'Scan to visit', pa: 'ਵੇਖਣ ਲਈ ਸਕੈਨ ਕਰੋ' },
     },
   },
   home: {

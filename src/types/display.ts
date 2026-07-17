@@ -155,6 +155,9 @@ export interface DisplayContent {
       faqTitle: LocalizedText;
       leafletsHelper: LocalizedText;
       recapTitle: LocalizedText;
+      collaborationWith: LocalizedText;
+      livePreviews: LocalizedText;
+      scanToVisit: LocalizedText;
     };
   };
   home: {
