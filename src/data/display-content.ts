@@ -144,13 +144,13 @@ const displayContent: DisplayContent = {
     differentiationCards: [
       {
         id: 'pyare',
-        imagePath: '/assets/images/singh-silhouette.svg',
+        imagePath: '/assets/images/IMG_3268.jpeg',
         title: { en: 'Panj Pyare', pa: 'ਪੰਜ ਪਿਆਰੇ' },
         description: { en: 'Five historic individuals who offered their heads to Guru Gobind Singh Ji and became the founding exemplars of the Khalsa.', pa: 'ਪੰਜ ਇਤਿਹਾਸਕ ਵਿਅਕਤੀ ਜਿਨ੍ਹਾਂ ਨੇ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਅੱਗੇ ਸਿਰ ਭੇਟ ਕੀਤਾ ਅਤੇ ਖ਼ਾਲਸੇ ਦੇ ਪ੍ਰਥਮ ਮਿਸਾਲ ਬਣੇ।' },
       },
       {
         id: 'takhts',
-        imagePath: '/assets/images/gurdwara-silhouette.svg',
+        imagePath: '/assets/images/IMG_3192.jpeg',
         title: { en: 'Panj Takht', pa: 'ਪੰਜ ਤਖ਼ਤ' },
         description: { en: 'Five sacred institutions and seats of authority that preserve Sikh doctrine, governance, and collective memory.', pa: 'ਪੰਜ ਪਵਿੱਤਰ ਸੰਸਥਾਗਤ ਅਸਥਾਨ ਜੋ ਸਿੱਖ ਮਰਯਾਦਾ, ਨਿਰਣੇ ਅਤੇ ਸਾਂਝੀ ਸਮੂਹਕ ਯਾਦ ਨੂੰ ਸੰਭਾਲਦੇ ਹਨ।' },
       },
@@ -258,7 +258,7 @@ const displayContent: DisplayContent = {
   panjPyare: [
     {
       id: 1,
-      imagePath: '/assets/images/pyara1.jpg',
+      imagePath: '/assets/images/IMG_3268.jpeg',
       silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '40%', y: '22%' },
       name: { en: 'Bhai Daya Singh Ji', pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ' },
@@ -292,7 +292,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 2,
-      imagePath: '/assets/images/pyara2.jpg',
+      imagePath: '/assets/images/IMG_3269.jpeg',
       silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '48%', y: '26%' },
       name: { en: 'Bhai Dharam Singh Ji', pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ' },
@@ -326,7 +326,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 3,
-      imagePath: '/assets/images/pyara3.jpg',
+      imagePath: '/assets/images/IMG_3270.jpeg',
       silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '64%', y: '46%' },
       name: { en: 'Bhai Himmat Singh Ji', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ' },
@@ -360,7 +360,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 4,
-      imagePath: '/assets/images/pyara4.jpg',
+      imagePath: '/assets/images/IMG_3271.jpeg',
       silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '30%', y: '41%' },
       name: { en: 'Bhai Mohkam Singh Ji', pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ' },
@@ -394,7 +394,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 5,
-      imagePath: '/assets/images/pyara5.jpg',
+      imagePath: '/assets/images/IMG_3272.jpeg',
       silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '47%', y: '50%' },
       name: { en: 'Bhai Sahib Singh Ji', pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ' },
@@ -430,7 +430,7 @@ const displayContent: DisplayContent = {
   takhts: [
     {
       id: 'akal_takht',
-      imagePath: '/assets/images/takht1.jpg',
+      imagePath: '/assets/images/IMG_3192.jpeg',
       silhouettePath: '/assets/images/gurdwara-silhouette.svg',
       name: { en: 'Sri Akal Takht Sahib', pa: 'ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ' },
       location: { en: 'Amritsar, Punjab, India', pa: 'ਅੰਮ੍ਰਿਤਸਰ, ਪੰਜਾਬ, ਭਾਰਤ' },
@@ -458,7 +458,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 'kesgarh_sahib',
-      imagePath: '/assets/images/takht2.jpg',
+      imagePath: '/assets/images/IMG_3194.jpeg',
       silhouettePath: '/assets/images/gurdwara-silhouette.svg',
       name: { en: 'Takht Sri Keshgarh Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਕੇਸਗੜ੍ਹ ਸਾਹਿਬ' },
       location: { en: 'Anandpur Sahib, Punjab, India', pa: 'ਅਨੰਦਪੁਰ ਸਾਹਿਬ, ਪੰਜਾਬ, ਭਾਰਤ' },
@@ -486,7 +486,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 'damdama_sahib',
-      imagePath: '/assets/images/takht3.jpg',
+      imagePath: '/assets/images/IMG_3200.jpeg',
       silhouettePath: '/assets/images/gurdwara-silhouette.svg',
       name: { en: 'Takht Sri Damdama Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਦਮਦਮਾ ਸਾਹਿਬ' },
       location: { en: 'Talwandi Sabo, Bathinda, Punjab, India', pa: 'ਤਲਵੰਡੀ ਸਾਬੋ, ਬਠਿੰਡਾ, ਪੰਜਾਬ, ਭਾਰਤ' },
@@ -514,7 +514,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 'patna_sahib',
-      imagePath: '/assets/images/takht4.jpg',
+      imagePath: '/assets/images/IMG_3197.jpeg',
       silhouettePath: '/assets/images/gurdwara-silhouette.svg',
       name: { en: 'Takht Sri Patna Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਪਟਨਾ ਸਾਹਿਬ' },
       location: { en: 'Patna, Bihar, India', pa: 'ਪਟਨਾ, ਬਿਹਾਰ, ਭਾਰਤ' },
@@ -542,7 +542,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 'hazur_sahib',
-      imagePath: '/assets/images/takht5.jpg',
+      imagePath: '/assets/images/IMG_3196.jpeg',
       silhouettePath: '/assets/images/gurdwara-silhouette.svg',
       name: { en: 'Takht Sri Hazur Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਹਜ਼ੂਰ ਸਾਹਿਬ' },
       location: { en: 'Nanded, Maharashtra, India', pa: 'ਨਾਂਦੇੜ, ਮਹਾਰਾਸ਼ਟਰ, ਭਾਰਤ' },
