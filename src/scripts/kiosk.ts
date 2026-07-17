@@ -1191,6 +1191,12 @@ function renderAbout(): string {
         </div>
         <div class="mt-6 rounded-[24px] border border-gold-300/25 bg-gold-400/8 p-6">
           <p class="text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.collaboration)}</p>
+          <p class="mt-5 text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.about.contributorsLabel)}</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            ${content.about.contributors
+              .map((name) => `<span class="rounded-full border border-gold-300/25 bg-white/[0.04] px-3 py-1.5 text-sm text-cloud-200">${name}</span>`)
+              .join('')}
+          </div>
         </div>
         <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.partnerships)}</p>
         <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.futureUpdates)}</p>

@@ -283,6 +283,8 @@ export interface DisplayContent {
   about: {
     title: LocalizedText;
     collaboration: LocalizedText;
+    contributorsLabel: LocalizedText;
+    contributors: string[];
     partnerships: LocalizedText;
     futureUpdates: LocalizedText;
     principles: PrincipleCard[];
