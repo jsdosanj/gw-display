@@ -79,11 +79,17 @@ const visitedViews = new Set<View>();
 // blade) rather than literal photography — matches the site's line-icon
 // language elsewhere and stays respectful of the articles' sanctity.
 const kakaarIcons: string[] = [
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M8 8c-1 3-1 7 0 11M12 8c0 4 0 8 0 11M16 8c1 3 1 7 0 11"/></svg>',
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="5" rx="1.5"/><path d="M6 9v11M9.5 9v11M13 9v11M16.5 9v11"/></svg>',
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.2" opacity="0.4"/></svg>',
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v6l-2 10h-3.5l-1.5-8-1.5 8H8L6 10V4z"/><path d="M4 8h16"/></svg>',
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v14"/><path d="M9 6h6"/><path d="M9 16h6l-1.5 3h-3z"/></svg>',
+  // Kesh — the rishi/joora hair-knot: a coiled bun above the gathered hair
+  // beneath it, the standard abstract shorthand for uncut, gathered hair.
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="4.5"/><path d="M12 6.3a2.4 2.4 0 0 1 1.8 3.9"/><path d="M7.5 20c.6-3 2.2-4.7 4.5-4.7s3.9 1.7 4.5 4.7"/></svg>',
+  // Kangha — a wooden comb: rounded spine with five teeth.
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.2c0-.9.8-1.7 1.7-1.7h11.6c.9 0 1.7.8 1.7 1.7v3H4.5v-3z"/><path d="M6.2 8.2v10.6M9.1 8.2v10.6M12 8.2v10.6M14.9 8.2v10.6M17.8 8.2v10.6"/></svg>',
+  // Kara — a single plain iron bangle with a subtle metallic highlight arc.
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="7.5"/><path d="M6.8 8a7.4 7.4 0 0 1 3.3-2.4" stroke-width="1.1" opacity="0.55"/></svg>',
+  // Kachhera — a symmetric drawstring undergarment silhouette with a waistband.
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14v3.5c0 1-.3 2-.8 2.9L15.8 17.5h-2.2l-1.1-6-1.1 6H9.3L6.8 11.4c-.5-.9-.8-1.9-.8-2.9V5z"/><path d="M5 8.3h14"/></svg>',
+  // Kirpan — a slightly curved single-edged blade with crossguard and hilt.
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.4 3c1.1 4.2.9 9-1.4 13.2"/><path d="M9.3 6.3h4.4"/><path d="M10.4 16.2h2.3l-.6 3.8h-1.1z"/></svg>',
 ];
 
 async function initQrCodes(): Promise<void> {
@@ -1106,7 +1112,7 @@ function renderResources(): string {
                     <div class="relative z-10 flex h-full flex-col items-start justify-end p-6 md:p-8">
                       <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
                       <p class="mt-2 max-w-xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(site.previewDescription)}</p>
-                      <p class="mt-2 text-xs uppercase tracking-[0.18em] text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.embedUnavailable)}</p>
+                      <p class="mt-3 inline-flex items-center rounded-full border border-white/15 bg-night-950/85 px-3 py-1.5 text-xs uppercase tracking-[0.14em] text-cloud-200 backdrop-blur-sm ${classForLanguage()}">${text(content.ui.labels.embedUnavailable)}</p>
                       <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.openInBrowser)}</a>
                     </div>
                   </div>
@@ -1610,6 +1616,7 @@ function render(): void {
     lastAnnouncedView = state.view;
     viewAnnouncer.textContent = text(content.sections[state.view].title);
     viewContent.focus({ preventScroll: true });
+    viewContent.scrollTop = 0;
 
     // Restart the transition animation on real navigation only (not every
     // in-view interaction) by removing and re-adding the class to force a

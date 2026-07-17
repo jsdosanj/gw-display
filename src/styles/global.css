@@ -616,7 +616,7 @@ button {
   inset: 0;
   background-image:
     var(--art-image, none),
-    linear-gradient(180deg, rgba(5, 11, 20, 0.55) 0%, rgba(5, 11, 20, 0.96) 78%);
+    linear-gradient(180deg, rgba(5, 11, 20, 0.65) 0%, rgba(5, 11, 20, 0.94) 55%, rgba(5, 11, 20, 0.98) 85%);
   background-position: center;
   background-size: cover;
   opacity: 0.85;

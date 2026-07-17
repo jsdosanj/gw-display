@@ -791,7 +791,7 @@ const displayContent: DisplayContent = {
     kakaars: [
       { name: { en: 'ਕੇਸ', pa: 'ਕੇਸ' }, meaning: { en: 'Uncut hair', pa: 'ਬਿਨਾਂ ਕੱਟੇ ਵਾਲ' }, description: { en: 'Symbolizes acceptance of God\'s will and the Creator\'s natural design, and a life of spiritual devotion.', pa: 'ਪਰਮਾਤਮਾ ਦੀ ਰਜ਼ਾ ਅਤੇ ਕੁਦਰਤੀ ਸਿਰਜਣਾ ਨੂੰ ਸਵੀਕਾਰ ਕਰਨ ਦਾ ਪ੍ਰਤੀਕ।' } },
       { name: { en: 'ਕੰਘਾ', pa: 'ਕੰਘਾ' }, meaning: { en: 'Wooden comb', pa: 'ਲੱਕੜ ਦੀ ਕੰਘੀ' }, description: { en: 'Symbolizes cleanliness and discipline, used to keep the kesh tidy.', pa: 'ਸਫ਼ਾਈ ਅਤੇ ਅਨੁਸ਼ਾਸਨ ਦਾ ਪ੍ਰਤੀਕ, ਕੇਸਾਂ ਨੂੰ ਸੰਵਾਰਨ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।' } },
-      { name: { en: 'ਕੜਾ', pa: 'ਕੜਾ' }, meaning: { en: 'Steel bracelet', pa: 'ਸਟੀਲ ਦਾ ਕੜਾ' }, description: { en: 'Symbolizes restraint from wrongdoing and an unbroken bond with the Guru.', pa: 'ਗ਼ਲਤ ਕੰਮਾਂ ਤੋਂ ਸੰਜਮ ਅਤੇ ਗੁਰੂ ਨਾਲ ਅਟੁੱਟ ਸੰਬੰਧ ਦਾ ਪ੍ਰਤੀਕ।' } },
+      { name: { en: 'ਕੜਾ', pa: 'ਕੜਾ' }, meaning: { en: 'Iron bracelet', pa: 'ਲੋਹੇ ਦਾ ਕੜਾ' }, description: { en: 'Symbolizes restraint from wrongdoing and an unbroken bond with the Guru.', pa: 'ਗ਼ਲਤ ਕੰਮਾਂ ਤੋਂ ਸੰਜਮ ਅਤੇ ਗੁਰੂ ਨਾਲ ਅਟੁੱਟ ਸੰਬੰਧ ਦਾ ਪ੍ਰਤੀਕ।' } },
       { name: { en: 'ਕਛਹਿਰਾ', pa: 'ਕਛਹਿਰਾ' }, meaning: { en: 'Cotton undergarment', pa: 'ਸੂਤੀ ਅੰਦਰੂਨੀ ਵਸਤਰ' }, description: { en: 'Symbolizes self-control, moral character, and readiness for action.', pa: 'ਸੰਜਮ, ਨੈਤਿਕ ਕਿਰਦਾਰ ਅਤੇ ਕਾਰਵਾਈ ਲਈ ਤਿਆਰੀ ਦਾ ਪ੍ਰਤੀਕ।' } },
       { name: { en: 'ਕਿਰਪਾਨ', pa: 'ਕਿਰਪਾਨ' }, meaning: { en: 'Ceremonial sword', pa: 'ਰਸਮੀ ਤਲਵਾਰ' }, description: { en: 'Symbolizes the duty to defend justice, the oppressed, and righteousness (ਧਰਮ).', pa: 'ਨਿਆਂ, ਦੱਬੇ-ਕੁਚਲਿਆਂ ਅਤੇ ਧਰਮ ਦੀ ਰਾਖੀ ਦੇ ਫ਼ਰਜ਼ ਦਾ ਪ੍ਰਤੀਕ।' } },
     ],
@@ -1019,7 +1019,7 @@ const displayContent: DisplayContent = {
           insight: { en: 'The Panj Pyare were five men from five different castes and regions of India who were the first to be initiated into the Khalsa.', pa: 'ਪੰਜ ਪਿਆਰੇ ਭਾਰਤ ਦੀਆਂ ਪੰਜ ਵੱਖ-ਵੱਖ ਜਾਤਾਂ ਅਤੇ ਖੇਤਰਾਂ ਤੋਂ ਪੰਜ ਵਿਅਕਤੀ ਸਨ ਜੋ ਖ਼ਾਲਸੇ ਵਿੱਚ ਦੀਖਿਆ ਲੈਣ ਵਾਲੇ ਪਹਿਲੇ ਸਨ।' },
         },
         {
-          prompt: { en: 'What steel bracelet do Sikhs wear as one of the Five Ks?', pa: 'ਪੰਜ ਕਕਾਰਾਂ ਵਿੱਚੋਂ ਸਿੱਖ ਕਿਹੜਾ ਸਟੀਲ ਦਾ ਕੜਾ ਪਹਿਨਦੇ ਹਨ?' },
+          prompt: { en: 'What iron bracelet do Sikhs wear as one of the Five Ks?', pa: 'ਪੰਜ ਕਕਾਰਾਂ ਵਿੱਚੋਂ ਸਿੱਖ ਕਿਹੜਾ ਲੋਹੇ ਦਾ ਕੜਾ ਪਹਿਨਦੇ ਹਨ?' },
           options: [
             { en: 'Kara', pa: 'ਕੜਾ' },
             { en: 'Kanga', pa: 'ਕੰਘਾ' },
@@ -1027,7 +1027,7 @@ const displayContent: DisplayContent = {
             { en: 'Kachera', pa: 'ਕਛਹਿਰਾ' },
           ],
           correctIndex: 0,
-          insight: { en: 'The kara is a steel bracelet symbolizing restraint from wrongdoing and an unbroken bond with the Guru.', pa: 'ਕੜਾ ਇੱਕ ਸਟੀਲ ਦਾ ਬਰੇਸਲੈਟ ਹੈ ਜੋ ਗ਼ਲਤ ਕੰਮਾਂ ਤੋਂ ਸੰਜਮ ਅਤੇ ਗੁਰੂ ਨਾਲ ਅਟੁੱਟ ਸੰਬੰਧ ਦਾ ਪ੍ਰਤੀਕ ਹੈ।' },
+          insight: { en: 'The kara is an iron bracelet symbolizing restraint from wrongdoing and an unbroken bond with the Guru.', pa: 'ਕੜਾ ਇੱਕ ਲੋਹੇ ਦਾ ਬਰੇਸਲੈਟ ਹੈ ਜੋ ਗ਼ਲਤ ਕੰਮਾਂ ਤੋਂ ਸੰਜਮ ਅਤੇ ਗੁਰੂ ਨਾਲ ਅਟੁੱਟ ਸੰਬੰਧ ਦਾ ਪ੍ਰਤੀਕ ਹੈ।' },
         },
         {
           prompt: { en: "What does the word 'Sikh' mean?", pa: "'ਸਿੱਖ' ਸ਼ਬਦ ਦਾ ਕੀ ਅਰਥ ਹੈ?" },
@@ -1468,7 +1468,7 @@ const displayContent: DisplayContent = {
   faq: [
     { question: { en: 'What is the Khalsa?', pa: 'ਖ਼ਾਲਸਾ ਕੀ ਹੈ?' }, answer: { en: 'The Khalsa is the initiated Sikh community created by Guru Gobind Singh Ji on Vaisakhi 1699. Members commit to a disciplined, egalitarian spiritual-warrior way of life, wearing five articles of faith (Panj Kakars).', pa: 'ਖ਼ਾਲਸਾ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੁਆਰਾ ਵਿਸਾਖੀ 1699 ਨੂੰ ਬਣਾਈ ਗਈ ਅੰਮ੍ਰਿਤਧਾਰੀ ਸਿੱਖ ਸੰਗਤ ਹੈ।' } },
     { question: { en: 'What is Amrit Sanchar?', pa: 'ਅੰਮ੍ਰਿਤ ਸੰਚਾਰ ਕੀ ਹੈ?' }, answer: { en: 'Amrit Sanchar (also called Khande-di-Pahul) is the Sikh initiation ceremony, where the initiate receives sacred Amrit prepared with the double-edged khanda and Panj Banis.', pa: 'ਅੰਮ੍ਰਿਤ ਸੰਚਾਰ (ਖੰਡੇ ਦੀ ਪਾਹੁਲ) ਸਿੱਖ ਦੀਖਿਆ ਸਮਾਰੋਹ ਹੈ।' } },
-    { question: { en: 'What are the Panj Kakars?', pa: 'ਪੰਜ ਕਕਾਰ ਕੀ ਹਨ?' }, answer: { en: 'The five articles of faith worn by initiated Sikhs: Kesh (uncut hair), Kara (steel bracelet), Kanga (wooden comb), Kachera (cotton undergarment), and Kirpan (steel sword).', pa: 'ਅੰਮ੍ਰਿਤਧਾਰੀ ਸਿੱਖਾਂ ਦੁਆਰਾ ਪਹਿਨੇ ਜਾਣ ਵਾਲੇ ਪੰਜ ਵਿਸ਼ਵਾਸ ਦੇ ਲੇਖ: ਕੇਸ, ਕੜਾ, ਕੰਘਾ, ਕਛਹਿਰਾ, ਕਿਰਪਾਨ।' } },
+    { question: { en: 'What are the Panj Kakars?', pa: 'ਪੰਜ ਕਕਾਰ ਕੀ ਹਨ?' }, answer: { en: 'The five articles of faith worn by initiated Sikhs: Kesh (uncut hair), Kara (iron bracelet), Kanga (wooden comb), Kachera (cotton undergarment), and Kirpan (steel sword).', pa: 'ਅੰਮ੍ਰਿਤਧਾਰੀ ਸਿੱਖਾਂ ਦੁਆਰਾ ਪਹਿਨੇ ਜਾਣ ਵਾਲੇ ਪੰਜ ਵਿਸ਼ਵਾਸ ਦੇ ਲੇਖ: ਕੇਸ, ਕੜਾ, ਕੰਘਾ, ਕਛਹਿਰਾ, ਕਿਰਪਾਨ।' } },
     { question: { en: 'What is a Hukamnama?', pa: 'ਹੁਕਮਨਾਮਾ ਕੀ ਹੈ?' }, answer: { en: 'A Hukamnama is an official edict or religious decree issued by the Jathedar of Sri Akal Takht Sahib, binding on all Sikhs worldwide.', pa: 'ਹੁਕਮਨਾਮਾ ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ ਦੇ ਜਥੇਦਾਰ ਦੁਆਰਾ ਜਾਰੀ ਕੀਤਾ ਅਧਿਕਾਰਕ ਧਾਰਮਿਕ ਫ਼ੈਸਲਾ ਹੈ।' } },
     { question: { en: 'Who is Guru Granth Sahib Ji?', pa: 'ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਕੌਣ ਹਨ?' }, answer: { en: 'Guru Granth Sahib Ji is the eternal, living Guru of the Sikhs — the sacred scripture declared as the permanent and undying Guru by Guru Gobind Singh Ji before his passing in 1708.', pa: 'ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਸਿੱਖਾਂ ਦੇ ਸਦੀਵੀ ਜੀਵੰਤ ਗੁਰੂ ਹਨ।' } },
     { question: { en: 'What is Miri-Piri?', pa: 'ਮੀਰੀ-ਪੀਰੀ ਕੀ ਹੈ?' }, answer: { en: 'Miri-Piri is the Sikh principle of dual sovereignty — Miri (temporal/worldly authority) and Piri (spiritual authority) held together, represented by the two swords worn by Guru Hargobind Sahib Ji.', pa: 'ਮੀਰੀ-ਪੀਰੀ ਦੋਹਰੀ ਪ੍ਰਭੂਸੱਤਾ ਦਾ ਸਿੱਖ ਸਿਧਾਂਤ ਹੈ।' } },
