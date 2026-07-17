@@ -150,6 +150,10 @@ export interface DisplayContent {
       learnMore: LocalizedText;
       beforeKhalsa: LocalizedText;
       afterKhalsa: LocalizedText;
+      timelineTitle: LocalizedText;
+      faqTitle: LocalizedText;
+      leafletsHelper: LocalizedText;
+      recapTitle: LocalizedText;
     };
   };
   home: {

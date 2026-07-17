@@ -296,7 +296,7 @@ function renderPyareMap(selected: PanjPyaraProfile): string {
 function renderTimelineSection(): string {
   return `
     <section class="glass-panel p-7 md:p-10">
-      <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">Key Events Timeline</h3>
+      <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(content.ui.labels.timelineTitle)}</h3>
       <div class="mt-6">
         ${content.timeline
           .map(
@@ -319,7 +319,7 @@ function renderTimelineSection(): string {
 function renderFaqSection(): string {
   return `
     <section class="glass-panel p-7 md:p-10">
-      <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">Frequently Asked Questions</h3>
+      <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(content.ui.labels.faqTitle)}</h3>
       <div class="mt-6 grid gap-3">
         ${content.faq
           .map(
@@ -704,6 +704,9 @@ function renderAbout(): string {
 
 function renderResources(): string {
   const sites = content.resources.sites;
+  if (sites.length === 0) {
+    return `<div class="glass-panel p-8 text-center"><p class="text-cloud-200">${text(content.resources.intro)}</p></div>`;
+  }
   const slideWidth = 100 / sites.length;
 
   return `
@@ -723,7 +726,7 @@ function renderResources(): string {
             .map(
               (site) => `
                 <div class="relative h-full" style="width:${slideWidth}%;">
-                  <iframe src="${site.url}" class="resource-iframe" loading="lazy" sandbox="allow-scripts allow-same-origin" title="${site.title}"></iframe>
+                  <iframe src="${site.url}" class="resource-iframe" loading="lazy" sandbox="allow-scripts" title="${site.title}"></iframe>
                   <div class="resource-card__overlay p-6 md:p-8">
                     <div>
                       <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
@@ -772,7 +775,7 @@ function renderLeaflets(): string {
       <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.leaflets.title)}</h2>
       <p class="intro mx-auto mt-4 max-w-2xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.leaflets.intro)}</p>
       <div class="leaflet-hero my-8 text-7xl">📄</div>
-      <p class="text-base text-cloud-200 ${classForLanguage()}">Access the full Basics of Sikhi leaflet library:</p>
+      <p class="text-base text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.leafletsHelper)}</p>
       <a href="${content.leaflets.hubUrl}" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.leaflets.cta)}</a>
       <p class="mt-4 text-sm text-cloud-400">basicsofsikhi.com/resources</p>
       <div class="mx-auto mt-8 flex h-32 w-32 items-center justify-center rounded-2xl border border-dashed border-white/20 bg-white/[0.03] text-xs uppercase tracking-[0.18em] text-cloud-400">QR Code</div>
@@ -854,7 +857,7 @@ function renderRecapCard(): string {
 
   return `
     <div class="recap-card mt-6 text-left">
-      <p class="text-center text-xs font-semibold uppercase tracking-[0.24em] text-gold-300">What you learned</p>
+      <p class="text-center text-xs font-semibold uppercase tracking-[0.24em] text-gold-300">${text(content.ui.labels.recapTitle)}</p>
       <ul class="mt-5 grid gap-3">
         ${topics
           .map(

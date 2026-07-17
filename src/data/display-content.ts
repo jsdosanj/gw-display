@@ -111,6 +111,10 @@ const displayContent: DisplayContent = {
       learnMore: { en: 'Learn more →', pa: 'ਹੋਰ ਜਾਣੋ →' },
       beforeKhalsa: { en: 'Before the Khalsa', pa: 'ਖ਼ਾਲਸੇ ਤੋਂ ਪਹਿਲਾਂ' },
       afterKhalsa: { en: 'After initiation', pa: 'ਅੰਮ੍ਰਿਤ ਛਕਣ ਤੋਂ ਬਾਅਦ' },
+      timelineTitle: { en: 'Key Events Timeline', pa: 'ਮੁੱਖ ਘਟਨਾਵਾਂ ਦੀ ਸਮਾਂ-ਰੇਖਾ' },
+      faqTitle: { en: 'Frequently Asked Questions', pa: 'ਅਕਸਰ ਪੁੱਛੇ ਜਾਂਦੇ ਸਵਾਲ' },
+      leafletsHelper: { en: 'Access the full Basics of Sikhi leaflet library:', pa: 'ਬੇਸਿਕਸ ਆਫ ਸਿੱਖੀ ਲੀਫਲੈਟ ਲਾਇਬ੍ਰੇਰੀ ਤੱਕ ਪਹੁੰਚ ਕਰੋ:' },
+      recapTitle: { en: 'What you learned', pa: 'ਤੁਸੀਂ ਕੀ ਸਿੱਖਿਆ' },
     },
   },
   home: {
