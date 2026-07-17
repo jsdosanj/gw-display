@@ -248,7 +248,10 @@ button {
   background-image:
     var(--art-image),
     linear-gradient(135deg, rgba(5, 11, 20, 0.95) 0%, rgba(9, 19, 34, 0.92) 52%, rgba(228, 187, 94, 0.4) 100%);
-  background-position: center;
+  /* Source portraits are tall (765x1024) but this panel is wide, so
+     background-size:cover crops most of the frame; centering vertically was
+     cutting faces off and showing chest/torso instead — bias toward the top. */
+  background-position: center 12%;
   background-size: cover;
   opacity: 0.9;
   z-index: 0;
