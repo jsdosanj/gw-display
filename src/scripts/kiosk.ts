@@ -127,6 +127,7 @@ function renderLanguageMenu(): string {
         ${content.ui.languages[state.language]} ▾
       </button>
       <div class="lang-menu" id="lang-menu" role="menu" ${langMenuOpen ? '' : 'hidden'}>
+          ${Object.entries(content.ui.languages)
           .map(
             ([code, label]) => `
               <button type="button" data-set-language="${code}" class="lang-option ${code === state.language ? 'active' : ''}">
