@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://jsdosanj.github.io/gw-display/</loc>
+    <loc>https://gw-display.jasvant-dosanjh.workers.dev/</loc>
     <lastmod>2026-07-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jsdosanj.github.io/gw-display/"/>
-    <xhtml:link rel="alternate" hreflang="pa" href="https://jsdosanj.github.io/gw-display/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://jsdosanj.github.io/gw-display/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://jsdosanj.github.io/gw-display/"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://jsdosanj.github.io/gw-display/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gw-display.jasvant-dosanjh.workers.dev/"/>
+    <xhtml:link rel="alternate" hreflang="pa" href="https://gw-display.jasvant-dosanjh.workers.dev/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://gw-display.jasvant-dosanjh.workers.dev/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gw-display.jasvant-dosanjh.workers.dev/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gw-display.jasvant-dosanjh.workers.dev/"/>
   </url>
 </urlset>

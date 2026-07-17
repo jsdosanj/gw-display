@@ -27,10 +27,10 @@ import type {
 
 const content: DisplayContent = displayContent;
 
-// Astro serves this site under the "/gw-display" base path (see
-// astro.config.mjs), but content data stores root-relative asset paths like
-// "/assets/images/x.jpeg" for readability. Without this, every image 404s
-// once deployed — reproduced and confirmed against the dev server directly.
+// Astro's configured base path (see astro.config.mjs — "/" for this
+// Cloudflare deployment) prefixed onto content data's root-relative asset
+// paths like "/assets/images/x.jpeg". Without this, every image 404s
+// whenever base isn't "/" — reproduced and confirmed against a live server.
 const BASE_URL = import.meta.env.BASE_URL;
 
 function asset(path: string): string {

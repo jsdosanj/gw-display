@@ -4,9 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  site: 'https://jsdosanj.github.io',
-  base: '/gw-display',
-
+  // Deployed via Cloudflare Workers (static assets) at the domain root.
+  site: 'https://gw-display.jasvant-dosanjh.workers.dev',
   vite: {
     plugins: [tailwindcss()],
   },
