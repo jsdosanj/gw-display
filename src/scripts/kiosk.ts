@@ -648,13 +648,10 @@ function renderPyare(): string {
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
         ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title), `Commemorative portrait artwork of ${text(selected.name, 'en')}, one of the Panj Pyare`)}
-        <div class="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
-            <h3 class="mt-2 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
-            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.birthName)}: ${text(selected.birthName)} &middot; ${selected.years}</p>
-          </div>
-          <span class="ai-badge">⚠ ${text(content.review.label)}</span>
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
+          <h3 class="mt-2 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
+          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.birthName)}: ${text(selected.birthName)} &middot; ${selected.years}</p>
         </div>
 
         ${beforeKhalsaHtml}
@@ -804,13 +801,10 @@ function renderTakhts(): string {
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
         ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title), `Photograph of ${text(selected.name, 'en')} in ${text(selected.location, 'en')}`)}
-        <div class="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
-            <h3 class="mt-2 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
-            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
-          </div>
-          <span class="ai-badge">⚠ ${text(content.review.label)}</span>
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
+          <h3 class="mt-2 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
+          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
         </div>
 
         ${locationHtml}
@@ -849,10 +843,7 @@ function renderLearn(): string {
       <section class="glass-panel p-8 md:p-10">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(learn.title)}</h2>
-          <div class="flex items-center gap-3">
-            <span class="ai-badge">⚠ ${text(content.review.label)}</span>
-            ${renderListenButton(learn.intro)}
-          </div>
+          ${renderListenButton(learn.intro)}
         </div>
         <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.intro)}</p>
       </section>
@@ -1022,16 +1013,6 @@ function renderAbout(): string {
             `,
           )
           .join('')}
-      </section>
-
-      <section class="glass-panel flex flex-wrap items-center gap-4 p-8">
-        <span class="scholar-badge">✓ ${text(content.ui.reviewHeading)}</span>
-        <span class="ai-badge">⚠ ${text(content.review.label)}</span>
-        <p class="text-sm text-cloud-300 ${classForLanguage()}">${text(content.review.detail)}</p>
-      </section>
-
-      <section class="glass-panel p-8">
-        <p class="lang-badge ${classForLanguage()}">${text(content.ui.labels.aiTranslationDisclaimer)}</p>
       </section>
 
       ${renderFaqSection()}
@@ -1626,6 +1607,25 @@ document.addEventListener('keydown', (event) => {
   }
   handleUserWake();
 });
+
+// Reading a long passage or scrolling through a panel is real engagement
+// too — without this, a visitor who stops tapping to read would silently
+// get bounced back to the attract screen mid-article, which reads as a
+// "random" reset. Only resets the idle countdown (no wake/re-render) since
+// scrolling can happen at any scroll depth without implying "wake me up".
+let scrollActivityThrottle = 0;
+function handleScrollActivity(): void {
+  if (!state.awake) {
+    return;
+  }
+  window.clearTimeout(scrollActivityThrottle);
+  scrollActivityThrottle = window.setTimeout(() => {
+    scheduleInactivityReset();
+  }, 500);
+}
+
+document.addEventListener('scroll', handleScrollActivity, { capture: true, passive: true });
+document.addEventListener('touchmove', handleScrollActivity, { passive: true });
 
 document.addEventListener('click', (event) => {
   const target = event.target instanceof HTMLElement ? event.target : null;

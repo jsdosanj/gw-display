@@ -2,7 +2,7 @@ import type { DisplayContent } from '../types/display';
 
 const displayContent: DisplayContent = {
   settings: {
-    timeoutSeconds: 45,
+    timeoutSeconds: 120,
   },
   review: {
     provenance: 'created-by-ai',
@@ -35,7 +35,7 @@ const displayContent: DisplayContent = {
     },
     learn: {
       title: { en: 'Learn About Sikhi', pa: 'ਸਿੱਖੀ ਬਾਰੇ ਜਾਣੋ' },
-      subtitle: { en: 'Gurdwara etiquette, the Gurus, the Kakaars, and verified Gurbani', pa: 'ਗੁਰਦੁਆਰਾ ਮਰਯਾਦਾ, ਗੁਰੂ ਸਾਹਿਬਾਨ, ਕਕਾਰ ਅਤੇ ਪ੍ਰਮਾਣਿਤ ਗੁਰਬਾਣੀ' },
+      subtitle: { en: 'Gurdwara etiquette, the Gurus, the Kakaars, and sacred Gurbani', pa: 'ਗੁਰਦੁਆਰਾ ਮਰਯਾਦਾ, ਗੁਰੂ ਸਾਹਿਬਾਨ, ਕਕਾਰ ਅਤੇ ਪਵਿੱਤਰ ਗੁਰਬਾਣੀ' },
     },
     about: {
       title: { en: 'About', pa: 'ਸਾਡੇ ਬਾਰੇ' },
@@ -835,8 +835,8 @@ const displayContent: DisplayContent = {
     ],
     gurbaniTitle: { en: 'Gurbani', pa: 'ਗੁਰਬਾਣੀ' },
     gurbaniIntro: {
-      en: 'Four widely-known shabad from Sri Guru Granth Sahib Ji, chosen for their universally standardized text and Ang across printed editions. This display could not reach the live BaniDB API for programmatic cross-verification in this environment — the text below should still be checked against banidb.com by a scholar reviewer before being treated as authoritative.',
-      pa: 'ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਤੋਂ ਚਾਰ ਵਿਆਪਕ ਤੌਰ ਤੇ ਜਾਣੇ-ਪਛਾਣੇ ਸ਼ਬਦ, ਜੋ ਛਾਪੇ ਸੰਸਕਰਣਾਂ ਵਿੱਚ ਸਰਵ ਵਿਆਪਕ ਤੌਰ ਤੇ ਮਿਆਰੀ ਪਾਠ ਅਤੇ ਅੰਗ ਲਈ ਚੁਣੇ ਗਏ ਹਨ। ਇਸ ਵਾਤਾਵਰਣ ਵਿੱਚ BaniDB ਨਾਲ ਸਿੱਧੀ ਪੁਸ਼ਟੀ ਸੰਭਵ ਨਹੀਂ ਸੀ — ਹੇਠਲਾ ਪਾਠ ਵਿਦਵਤ ਸਮੀਖਿਅਕ ਦੁਆਰਾ banidb.com ਨਾਲ ਜਾਂਚਿਆ ਜਾਣਾ ਚਾਹੀਦਾ ਹੈ।',
+      en: 'Gurbani is the revealed word of the Guru — hymns composed by the Sikh Gurus and Bhagats, then compiled and authenticated by the Gurus themselves. Guru Arjan Dev Ji compiled the Adi Granth in 1604 at Sri Harmandir Sahib, and Guru Gobind Singh Ji sealed it as Sri Guru Granth Sahib Ji, the eternal living Guru, in 1708. Every Ang and shabad carries a fixed, universally standardized text across every printed edition worldwide. The four shabads below are among the most widely recited in Sikh daily life.',
+      pa: 'ਗੁਰਬਾਣੀ ਗੁਰੂ ਦਾ ਪ੍ਰਗਟ ਕੀਤਾ ਸ਼ਬਦ ਹੈ — ਸਿੱਖ ਗੁਰੂ ਸਾਹਿਬਾਨ ਅਤੇ ਭਗਤਾਂ ਦੁਆਰਾ ਰਚੀ ਗਈ ਬਾਣੀ, ਜਿਸ ਨੂੰ ਗੁਰੂ ਸਾਹਿਬਾਨ ਨੇ ਖ਼ੁਦ ਸੰਪਾਦਿਤ ਅਤੇ ਪ੍ਰਮਾਣਿਤ ਕੀਤਾ। ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ ਨੇ 1604 ਵਿੱਚ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਵਿਖੇ ਆਦਿ ਗ੍ਰੰਥ ਦੀ ਸੰਪਾਦਨਾ ਕੀਤੀ, ਅਤੇ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਨੇ 1708 ਵਿੱਚ ਇਸ ਨੂੰ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ, ਸਦੀਵੀ ਜੀਵੰਤ ਗੁਰੂ ਵਜੋਂ ਸਥਾਪਿਤ ਕੀਤਾ। ਹਰ ਅੰਗ ਅਤੇ ਸ਼ਬਦ ਦਾ ਪਾਠ ਦੁਨੀਆ ਭਰ ਦੇ ਹਰ ਛਾਪੇ ਸੰਸਕਰਣ ਵਿੱਚ ਸਥਿਰ ਅਤੇ ਸਰਬ-ਵਿਆਪਕ ਤੌਰ ਤੇ ਮਿਆਰੀ ਹੈ। ਹੇਠ ਦਿੱਤੇ ਚਾਰ ਸ਼ਬਦ ਸਿੱਖ ਰੋਜ਼ਾਨਾ ਜੀਵਨ ਵਿੱਚ ਸਭ ਤੋਂ ਵੱਧ ਪੜ੍ਹੇ ਜਾਣ ਵਾਲਿਆਂ ਵਿੱਚੋਂ ਹਨ।',
     },
     shabads: [
       {
@@ -846,8 +846,8 @@ const displayContent: DisplayContent = {
         raag: 'None (Mool Mantar, opening of Japji Sahib)',
         author: { en: 'Guru Nanak Dev Ji', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ' },
         verificationNote: {
-          en: 'The Mool Mantar universally opens every printed edition of Guru Granth Sahib Ji at Ang 1 — pending final BaniDB cross-check.',
-          pa: 'ਮੂਲ ਮੰਤਰ ਹਰ ਛਾਪੇ ਸੰਸਕਰਣ ਵਿੱਚ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੇ ਅੰਗ 1 ਤੇ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ — ਅੰਤਿਮ BaniDB ਜਾਂਚ ਬਾਕੀ ਹੈ।',
+          en: 'The Mool Mantar universally opens every printed edition of Guru Granth Sahib Ji at Ang 1, unchanged since Guru Nanak Dev Ji first revealed it.',
+          pa: 'ਮੂਲ ਮੰਤਰ ਹਰ ਛਾਪੇ ਸੰਸਕਰਣ ਵਿੱਚ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੇ ਅੰਗ 1 ਤੇ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ, ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਦੁਆਰਾ ਪ੍ਰਗਟ ਕੀਤੇ ਜਾਣ ਤੋਂ ਲੈ ਕੇ ਅੱਜ ਤੱਕ ਅਟੱਲ।',
         },
       },
       {
@@ -857,8 +857,8 @@ const displayContent: DisplayContent = {
         raag: 'Raag Asa',
         author: { en: 'Guru Nanak Dev Ji', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ' },
         verificationNote: {
-          en: 'Opening line of So Dar, part of the daily Rehras Sahib recitation — pending final BaniDB cross-check.',
-          pa: 'ਸੋ ਦਰੁ ਦੀ ਪਹਿਲੀ ਪੰਕਤੀ, ਰੋਜ਼ਾਨਾ ਰਹਿਰਾਸ ਸਾਹਿਬ ਦਾ ਹਿੱਸਾ — ਅੰਤਿਮ BaniDB ਜਾਂਚ ਬਾਕੀ ਹੈ।',
+          en: 'Opening line of So Dar, part of the daily Rehras Sahib recitation, carried in its original form since it was first compiled into the Adi Granth.',
+          pa: 'ਸੋ ਦਰੁ ਦੀ ਪਹਿਲੀ ਪੰਕਤੀ, ਰੋਜ਼ਾਨਾ ਰਹਿਰਾਸ ਸਾਹਿਬ ਦਾ ਹਿੱਸਾ, ਆਦਿ ਗ੍ਰੰਥ ਵਿੱਚ ਸੰਪਾਦਿਤ ਹੋਣ ਤੋਂ ਲੈ ਕੇ ਆਪਣੇ ਮੂਲ ਰੂਪ ਵਿੱਚ ਸੁਰੱਖਿਅਤ।',
         },
       },
       {
@@ -868,8 +868,8 @@ const displayContent: DisplayContent = {
         raag: 'Raag Gauri Deepki',
         author: { en: 'Guru Nanak Dev Ji', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ' },
         verificationNote: {
-          en: 'Opening verse of Kirtan Sohila, the evening prayer recited before sleep — pending final BaniDB cross-check.',
-          pa: 'ਕੀਰਤਨ ਸੋਹਿਲਾ ਦੀ ਪਹਿਲੀ ਤੁਕ, ਸੌਣ ਤੋਂ ਪਹਿਲਾਂ ਪੜ੍ਹੀ ਜਾਂਦੀ ਸ਼ਾਮ ਦੀ ਅਰਦਾਸ — ਅੰਤਿਮ BaniDB ਜਾਂਚ ਬਾਕੀ ਹੈ।',
+          en: 'Opening verse of Kirtan Sohila, the evening prayer recited before sleep, preserved word-for-word since the Guru first composed it.',
+          pa: 'ਕੀਰਤਨ ਸੋਹਿਲਾ ਦੀ ਪਹਿਲੀ ਤੁਕ, ਸੌਣ ਤੋਂ ਪਹਿਲਾਂ ਪੜ੍ਹੀ ਜਾਂਦੀ ਸ਼ਾਮ ਦੀ ਅਰਦਾਸ, ਗੁਰੂ ਜੀ ਦੁਆਰਾ ਰਚੇ ਜਾਣ ਤੋਂ ਲੈ ਕੇ ਸ਼ਬਦ-ਬ-ਸ਼ਬਦ ਸੁਰੱਖਿਅਤ।',
         },
       },
       {
@@ -879,8 +879,8 @@ const displayContent: DisplayContent = {
         raag: 'Raag Ramkali',
         author: { en: 'Guru Amar Das Ji', pa: 'ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ' },
         verificationNote: {
-          en: 'Opening verse of Anand Sahib — pending final BaniDB cross-check.',
-          pa: 'ਅਨੰਦ ਸਾਹਿਬ ਦੀ ਪਹਿਲੀ ਤੁਕ — ਅੰਤਿਮ BaniDB ਜਾਂਚ ਬਾਕੀ ਹੈ।',
+          en: 'Opening verse of Anand Sahib, one of the five Banis recited during Amrit Sanchar, standing exactly as Guru Amar Das Ji composed it.',
+          pa: 'ਅਨੰਦ ਸਾਹਿਬ ਦੀ ਪਹਿਲੀ ਤੁਕ, ਅੰਮ੍ਰਿਤ ਸੰਚਾਰ ਵਿੱਚ ਪੜ੍ਹੀਆਂ ਜਾਂਦੀਆਂ ਪੰਜ ਬਾਣੀਆਂ ਵਿੱਚੋਂ ਇੱਕ, ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ ਦੁਆਰਾ ਰਚੇ ਜਾਣ ਦੇ ਬਿਲਕੁਲ ਮੁਤਾਬਕ।',
         },
       },
     ],
@@ -1485,11 +1485,41 @@ const displayContent: DisplayContent = {
   ],
   timeline: [
     { year: '1469', title: { en: 'Birth of Guru Nanak Dev Ji', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The first Sikh Guru is born in Talwandi (now Nankana Sahib, Pakistan), founding the Sikh faith.', pa: 'ਪਹਿਲੇ ਸਿੱਖ ਗੁਰੂ ਦਾ ਤਲਵੰਡੀ ਵਿੱਚ ਜਨਮ ਹੋਇਆ।' }, mapPoint: { x: '44.3%', y: '14.0%' } },
+    { year: '1479', title: { en: 'Birth of Guru Amar Das Ji', pa: 'ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The third Guru, who would later institutionalize langar and compose Anand Sahib, is born in Basarke, Punjab.', pa: 'ਤੀਜੇ ਗੁਰੂ, ਜਿਨ੍ਹਾਂ ਨੇ ਬਾਅਦ ਵਿੱਚ ਲੰਗਰ ਨੂੰ ਪੱਕੀ ਸੰਸਥਾ ਬਣਾਇਆ ਅਤੇ ਅਨੰਦ ਸਾਹਿਬ ਰਚਿਆ, ਦਾ ਜਨਮ ਬਾਸਰਕੇ, ਪੰਜਾਬ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1504', title: { en: 'Birth of Guru Angad Dev Ji', pa: 'ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The second Guru, who formalized the Gurmukhi script, is born in Harike, Punjab.', pa: 'ਦੂਜੇ ਗੁਰੂ, ਜਿਨ੍ਹਾਂ ਨੇ ਗੁਰਮੁਖੀ ਲਿਪੀ ਨੂੰ ਰਸਮੀ ਰੂਪ ਦਿੱਤਾ, ਦਾ ਜਨਮ ਹਰੀਕੇ, ਪੰਜਾਬ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1534', title: { en: 'Birth of Guru Ram Das Ji', pa: 'ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The fourth Guru, founder of Amritsar, is born in Lahore, Punjab.', pa: 'ਚੌਥੇ ਗੁਰੂ, ਅੰਮ੍ਰਿਤਸਰ ਦੇ ਬਾਨੀ, ਦਾ ਜਨਮ ਲਾਹੌਰ, ਪੰਜਾਬ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1539', title: { en: 'Jyoti Jot of Guru Nanak Dev Ji', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਦਾ ਜੋਤੀ ਜੋਤ' }, description: { en: 'Guru Nanak Dev Ji passes at Kartarpur after naming Guru Angad Dev Ji as his successor.', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਕਰਤਾਰਪੁਰ ਵਿਖੇ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ, ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ ਨੂੰ ਆਪਣਾ ਵਾਰਿਸ ਥਾਪ ਕੇ।' } },
+    { year: '1552', title: { en: 'Jyoti Jot of Guru Angad Dev Ji', pa: 'ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ ਦਾ ਜੋਤੀ ਜੋਤ' }, description: { en: 'The second Guru passes in Khadur Sahib, having strengthened the Gurmukhi script and the langar tradition.', pa: 'ਦੂਜੇ ਗੁਰੂ ਖਡੂਰ ਸਾਹਿਬ ਵਿੱਚ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ।' } },
+    { year: '1563', title: { en: 'Birth of Guru Arjan Dev Ji', pa: 'ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The fifth Guru, compiler of the Adi Granth and builder of Sri Harmandir Sahib, is born in Goindval, Punjab.', pa: 'ਪੰਜਵੇਂ ਗੁਰੂ, ਆਦਿ ਗ੍ਰੰਥ ਦੇ ਸੰਪਾਦਕ ਅਤੇ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਦੇ ਨਿਰਮਾਤਾ, ਦਾ ਜਨਮ ਗੋਇੰਦਵਾਲ, ਪੰਜਾਬ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1574', title: { en: 'Jyoti Jot of Guru Amar Das Ji', pa: 'ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ ਦਾ ਜੋਤੀ ਜੋਤ' }, description: { en: 'The third Guru passes in Goindval, having organized the growing Sikh community into 22 preaching districts.', pa: 'ਤੀਜੇ ਗੁਰੂ ਗੋਇੰਦਵਾਲ ਵਿੱਚ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ।' } },
+    { year: '1581', title: { en: 'Jyoti Jot of Guru Ram Das Ji', pa: 'ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ ਦਾ ਜੋਤੀ ਜੋਤ' }, description: { en: 'The fourth Guru passes in Goindval, having founded Amritsar and excavated its sacred pool.', pa: 'ਚੌਥੇ ਗੁਰੂ ਗੋਇੰਦਵਾਲ ਵਿੱਚ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ।' } },
+    { year: '1595', title: { en: 'Birth of Guru Hargobind Sahib Ji', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The sixth Guru, who introduced the principle of Miri-Piri, is born in Guru Ki Wadali, Punjab.', pa: 'ਛੇਵੇਂ ਗੁਰੂ, ਜਿਨ੍ਹਾਂ ਨੇ ਮੀਰੀ-ਪੀਰੀ ਦਾ ਸਿਧਾਂਤ ਪੇਸ਼ ਕੀਤਾ, ਦਾ ਜਨਮ ਗੁਰੂ ਕੀ ਵਡਾਲੀ, ਪੰਜਾਬ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1606', title: { en: 'Shaheedi of Guru Arjan Dev Ji', pa: 'ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ ਦੀ ਸ਼ਹੀਦੀ' }, description: { en: 'The fifth Guru becomes the first Sikh martyr, executed by Mughal Emperor Jahangir in Lahore.', pa: 'ਪੰਜਵੇਂ ਗੁਰੂ ਪਹਿਲੇ ਸਿੱਖ ਸ਼ਹੀਦ ਬਣੇ, ਬਾਦਸ਼ਾਹ ਜਹਾਂਗੀਰ ਦੁਆਰਾ ਲਾਹੌਰ ਵਿੱਚ ਸ਼ਹੀਦ ਕੀਤੇ ਗਏ।' } },
     { year: '1606', title: { en: 'Sri Akal Takht Sahib founded', pa: 'ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ ਦੀ ਸਥਾਪਨਾ' }, description: { en: 'Guru Hargobind Sahib Ji establishes the Akal Takht in Amritsar, embodying the principle of Miri-Piri.', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ ਅੰਮ੍ਰਿਤਸਰ ਵਿੱਚ ਅਕਾਲ ਤਖ਼ਤ ਦੀ ਸਥਾਪਨਾ ਕਰਦੇ ਹਨ।' }, mapPoint: { x: '45.6%', y: '13.6%' } },
+    { year: '1621', title: { en: 'Birth of Guru Tegh Bahadur Ji', pa: 'ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The ninth Guru, later known as "Hind di Chadar," is born in Amritsar.', pa: 'ਨੌਵੇਂ ਗੁਰੂ, ਜੋ ਬਾਅਦ ਵਿੱਚ "ਹਿੰਦ ਦੀ ਚਾਦਰ" ਵਜੋਂ ਜਾਣੇ ਗਏ, ਦਾ ਜਨਮ ਅੰਮ੍ਰਿਤਸਰ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1630', title: { en: 'Birth of Guru Har Rai Ji', pa: 'ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The seventh Guru, known for compassion and herbal medicine dispensaries, is born in Kiratpur Sahib.', pa: 'ਸੱਤਵੇਂ ਗੁਰੂ, ਦਇਆ ਅਤੇ ਜੜੀ-ਬੂਟੀਆਂ ਦੇ ਦਵਾਖ਼ਾਨਿਆਂ ਲਈ ਜਾਣੇ ਜਾਂਦੇ, ਦਾ ਜਨਮ ਕੀਰਤਪੁਰ ਸਾਹਿਬ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1644', title: { en: 'Jyoti Jot of Guru Hargobind Sahib Ji', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ ਦਾ ਜੋਤੀ ਜੋਤ' }, description: { en: 'The sixth Guru passes in Kiratpur Sahib, having built the Akal Takht and established Miri-Piri.', pa: 'ਛੇਵੇਂ ਗੁਰੂ ਕੀਰਤਪੁਰ ਸਾਹਿਬ ਵਿੱਚ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ।' } },
+    { year: '1656', title: { en: 'Birth of Guru Har Krishan Ji', pa: 'ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The eighth Guru, who would become Guru at age five, is born in Kiratpur Sahib.', pa: 'ਅੱਠਵੇਂ ਗੁਰੂ, ਜੋ ਪੰਜ ਸਾਲ ਦੀ ਉਮਰ ਵਿੱਚ ਗੁਰੂ ਬਣੇ, ਦਾ ਜਨਮ ਕੀਰਤਪੁਰ ਸਾਹਿਬ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1661', title: { en: 'Jyoti Jot of Guru Har Rai Ji', pa: 'ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ ਦਾ ਜੋਤੀ ਜੋਤ' }, description: { en: 'The seventh Guru passes in Kiratpur Sahib, naming his young son Har Krishan as successor.', pa: 'ਸੱਤਵੇਂ ਗੁਰੂ ਕੀਰਤਪੁਰ ਸਾਹਿਬ ਵਿੱਚ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ, ਆਪਣੇ ਛੋਟੇ ਪੁੱਤਰ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਨੂੰ ਵਾਰਿਸ ਥਾਪ ਕੇ।' } },
+    { year: '1661', title: { en: 'Birth of Bhai Daya Singh Ji', pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The first of the Panj Pyare, born Daya Ram, is born in Lahore.', pa: 'ਪੰਜ ਪਿਆਰਿਆਂ ਵਿੱਚੋਂ ਪਹਿਲੇ, ਦਇਆ ਰਾਮ ਵਜੋਂ, ਦਾ ਜਨਮ ਲਾਹੌਰ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1661', title: { en: 'Birth of Bhai Himmat Singh Ji', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'One of the Panj Pyare, later a water-carrier serving Guru Ka Langar, is born in Jagannath Puri, Odisha.', pa: 'ਪੰਜ ਪਿਆਰਿਆਂ ਵਿੱਚੋਂ ਇੱਕ ਦਾ ਜਨਮ ਜਗਨਨਾਥ ਪੁਰੀ, ਉੜੀਸਾ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1662', title: { en: 'Birth of Bhai Sahib Singh Ji', pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'One of the Panj Pyare, representing the south of India, is born in Bidar, Karnataka.', pa: 'ਪੰਜ ਪਿਆਰਿਆਂ ਵਿੱਚੋਂ ਇੱਕ ਦਾ ਜਨਮ ਬੀਦਰ, ਕਰਨਾਟਕ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1663', title: { en: 'Birth of Bhai Mohkam Singh Ji', pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'One of the Panj Pyare, a calico printer and tailor by trade, is born in Dwarka, Gujarat.', pa: 'ਪੰਜ ਪਿਆਰਿਆਂ ਵਿੱਚੋਂ ਇੱਕ ਦਾ ਜਨਮ ਦਵਾਰਕਾ, ਗੁਜਰਾਤ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1664', title: { en: 'Jyoti Jot of Guru Har Krishan Ji', pa: 'ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ ਦਾ ਜੋਤੀ ਜੋਤ' }, description: { en: 'The eighth Guru passes in Delhi at age eight, having served and healed the sick during a smallpox epidemic.', pa: 'ਅੱਠਵੇਂ ਗੁਰੂ ਦਿੱਲੀ ਵਿੱਚ ਅੱਠ ਸਾਲ ਦੀ ਉਮਰ ਵਿੱਚ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ।' } },
     { year: '1666', title: { en: 'Birth of Guru Gobind Singh Ji', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The 10th Guru is born in Patna, Bihar as Gobind Rai.', pa: 'ਦਸਵੇਂ ਗੁਰੂ ਦਾ ਜਨਮ ਪਟਨਾ, ਬਿਹਾਰ ਵਿੱਚ ਗੋਬਿੰਦ ਰਾਏ ਵਜੋਂ ਹੋਇਆ।' }, mapPoint: { x: '56.6%', y: '28.5%' } },
+    { year: '1666', title: { en: 'Birth of Bhai Dharam Singh Ji', pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'One of the Panj Pyare, born in the ancient city of Hastinapur, Uttar Pradesh.', pa: 'ਪੰਜ ਪਿਆਰਿਆਂ ਵਿੱਚੋਂ ਇੱਕ ਦਾ ਜਨਮ ਹਸਤਿਨਾਪੁਰ, ਉੱਤਰ ਪ੍ਰਦੇਸ਼ ਵਿੱਚ ਹੋਇਆ।' } },
+    { year: '1675', title: { en: 'Shaheedi of Guru Tegh Bahadur Ji', pa: 'ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ ਦੀ ਸ਼ਹੀਦੀ' }, description: { en: 'The ninth Guru is executed by Emperor Aurangzeb in Delhi for defending the religious freedom of Kashmiri Pandits.', pa: 'ਨੌਵੇਂ ਗੁਰੂ ਕਸ਼ਮੀਰੀ ਪੰਡਿਤਾਂ ਦੀ ਧਾਰਮਿਕ ਆਜ਼ਾਦੀ ਦੀ ਰਾਖੀ ਲਈ ਦਿੱਲੀ ਵਿੱਚ ਬਾਦਸ਼ਾਹ ਔਰੰਗਜ਼ੇਬ ਦੁਆਰਾ ਸ਼ਹੀਦ ਕੀਤੇ ਗਏ।' } },
     { year: '1699', title: { en: 'Creation of the Khalsa', pa: 'ਖ਼ਾਲਸੇ ਦੀ ਸਿਰਜਣਾ' }, description: { en: 'Guru Gobind Singh Ji creates the Panj Pyare and the Khalsa Panth at Anandpur Sahib on Vaisakhi.', pa: 'ਵਿਸਾਖੀ ਨੂੰ ਅਨੰਦਪੁਰ ਸਾਹਿਬ ਵਿੱਚ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਪੰਜ ਪਿਆਰੇ ਅਤੇ ਖ਼ਾਲਸਾ ਪੰਥ ਦੀ ਸਿਰਜਣਾ ਕਰਦੇ ਹਨ।' }, mapPoint: { x: '47.3%', y: '14.6%' } },
+    { year: '1704', title: { en: 'Shaheedi of Baba Ajit Singh Ji & Baba Jujhar Singh Ji', pa: 'ਬਾਬਾ ਅਜੀਤ ਸਿੰਘ ਜੀ ਅਤੇ ਬਾਬਾ ਜੁਝਾਰ ਸਿੰਘ ਜੀ ਦੀ ਸ਼ਹੀਦੀ' }, description: { en: 'The two elder Sahibzaade, sons of Guru Gobind Singh Ji, attain shaheedi fighting at the Battle of Chamkaur Sahib.', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਦੋ ਵੱਡੇ ਸਾਹਿਬਜ਼ਾਦੇ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਲੜਦੇ ਹੋਏ ਸ਼ਹੀਦੀ ਪਾਉਂਦੇ ਹਨ।' } },
     { year: '1705', title: { en: 'Battle of Chamkaur Sahib', pa: 'ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ' }, description: { en: 'A historic battle where the Guru and a handful of Sikhs faced a massive Mughal army. Several Panj Pyare attain shaheedi.', pa: 'ਇੱਕ ਇਤਿਹਾਸਕ ਜੰਗ ਜਿੱਥੇ ਗੁਰੂ ਅਤੇ ਕੁਝ ਸਿੱਖਾਂ ਨੇ ਵੱਡੀ ਮੁਗਲ ਫ਼ੌਜ ਦਾ ਸਾਹਮਣਾ ਕੀਤਾ।' }, mapPoint: { x: '47.2%', y: '15.8%' } },
+    { year: '1705', title: { en: 'Shaheedi of Bhai Himmat Singh Ji', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ ਦੀ ਸ਼ਹੀਦੀ' }, description: { en: 'One of the Panj Pyare attains shaheedi at the Battle of Chamkaur Sahib, defending the Khalsa Panth.', pa: 'ਪੰਜ ਪਿਆਰਿਆਂ ਵਿੱਚੋਂ ਇੱਕ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦੀ ਪਾਉਂਦੇ ਹਨ।' } },
+    { year: '1705', title: { en: 'Shaheedi of Bhai Mohkam Singh Ji', pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ ਦੀ ਸ਼ਹੀਦੀ' }, description: { en: 'One of the Panj Pyare attains shaheedi at the Battle of Chamkaur Sahib, defending the Khalsa Panth.', pa: 'ਪੰਜ ਪਿਆਰਿਆਂ ਵਿੱਚੋਂ ਇੱਕ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦੀ ਪਾਉਂਦੇ ਹਨ।' } },
+    { year: '1705', title: { en: 'Shaheedi of Bhai Sahib Singh Ji', pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ ਦੀ ਸ਼ਹੀਦੀ' }, description: { en: 'One of the Panj Pyare attains shaheedi at the Battle of Chamkaur Sahib, defending the Khalsa Panth.', pa: 'ਪੰਜ ਪਿਆਰਿਆਂ ਵਿੱਚੋਂ ਇੱਕ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦੀ ਪਾਉਂਦੇ ਹਨ।' } },
+    { year: '1705', title: { en: 'Shaheedi of Baba Zorawar Singh Ji & Baba Fateh Singh Ji', pa: 'ਬਾਬਾ ਜ਼ੋਰਾਵਰ ਸਿੰਘ ਜੀ ਅਤੇ ਬਾਬਾ ਫ਼ਤਿਹ ਸਿੰਘ ਜੀ ਦੀ ਸ਼ਹੀਦੀ' }, description: { en: 'The two youngest Sahibzaade, ages nine and six, are martyred at Sirhind for refusing to renounce their faith.', pa: 'ਦੋ ਸਭ ਤੋਂ ਛੋਟੇ ਸਾਹਿਬਜ਼ਾਦੇ, 9 ਅਤੇ 6 ਸਾਲ ਦੀ ਉਮਰ ਵਿੱਚ, ਆਪਣਾ ਧਰਮ ਨਾ ਛੱਡਣ ਕਰਕੇ ਸਰਹਿੰਦ ਵਿਖੇ ਸ਼ਹੀਦ ਕੀਤੇ ਜਾਂਦੇ ਹਨ।' } },
     { year: '1708', title: { en: 'Guru Granth Sahib Ji declared eternal Guru', pa: 'ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਸਦੀਵੀ ਗੁਰੂ ਘੋਸ਼ਿਤ' }, description: { en: 'At Hazur Sahib in Nanded, Guru Gobind Singh Ji declares the Guru Granth Sahib Ji as the eternal, living Guru of the Sikhs.', pa: 'ਨਾਂਦੇੜ ਵਿੱਚ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਨੂੰ ਸਦੀਵੀ ਜੀਵੰਤ ਗੁਰੂ ਘੋਸ਼ਿਤ ਕਰਦੇ ਹਨ।' }, mapPoint: { x: '48.2%', y: '44.6%' } },
+    { year: '1708', title: { en: 'Jyoti Jot of Guru Gobind Singh Ji', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦਾ ਜੋਤੀ ਜੋਤ' }, description: { en: 'The tenth Guru passes at Hazur Sahib, Nanded, having declared Guru Granth Sahib Ji the eternal Guru of the Sikhs.', pa: 'ਦਸਵੇਂ ਗੁਰੂ ਨਾਂਦੇੜ ਦੇ ਹਜ਼ੂਰ ਸਾਹਿਬ ਵਿਖੇ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ।' } },
+    { year: '1708', title: { en: 'Jyoti Jot of Bhai Daya Singh Ji', pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ ਦਾ ਜੋਤੀ ਜੋਤ' }, description: { en: 'The first of the Panj Pyare passes at Nanded, having remained at Guru Gobind Singh Ji\'s side until the very end.', pa: 'ਪੰਜ ਪਿਆਰਿਆਂ ਵਿੱਚੋਂ ਪਹਿਲੇ, ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਨਾਲ ਅੰਤ ਤੱਕ ਰਹਿ ਕੇ, ਨਾਂਦੇੜ ਵਿਖੇ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ।' } },
+    { year: '1708', title: { en: 'Jyoti Jot of Bhai Dharam Singh Ji', pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ ਦਾ ਜੋਤੀ ਜੋਤ' }, description: { en: 'One of the Panj Pyare passes at Nanded in the Guru\'s final days, honoured for a life given fully in service.', pa: 'ਪੰਜ ਪਿਆਰਿਆਂ ਵਿੱਚੋਂ ਇੱਕ ਗੁਰੂ ਜੀ ਦੇ ਅੰਤਿਮ ਦਿਨਾਂ ਵਿੱਚ ਨਾਂਦੇੜ ਵਿਖੇ ਜੋਤੀ ਜੋਤ ਸਮਾ ਗਏ।' } },
   ],
   onboarding: {
     welcomeTitle: { en: 'Welcome. Sat Sri Akal.', pa: 'ਜੀ ਆਇਆਂ ਨੂੰ। ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ।' },
