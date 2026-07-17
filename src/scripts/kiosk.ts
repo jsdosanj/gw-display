@@ -73,6 +73,19 @@ const qrDataUrls: Record<string, string> = {};
 const journeyViews: View[] = ['pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
 const visitedViews = new Set<View>();
 
+// Minimal line-art medallion icons for the Panj Kakaar, in the fixed
+// Kesh/Kangha/Kara/Kachhera/Kirpan order the content array is authored in.
+// Abstract symbolism (a topknot, a comb's teeth, a bangle, a waistband, a
+// blade) rather than literal photography — matches the site's line-icon
+// language elsewhere and stays respectful of the articles' sanctity.
+const kakaarIcons: string[] = [
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M8 8c-1 3-1 7 0 11M12 8c0 4 0 8 0 11M16 8c1 3 1 7 0 11"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="5" rx="1.5"/><path d="M6 9v11M9.5 9v11M13 9v11M16.5 9v11"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.2" opacity="0.4"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v6l-2 10h-3.5l-1.5-8-1.5 8H8L6 10V4z"/><path d="M4 8h16"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v14"/><path d="M9 6h6"/><path d="M9 16h6l-1.5 3h-3z"/></svg>',
+];
+
 async function initQrCodes(): Promise<void> {
   for (const site of content.resources.sites) {
     try {
@@ -881,6 +894,28 @@ function renderLearn(): string {
       </section>
 
       <section class="glass-panel p-8 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.guruLineageTitle)}</h3>
+        <p class="mt-3 max-w-3xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.guruLineageIntro)}</p>
+        <div class="guru-lineage mt-8">
+          ${learn.gurus
+            .map(
+              (guru) => `
+                <div class="guru-lineage__node">
+                  <div class="guru-lineage__connector" aria-hidden="true"></div>
+                  <div class="guru-lineage__medallion">${guru.order}</div>
+                  <div class="guru-lineage__card">
+                    <p class="text-base font-semibold text-white ${classForLanguage()}">${text(guru.name)}</p>
+                    <p class="mt-1 text-xs uppercase tracking-[0.14em] text-cloud-400">${guru.years}</p>
+                    <p class="guru-lineage__relation ${classForLanguage()}">${text(guru.relation)}</p>
+                  </div>
+                </div>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:p-10">
         <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.gurusTitle)}</h3>
         <div class="mt-6 grid gap-4">
           ${learn.gurus
@@ -918,12 +953,13 @@ function renderLearn(): string {
       <section class="glass-panel p-8 md:p-10">
         <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.kakaarsTitle)}</h3>
         <p class="mt-3 max-w-3xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.kakaarsIntro)}</p>
-        <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        <div class="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
           ${learn.kakaars
             .map(
-              (kakaar) => `
-                <article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 text-center">
-                  <p class="gurmukhi text-3xl font-semibold text-gold-300">${text(kakaar.name)}</p>
+              (kakaar, index) => `
+                <article class="kakaar-card">
+                  <div class="kakaar-card__icon" aria-hidden="true">${kakaarIcons[index] ?? ''}</div>
+                  <p class="gurmukhi mt-4 text-3xl font-semibold text-gold-300">${text(kakaar.name)}</p>
                   <p class="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-cloud-400">${text(kakaar.meaning)}</p>
                   <p class="mt-3 text-sm leading-6 text-cloud-200 ${classForLanguage()}">${text(kakaar.description)}</p>
                 </article>
@@ -976,7 +1012,7 @@ function renderLearn(): string {
                     <span>·</span>
                     <span class="${classForLanguage()}">${text(shabad.author)}</span>
                   </div>
-                  <p class="mt-4 text-xs italic leading-6 text-cloud-400 ${classForLanguage()}">${text(shabad.verificationNote)}</p>
+                  <p class="mt-4 text-sm italic leading-6 text-cloud-300 ${classForLanguage()}">${text(shabad.verificationNote)}</p>
                 </article>
               `,
             )

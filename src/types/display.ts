@@ -125,6 +125,7 @@ export interface GuruSummary {
   name: LocalizedText;
   years: string;
   summary: LocalizedText;
+  relation: LocalizedText;
 }
 
 export interface SahibzaadaSummary {
@@ -162,6 +163,8 @@ export interface LearnSikhiContent {
   etiquette: EtiquetteItem[];
   gurusTitle: LocalizedText;
   gurus: GuruSummary[];
+  guruLineageTitle: LocalizedText;
+  guruLineageIntro: LocalizedText;
   sahibzaadeTitle: LocalizedText;
   sahibzaade: SahibzaadaSummary[];
   kakaarsTitle: LocalizedText;
