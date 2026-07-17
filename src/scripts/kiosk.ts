@@ -260,7 +260,7 @@ function renderNav(): void {
   const views: View[] = ['home', 'pyare', 'takhts', 'quiz', 'learn', 'about', 'resources', 'leaflets'];
 
   bottomNav.innerHTML = `
-    <div class="glass-header flex min-h-20 gap-2 overflow-x-auto px-2 pt-2 md:grid md:min-h-24 md:grid-cols-7 md:gap-2 md:overflow-visible md:px-5 md:py-2">
+    <div class="glass-header flex min-h-20 gap-2 overflow-x-auto px-2 pt-2 md:grid md:min-h-24 md:grid-cols-8 md:gap-2 md:overflow-visible md:px-5 md:py-2">
       ${views
         .map(
           (view) => `
