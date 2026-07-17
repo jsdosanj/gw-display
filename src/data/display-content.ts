@@ -106,7 +106,7 @@ const displayContent: DisplayContent = {
       openInBrowser: { en: 'Open in browser', pa: 'ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਖੋਲ੍ਹੋ' },
       visitSite: { en: 'Visit site', pa: 'ਸਾਈਟ ਵੇਖੋ' },
       takhtsIntro: { en: 'The Panj Takht (Five Thrones) are the five most sacred seats of Sikh institutional authority. Each Takht holds supreme significance in the Sikh world — governing doctrine, issuing binding decrees (hukamnamas), and marking pivotal moments in Sikh history. They span the geography of South Asia, from Punjab to Bihar, Deccan to Karnataka.', pa: 'ਪੰਜ ਤਖ਼ਤ ਸਿੱਖ ਸੰਸਥਾਗਤ ਅਧਿਕਾਰ ਦੇ ਸਭ ਤੋਂ ਪਵਿੱਤਰ ਪੰਜ ਅਸਥਾਨ ਹਨ। ਹਰ ਤਖ਼ਤ ਸਿੱਖ ਜਗਤ ਵਿੱਚ ਸਰਵੋੱਚ ਮਹੱਤਵ ਰੱਖਦਾ ਹੈ।' },
-      pyareIntro: { en: 'On Vaisakhi of 1699, Guru Gobind Singh Ji asked for five volunteers willing to give their heads for the faith. Five men stepped forward from different corners of India — different castes, different occupations, different lives — and together became the Panj Pyare: the Five Beloved Ones. They are the founding exemplars of the Khalsa, the embodiment of courage, equality, and selfless devotion. Touch each pin on the map to learn where they came from, who they were, and the lives they led.', pa: '1699 ਦੀ ਵਿਸਾਖੀ ਨੂੰ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਨੇ ਧਰਮ ਲਈ ਆਪਣਾ ਸਿਰ ਦੇਣ ਲਈ ਤਿਆਰ ਪੰਜ ਸੇਵਾਦਾਰਾਂ ਦੀ ਮੰਗ ਕੀਤੀ। ਭਾਰਤ ਦੇ ਵੱਖ-ਵੱਖ ਕੋਨਿਆਂ ਤੋਂ ਪੰਜ ਵਿਅਕਤੀ ਅੱਗੇ ਆਏ ਅਤੇ ਪੰਜ ਪਿਆਰੇ ਬਣੇ।' },
+      pyareIntro: { en: 'On Vaisakhi of 1699, Guru Gobind Singh Ji asked for five volunteers willing to give their heads for the faith. Five men stepped forward from different corners of India — different castes, different occupations, different lives — and together became the Panj Pyare: the Five Beloved Ones. Guru Gobind Singh Ji deliberately chose men from five distinct caste backgrounds and five different regions of India — a Khatri, a Jat, a Jheevar, a Chhimba, and a Nai — as a decisive act to dissolve caste distinction (ਜਾਤ-ਪਾਤ) within the Khalsa and declare that all souls stand equal before Waheguru. They are the founding exemplars of the Khalsa, the embodiment of courage, equality, and selfless devotion. Touch each pin on the map to learn where they came from, who they were, and the lives they led.', pa: '1699 ਦੀ ਵਿਸਾਖੀ ਨੂੰ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਨੇ ਧਰਮ ਲਈ ਆਪਣਾ ਸਿਰ ਦੇਣ ਲਈ ਤਿਆਰ ਪੰਜ ਸੇਵਾਦਾਰਾਂ ਦੀ ਮੰਗ ਕੀਤੀ। ਭਾਰਤ ਦੇ ਵੱਖ-ਵੱਖ ਕੋਨਿਆਂ ਤੋਂ ਪੰਜ ਵਿਅਕਤੀ ਅੱਗੇ ਆਏ ਅਤੇ ਪੰਜ ਪਿਆਰੇ ਬਣੇ। ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਨੇ ਜਾਣਬੁੱਝ ਕੇ ਪੰਜ ਵੱਖ-ਵੱਖ ਜਾਤਾਂ ਅਤੇ ਖੇਤਰਾਂ ਤੋਂ ਪੁਰਸ਼ ਚੁਣੇ — ਖ਼ਾਲਸੇ ਅੰਦਰ ਜਾਤ-ਪਾਤ ਨੂੰ ਖ਼ਤਮ ਕਰਨ ਅਤੇ ਇਹ ਐਲਾਨ ਕਰਨ ਲਈ ਕਿ ਵਾਹਿਗੁਰੂ ਅੱਗੇ ਸਾਰੀਆਂ ਰੂਹਾਂ ਬਰਾਬਰ ਹਨ।' },
       selectOnMap: { en: 'Select a location on the map to begin', pa: 'ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਨਕਸ਼ੇ ਤੇ ਇੱਕ ਸਥਾਨ ਚੁਣੋ' },
       learnMore: { en: 'Learn more →', pa: 'ਹੋਰ ਜਾਣੋ →' },
       beforeKhalsa: { en: 'Before the Khalsa', pa: 'ਖ਼ਾਲਸੇ ਤੋਂ ਪਹਿਲਾਂ' },
@@ -118,6 +118,12 @@ const displayContent: DisplayContent = {
       collaborationWith: { en: 'Built in Collaboration With', pa: 'ਸਾਂਝੇ ਤੌਰ ਤੇ ਬਣਾਇਆ' },
       livePreviews: { en: 'Live Previews', pa: 'ਲਾਈਵ ਝਲਕ' },
       scanToVisit: { en: 'Scan to visit', pa: 'ਵੇਖਣ ਲਈ ਸਕੈਨ ਕਰੋ' },
+      lessons: { en: 'Lessons from their life', pa: 'ਜੀਵਨ ਤੋਂ ਸਿੱਖਿਆ' },
+      language: { en: 'Language', pa: 'ਭਾਸ਼ਾ' },
+      qualities: { en: 'Qualities', pa: 'ਗੁਣ' },
+      gurusVisited: { en: 'Gurus associated with this site', pa: 'ਇਸ ਅਸਥਾਨ ਨਾਲ ਸੰਬੰਧਿਤ ਗੁਰੂ ਸਾਹਿਬਾਨ' },
+      areaHistory: { en: 'History of the surrounding area', pa: 'ਆਲੇ-ਦੁਆਲੇ ਦੇ ਇਲਾਕੇ ਦਾ ਇਤਿਹਾਸ' },
+      localImpact: { en: 'Impact on the local area', pa: 'ਸਥਾਨਕ ਇਲਾਕੇ ਤੇ ਪ੍ਰਭਾਵ' },
     },
   },
   home: {
@@ -289,6 +295,17 @@ const displayContent: DisplayContent = {
         en: 'Bhai Daya Singh Ji remained with Guru Gobind Singh Ji until the Guru\'s final days at Nanded, Maharashtra, in October 1708. He attained jyoti jot shortly thereafter, never having left the Guru\'s side.',
         pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ ਨਾਂਦੇੜ, ਮਹਾਰਾਸ਼ਟਰ ਵਿੱਚ ਅਕਤੂਬਰ 1708 ਤੱਕ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਨਾਲ ਰਹੇ।',
       },
+      lessons: {
+        en: 'Bhai Daya Singh Ji\'s life teaches that true courage means being the first to answer a call others hesitate before, and that steadfast loyalty can carry a person from a merchant\'s ledger to the Guru\'s own emissary. His delivery of the Zafarnama also shows that speaking uncomfortable truth to power, done with dignity, is itself an act of faith.',
+        pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ ਦਾ ਜੀਵਨ ਸਿਖਾਉਂਦਾ ਹੈ ਕਿ ਸੱਚੀ ਹਿੰਮਤ ਦਾ ਮਤਲਬ ਹੈ ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਪੁਕਾਰ ਦਾ ਜਵਾਬ ਦੇਣਾ, ਅਤੇ ਅਡੋਲ ਵਫ਼ਾਦਾਰੀ ਇੱਕ ਵਪਾਰੀ ਨੂੰ ਗੁਰੂ ਦਾ ਭਰੋਸੇਯੋਗ ਦੂਤ ਬਣਾ ਸਕਦੀ ਹੈ।',
+      },
+      language: {
+        en: 'As a Khatri merchant from Lahore, Bhai Daya Singh Ji would have grown up speaking Punjabi. Given his documented role carrying the Persian-language Zafarnama to Emperor Aurangzeb\'s court, he likely also had working knowledge of Persian, the administrative and diplomatic language of the Mughal era.',
+        pa: 'ਲਾਹੌਰ ਦੇ ਇੱਕ ਖੱਤਰੀ ਵਪਾਰੀ ਵਜੋਂ, ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ ਪੰਜਾਬੀ ਬੋਲਦੇ ਹੋਏ ਵੱਡੇ ਹੋਏ ਹੋਣਗੇ। ਔਰੰਗਜ਼ੇਬ ਦੇ ਦਰਬਾਰ ਵਿੱਚ ਫ਼ਾਰਸੀ ਭਾਸ਼ਾ ਦਾ ਜ਼ਫ਼ਰਨਾਮਾ ਲੈ ਕੇ ਜਾਣ ਦੀ ਭੂਮਿਕਾ ਤੋਂ ਲੱਗਦਾ ਹੈ ਕਿ ਉਹ ਫ਼ਾਰਸੀ ਵੀ ਜਾਣਦੇ ਸਨ।',
+      },
+      qualities: {
+        en: 'Compassion, courage, eloquence, and unwavering loyalty.', pa: 'ਦਇਆ, ਹਿੰਮਤ, ਸੁਭਾਸ਼ਿਤਾ ਅਤੇ ਅਡੋਲ ਵਫ਼ਾਦਾਰੀ।',
+      },
     },
     {
       id: 2,
@@ -322,6 +339,17 @@ const displayContent: DisplayContent = {
       shaheedi: {
         en: 'Historical accounts differ. Some sources record Bhai Dharam Singh Ji as having attained shaheedi at the Battle of Chamkaur Sahib (1705); others place him at Nanded in 1708. He is honoured as having given everything in service of the Guru\'s mission.',
         pa: 'ਇਤਿਹਾਸਕ ਬਿਰਤਾਂਤ ਵੱਖ-ਵੱਖ ਹਨ। ਕੁਝ ਸਰੋਤ ਕਹਿੰਦੇ ਹਨ ਕਿ ਉਨ੍ਹਾਂ ਨੇ 1705 ਵਿੱਚ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦੀ ਪਾਈ।',
+      },
+      lessons: {
+        en: 'Bhai Dharam Singh Ji\'s life shows that righteousness (dharam) is proven not by birth or title but by the willingness to cross a room and stand beside someone the world calls different from you. His steadfastness in farming life and in the Guru\'s presence teaches that ordinary daily discipline prepares a person for extraordinary moments.',
+        pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ ਦਾ ਜੀਵਨ ਦਿਖਾਉਂਦਾ ਹੈ ਕਿ ਧਰਮ ਜਨਮ ਜਾਂ ਖ਼ਿਤਾਬ ਨਾਲ ਨਹੀਂ ਸਗੋਂ ਉਸ ਵਿਅਕਤੀ ਦੇ ਨਾਲ ਖੜੇ ਹੋਣ ਦੀ ਇੱਛਾ ਨਾਲ ਸਾਬਤ ਹੁੰਦਾ ਹੈ ਜਿਸਨੂੰ ਸੰਸਾਰ ਵੱਖਰਾ ਸਮਝਦਾ ਹੈ।',
+      },
+      language: {
+        en: 'As a Jat farmer from Hastinapur in present-day Uttar Pradesh, Bhai Dharam Singh Ji would most likely have spoken a regional dialect close to Hindi or Brajbhasha natively, alongside the Punjabi used in Guru Gobind Singh Ji\'s Anandpur Sahib sangat.',
+        pa: 'ਹਸਤਿਨਾਪੁਰ (ਅੱਜ ਦੇ ਉੱਤਰ ਪ੍ਰਦੇਸ਼) ਦੇ ਇੱਕ ਜੱਟ ਕਿਸਾਨ ਵਜੋਂ, ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ ਸ਼ਾਇਦ ਹਿੰਦੀ ਜਾਂ ਬ੍ਰਜਭਾਸ਼ਾ ਦੇ ਨੇੜੇ ਇੱਕ ਖੇਤਰੀ ਬੋਲੀ ਬੋਲਦੇ ਸਨ, ਨਾਲ ਹੀ ਅਨੰਦਪੁਰ ਸਾਹਿਬ ਦੀ ਸੰਗਤ ਵਿੱਚ ਪੰਜਾਬੀ ਵੀ।',
+      },
+      qualities: {
+        en: 'Righteousness, humility, quiet discipline, and steadfast resolve.', pa: 'ਧਰਮ, ਨਿਮਰਤਾ, ਸ਼ਾਂਤ ਅਨੁਸ਼ਾਸਨ ਅਤੇ ਅਡੋਲ ਦ੍ਰਿੜਤਾ।',
       },
     },
     {
@@ -357,6 +385,17 @@ const displayContent: DisplayContent = {
         en: 'Bhai Himmat Singh Ji attained shaheedi at the Battle of Chamkaur Sahib on December 7, 1705 — fighting alongside the Guru\'s own sons and companions, giving his life to defend the Khalsa Panth.',
         pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ ਨੇ 7 ਦਸੰਬਰ 1705 ਨੂੰ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦੀ ਪਾਈ।',
       },
+      lessons: {
+        en: 'Bhai Himmat Singh Ji\'s life teaches that no service is too humble to lead to greatness, and that dignity is not granted by occupation but claimed through courage. A man who carried water for others was the same man who stood, unflinching, as one of the founders of a new Panth.',
+        pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ ਦਾ ਜੀਵਨ ਸਿਖਾਉਂਦਾ ਹੈ ਕਿ ਕੋਈ ਵੀ ਸੇਵਾ ਮਹਾਨਤਾ ਵੱਲ ਲੈ ਜਾਣ ਲਈ ਬਹੁਤ ਨਿਮਾਣੀ ਨਹੀਂ, ਅਤੇ ਸਨਮਾਨ ਕਿੱਤੇ ਨਾਲ ਨਹੀਂ ਸਗੋਂ ਹਿੰਮਤ ਨਾਲ ਹਾਸਲ ਹੁੰਦਾ ਹੈ।',
+      },
+      language: {
+        en: 'Having traveled from Jagannath Puri in present-day Odisha, Bhai Himmat Singh Ji would most likely have spoken Odia natively before learning the Punjabi of Guru Gobind Singh Ji\'s Anandpur Sahib sangat.',
+        pa: 'ਅੱਜ ਦੇ ਉੜੀਸਾ ਦੇ ਜਗਨਨਾਥ ਪੁਰੀ ਤੋਂ ਆਉਣ ਕਾਰਨ, ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ ਸ਼ਾਇਦ ਮੂਲ ਰੂਪ ਵਿੱਚ ਉੜੀਆ ਬੋਲਦੇ ਸਨ, ਬਾਅਦ ਵਿੱਚ ਅਨੰਦਪੁਰ ਸਾਹਿਬ ਦੀ ਸੰਗਤ ਦੀ ਪੰਜਾਬੀ ਸਿੱਖੀ।',
+      },
+      qualities: {
+        en: 'Courage, humility, fearlessness, and selfless service.', pa: 'ਹਿੰਮਤ, ਨਿਮਰਤਾ, ਨਿਰਭੈਤਾ ਅਤੇ ਨਿਸ਼ਕਾਮ ਸੇਵਾ।',
+      },
     },
     {
       id: 4,
@@ -390,6 +429,17 @@ const displayContent: DisplayContent = {
       shaheedi: {
         en: 'Bhai Mohkam Singh Ji attained shaheedi at the Battle of Chamkaur Sahib in December 1705, among the brave companions who gave their lives defending the Guru and the Khalsa Panth.',
         pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ ਨੇ ਦਸੰਬਰ 1705 ਵਿੱਚ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦੀ ਪਾਈ।',
+      },
+      lessons: {
+        en: 'Bhai Mohkam Singh Ji\'s life shows that skill practiced with devotion — whether in cloth or in character — builds the steadiness a person needs when called to something greater. His journey from Dwarka to Anandpur Sahib is a reminder that sincere seeking can cross any distance.',
+        pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ ਦਾ ਜੀਵਨ ਦਿਖਾਉਂਦਾ ਹੈ ਕਿ ਸ਼ਰਧਾ ਨਾਲ ਅਭਿਆਸ ਕੀਤਾ ਹੁਨਰ — ਭਾਵੇਂ ਕੱਪੜੇ ਵਿੱਚ ਹੋਵੇ ਜਾਂ ਕਿਰਦਾਰ ਵਿੱਚ — ਉਹ ਅਡੋਲਤਾ ਬਣਾਉਂਦਾ ਹੈ ਜਿਸਦੀ ਲੋੜ ਕਿਸੇ ਵੱਡੀ ਪੁਕਾਰ ਦੇ ਸਮੇਂ ਪੈਂਦੀ ਹੈ।',
+      },
+      language: {
+        en: 'As a craftsman from Dwarka in present-day Gujarat, Bhai Mohkam Singh Ji would most likely have spoken Gujarati natively, in addition to the Punjabi of Guru Gobind Singh Ji\'s sangat.',
+        pa: 'ਅੱਜ ਦੇ ਗੁਜਰਾਤ ਦੇ ਦਵਾਰਕਾ ਤੋਂ ਇੱਕ ਕਾਰੀਗਰ ਵਜੋਂ, ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ ਸ਼ਾਇਦ ਮੂਲ ਰੂਪ ਵਿੱਚ ਗੁਜਰਾਤੀ ਬੋਲਦੇ ਸਨ, ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੀ ਸੰਗਤ ਦੀ ਪੰਜਾਬੀ ਦੇ ਨਾਲ।',
+      },
+      qualities: {
+        en: 'Steadfastness, skillfulness, discipline, and quiet loyalty.', pa: 'ਅਡੋਲਤਾ, ਹੁਨਰਮੰਦੀ, ਅਨੁਸ਼ਾਸਨ ਅਤੇ ਸ਼ਾਂਤ ਵਫ਼ਾਦਾਰੀ।',
       },
     },
     {
@@ -425,6 +475,17 @@ const displayContent: DisplayContent = {
         en: 'Bhai Sahib Singh Ji is believed to have attained shaheedi at the Battle of Chamkaur Sahib in December 1705, giving his life alongside his brothers of the Panj Pyare in the service of the Khalsa Panth.',
         pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ ਨੇ ਦਸੰਬਰ 1705 ਵਿੱਚ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦੀ ਪਾਈ।',
       },
+      lessons: {
+        en: 'Bhai Sahib Singh Ji\'s life teaches that service, however socially undervalued, is a form of devotion — and that the final person to complete a circle can matter as much as the first. His journey from Bidar to Anandpur Sahib completed a living map of a Panth meant for all of India, not one region alone.',
+        pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ ਦਾ ਜੀਵਨ ਸਿਖਾਉਂਦਾ ਹੈ ਕਿ ਸੇਵਾ, ਭਾਵੇਂ ਸਮਾਜਿਕ ਤੌਰ ਤੇ ਘੱਟ ਸਮਝੀ ਜਾਵੇ, ਭਗਤੀ ਦਾ ਇੱਕ ਰੂਪ ਹੈ — ਅਤੇ ਚੱਕਰ ਪੂਰਾ ਕਰਨ ਵਾਲਾ ਆਖਰੀ ਵਿਅਕਤੀ ਵੀ ਪਹਿਲੇ ਜਿੰਨਾ ਹੀ ਮਹੱਤਵਪੂਰਨ ਹੋ ਸਕਦਾ ਹੈ।',
+      },
+      language: {
+        en: 'Coming from Bidar in present-day Karnataka, Bhai Sahib Singh Ji would most likely have grown up speaking Kannada and the Deccani vernacular common to the region, in addition to the Punjabi of Guru Gobind Singh Ji\'s sangat.',
+        pa: 'ਅੱਜ ਦੇ ਕਰਨਾਟਕ ਦੇ ਬੀਦਰ ਤੋਂ ਆਉਣ ਕਾਰਨ, ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ ਸ਼ਾਇਦ ਕੰਨੜ ਅਤੇ ਖੇਤਰ ਦੀ ਦੱਖਣੀ ਬੋਲੀ ਬੋਲਦੇ ਹੋਏ ਵੱਡੇ ਹੋਏ, ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੀ ਸੰਗਤ ਦੀ ਪੰਜਾਬੀ ਦੇ ਨਾਲ।',
+      },
+      qualities: {
+        en: 'Service, humility, devotion, and quiet perseverance.', pa: 'ਸੇਵਾ, ਨਿਮਰਤਾ, ਭਗਤੀ ਅਤੇ ਸ਼ਾਂਤ ਦ੍ਰਿੜਤਾ।',
+      },
     },
   ],
   takhts: [
@@ -455,6 +516,18 @@ const displayContent: DisplayContent = {
         pa: 'ਸਿਰ ਢੱਕਣਾ ਅਤੇ ਜੁੱਤੇ ਉਤਾਰਨੇ ਜ਼ਰੂਰੀ ਹਨ। ਪਰਿਸਰ ਵਿੱਚ ਤੰਬਾਕੂ, ਸ਼ਰਾਬ ਜਾਂ ਮਾਸ ਦੀ ਮਨਾਹੀ ਹੈ। ਲੰਗਰ ਸਾਰਿਆਂ ਲਈ ਖੁੱਲ੍ਹਾ ਹੈ।',
       },
       yearDeclared: '1606',
+      gurusVisited: {
+        en: 'Amritsar\'s sacred pool was founded by Guru Ram Das Ji (4th Guru); Guru Arjan Dev Ji (5th Guru) completed Sri Harmandir Sahib beside it and compiled the Adi Granth here; Guru Hargobind Sahib Ji (6th Guru) built the Akal Takht itself in 1606. Later Gurus\' direct visits to the Akal Takht specifically are less documented, as the seat of Guruship moved elsewhere for several generations following Guru Hargobind Sahib Ji.',
+        pa: 'ਅੰਮ੍ਰਿਤਸਰ ਦੇ ਪਵਿੱਤਰ ਸਰੋਵਰ ਦੀ ਸਥਾਪਨਾ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ (ਚੌਥੇ ਗੁਰੂ) ਨੇ ਕੀਤੀ; ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ (ਪੰਜਵੇਂ ਗੁਰੂ) ਨੇ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਪੂਰਾ ਕੀਤਾ ਅਤੇ ਆਦਿ ਗ੍ਰੰਥ ਇੱਥੇ ਤਿਆਰ ਕੀਤਾ; ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ (ਛੇਵੇਂ ਗੁਰੂ) ਨੇ 1606 ਵਿੱਚ ਅਕਾਲ ਤਖ਼ਤ ਖ਼ੁਦ ਬਣਾਇਆ।',
+      },
+      areaHistory: {
+        en: 'Amritsar grew up around the sacred pool founded circa 1577 by Guru Ram Das Ji, developing into Punjab\'s foremost Sikh pilgrimage and trading city. It endured repeated invasions and desecrations through the 18th century, including attacks by Ahmad Shah Durrani, before flourishing as a cultural and political center under the Sikh Misls and later the Sikh Empire of Maharaja Ranjit Singh.',
+        pa: 'ਅੰਮ੍ਰਿਤਸਰ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ ਦੁਆਰਾ ਲਗਭਗ 1577 ਵਿੱਚ ਸਥਾਪਿਤ ਪਵਿੱਤਰ ਸਰੋਵਰ ਦੇ ਆਲੇ-ਦੁਆਲੇ ਵਧਿਆ, ਪੰਜਾਬ ਦਾ ਪ੍ਰਮੁੱਖ ਸਿੱਖ ਤੀਰਥ ਅਤੇ ਵਪਾਰਕ ਸ਼ਹਿਰ ਬਣ ਗਿਆ। ਇਸਨੇ 18ਵੀਂ ਸਦੀ ਦੌਰਾਨ ਵਾਰ-ਵਾਰ ਹਮਲੇ ਸਹੇ, ਬਾਅਦ ਵਿੱਚ ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ ਦੇ ਸਿੱਖ ਸਾਮਰਾਜ ਹੇਠ ਵਧਿਆ-ਫੁੱਲਿਆ।',
+      },
+      localImpact: {
+        en: 'The Akal Takht anchors Amritsar\'s identity as the spiritual and political capital of the Sikh world, drawing millions of pilgrims annually whose visits sustain the city\'s langar (community kitchen) tradition, local economy, and civic life around the twin principles of Miri-Piri.',
+        pa: 'ਅਕਾਲ ਤਖ਼ਤ ਅੰਮ੍ਰਿਤਸਰ ਦੀ ਪਹਿਚਾਣ ਨੂੰ ਸਿੱਖ ਜਗਤ ਦੀ ਅਧਿਆਤਮਿਕ ਅਤੇ ਰਾਜਨੀਤਿਕ ਰਾਜਧਾਨੀ ਵਜੋਂ ਸਥਾਪਿਤ ਕਰਦਾ ਹੈ, ਹਰ ਸਾਲ ਲੱਖਾਂ ਸ਼ਰਧਾਲੂਆਂ ਨੂੰ ਖਿੱਚਦਾ ਹੈ।',
+      },
     },
     {
       id: 'kesgarh_sahib',
@@ -483,6 +556,18 @@ const displayContent: DisplayContent = {
         pa: 'ਸਿਰ ਢੱਕਣਾ ਅਤੇ ਜੁੱਤੇ ਉਤਾਰਨੇ ਜ਼ਰੂਰੀ ਹਨ। ਸ਼ਸਤਰਘਰ (ਹਥਿਆਰਾਂ ਦਾ ਅਜਾਇਬਘਰ) ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਇਤਿਹਾਸਕ ਹਥਿਆਰਾਂ ਨੂੰ ਦਿਖਾਉਂਦਾ ਹੈ।',
       },
       yearDeclared: '1699',
+      gurusVisited: {
+        en: 'Guru Tegh Bahadur Ji (9th Guru) founded the town, then called Chak Nanaki, in 1665. His son Guru Gobind Singh Ji (10th Guru) grew up here, established the Khalsa on Vaisakhi 1699, and made Anandpur Sahib his primary seat until 1704.',
+        pa: 'ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ (9ਵੇਂ ਗੁਰੂ) ਨੇ 1665 ਵਿੱਚ ਇਸ ਨਗਰ ਦੀ ਸਥਾਪਨਾ ਕੀਤੀ, ਉਦੋਂ ਇਸਨੂੰ ਚੱਕ ਨਾਨਕੀ ਕਿਹਾ ਜਾਂਦਾ ਸੀ। ਉਨ੍ਹਾਂ ਦੇ ਪੁੱਤਰ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (10ਵੇਂ ਗੁਰੂ) ਇੱਥੇ ਵੱਡੇ ਹੋਏ ਅਤੇ ਵਿਸਾਖੀ 1699 ਨੂੰ ਖ਼ਾਲਸੇ ਦੀ ਸਥਾਪਨਾ ਕੀਤੀ।',
+      },
+      areaHistory: {
+        en: 'Founded in 1665 at the foothills of the Shivalik range, Anandpur Sahib grew into a fortified town after Guru Gobind Singh Ji built a ring of forts — including Anandgarh, Lohgarh, Fatehgarh, and Holgarh — to protect the young Khalsa community from hill-state rajas and Mughal forces. It was the site of repeated sieges before the Guru\'s forced evacuation in December 1704.',
+        pa: '1665 ਵਿੱਚ ਸ਼ਿਵਾਲਿਕ ਪਹਾੜੀਆਂ ਦੀ ਤਲਹਟੀ ਵਿੱਚ ਸਥਾਪਿਤ, ਅਨੰਦਪੁਰ ਸਾਹਿਬ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੁਆਰਾ ਬਣਾਏ ਕਿਲ੍ਹਿਆਂ ਦੇ ਘੇਰੇ ਨਾਲ ਇੱਕ ਕਿਲ੍ਹਾਬੰਦ ਨਗਰ ਬਣ ਗਿਆ। ਦਸੰਬਰ 1704 ਵਿੱਚ ਗੁਰੂ ਜੀ ਦੀ ਮਜਬੂਰੀ ਦੀ ਨਿਕਾਸੀ ਤੋਂ ਪਹਿਲਾਂ ਇਹ ਵਾਰ-ਵਾਰ ਘੇਰਾਬੰਦੀ ਦਾ ਸਥਾਨ ਰਿਹਾ।',
+      },
+      localImpact: {
+        en: 'Anandpur Sahib remains one of Sikhi\'s most important pilgrimage towns, hosting the large annual Hola Mohalla festival, and its fort-building history shaped defensive settlement patterns across the Shivalik foothill region.',
+        pa: 'ਅਨੰਦਪੁਰ ਸਾਹਿਬ ਸਿੱਖੀ ਦੇ ਸਭ ਤੋਂ ਮਹੱਤਵਪੂਰਨ ਤੀਰਥ ਨਗਰਾਂ ਵਿੱਚੋਂ ਇੱਕ ਬਣਿਆ ਰਹਿੰਦਾ ਹੈ, ਹਰ ਸਾਲ ਵੱਡਾ ਹੋਲਾ ਮਹੱਲਾ ਤਿਉਹਾਰ ਮਨਾਉਂਦਾ ਹੈ।',
+      },
     },
     {
       id: 'damdama_sahib',
@@ -511,6 +596,18 @@ const displayContent: DisplayContent = {
         pa: 'ਸਿਰ ਢੱਕਣਾ ਅਤੇ ਜੁੱਤੇ ਉਤਾਰਨੇ ਜ਼ਰੂਰੀ ਹਨ। ਇਸ ਤਖ਼ਤ ਨੂੰ 26 ਨਵੰਬਰ 1966 ਨੂੰ ਰਸਮੀ ਤੌਰ ਤੇ ਮਾਨਤਾ ਮਿਲੀ।',
       },
       yearDeclared: '1966 (formally declared)',
+      gurusVisited: {
+        en: 'Guru Gobind Singh Ji (10th Guru) is the Guru documented at this specific site, residing here for approximately nine months in 1705–06 after the battles of Chamkaur and the loss of his family.',
+        pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (10ਵੇਂ ਗੁਰੂ) ਇਸ ਖ਼ਾਸ ਅਸਥਾਨ ਨਾਲ ਦਸਤਾਵੇਜ਼ੀ ਤੌਰ ਤੇ ਜੁੜੇ ਗੁਰੂ ਹਨ, ਜਿੱਥੇ ਉਹ 1705–06 ਵਿੱਚ ਲਗਭਗ ਨੌਂ ਮਹੀਨੇ ਰਹੇ।',
+      },
+      areaHistory: {
+        en: 'Talwandi Sabo sits in the semi-arid Malwa region near present-day Bathinda. It was a modest settlement before Guru Gobind Singh Ji\'s extended residency, after which it became renowned as a center of Gurbani scholarship and study, earning the name "Guru Ki Kashi."',
+        pa: 'ਤਲਵੰਡੀ ਸਾਬੋ ਅੱਜ ਦੇ ਬਠਿੰਡਾ ਦੇ ਨੇੜੇ ਅਰਧ-ਸੁੱਕੇ ਮਾਲਵਾ ਖੇਤਰ ਵਿੱਚ ਸਥਿਤ ਹੈ। ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਲੰਬੇ ਨਿਵਾਸ ਤੋਂ ਬਾਅਦ ਇਹ ਗੁਰਬਾਣੀ ਵਿਦਵਤਾ ਦਾ ਕੇਂਦਰ ਬਣ ਗਿਆ, "ਗੁਰੂ ਕੀ ਕਾਸ਼ੀ" ਦਾ ਨਾਮ ਕਮਾਇਆ।',
+      },
+      localImpact: {
+        en: 'The Takht\'s scholarly legacy shaped Talwandi Sabo and the wider Bathinda area into a center of Sikh religious education, with institutions such as Guru Kashi University, named for the site\'s epithet, continuing that tradition of learning today.',
+        pa: 'ਤਖ਼ਤ ਦੀ ਵਿਦਵਤਾ ਪਰੰਪਰਾ ਨੇ ਤਲਵੰਡੀ ਸਾਬੋ ਅਤੇ ਬਠਿੰਡਾ ਖੇਤਰ ਨੂੰ ਸਿੱਖ ਧਾਰਮਿਕ ਸਿੱਖਿਆ ਦਾ ਕੇਂਦਰ ਬਣਾ ਦਿੱਤਾ, ਗੁਰੂ ਕਾਸ਼ੀ ਯੂਨੀਵਰਸਿਟੀ ਵਰਗੀਆਂ ਸੰਸਥਾਵਾਂ ਅੱਜ ਵੀ ਇਹ ਪਰੰਪਰਾ ਜਾਰੀ ਰੱਖਦੀਆਂ ਹਨ।',
+      },
     },
     {
       id: 'patna_sahib',
@@ -539,6 +636,18 @@ const displayContent: DisplayContent = {
         pa: 'ਸਿਰ ਢੱਕਣਾ ਅਤੇ ਜੁੱਤੇ ਉਤਾਰਨੇ ਜ਼ਰੂਰੀ ਹਨ। ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਬਚਪਨ ਦੀਆਂ ਪਵਿੱਤਰ ਯਾਦਗਾਰੀ ਵਸਤੂਆਂ ਇੱਥੇ ਸੁਰੱਖਿਅਤ ਹਨ।',
       },
       yearDeclared: '1666 (birthplace recognized)',
+      gurusVisited: {
+        en: 'Guru Nanak Dev Ji (1st Guru) is traditionally held to have visited Patna during his travels (udasis). Guru Tegh Bahadur Ji (9th Guru) had his family, including his wife Mata Gujri Ji, reside in Patna while he traveled through eastern India; his son, Guru Gobind Singh Ji (10th Guru), was born here in December 1666.',
+        pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ (ਪਹਿਲੇ ਗੁਰੂ) ਦੇ ਆਪਣੀਆਂ ਉਦਾਸੀਆਂ ਦੌਰਾਨ ਪਟਨਾ ਆਉਣ ਦੀ ਪਰੰਪਰਾ ਹੈ। ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ (9ਵੇਂ ਗੁਰੂ) ਦਾ ਪਰਿਵਾਰ, ਮਾਤਾ ਗੁਜਰੀ ਜੀ ਸਮੇਤ, ਪਟਨਾ ਵਿੱਚ ਰਿਹਾ; ਉਨ੍ਹਾਂ ਦੇ ਪੁੱਤਰ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (10ਵੇਂ ਗੁਰੂ) ਦਾ ਜਨਮ ਦਸੰਬਰ 1666 ਵਿੱਚ ਇੱਥੇ ਹੋਇਆ।',
+      },
+      areaHistory: {
+        en: 'Patna (ancient Pataliputra) is among the oldest continuously inhabited cities in the world, once the capital of the Magadha and Mauryan empires. By the 17th century it was a major Mughal-era trading city on the Ganges with an established Sikh sangat.',
+        pa: 'ਪਟਨਾ (ਪ੍ਰਾਚੀਨ ਪਾਟਲੀਪੁੱਤਰ) ਸੰਸਾਰ ਦੇ ਸਭ ਤੋਂ ਪੁਰਾਣੇ ਲਗਾਤਾਰ ਵਸੇ ਸ਼ਹਿਰਾਂ ਵਿੱਚੋਂ ਹੈ, ਕਦੇ ਮਗਧ ਅਤੇ ਮੌਰੀਆ ਸਾਮਰਾਜਾਂ ਦੀ ਰਾਜਧਾਨੀ ਸੀ। 17ਵੀਂ ਸਦੀ ਤੱਕ ਇਹ ਗੰਗਾ ਕੰਢੇ ਇੱਕ ਵੱਡਾ ਮੁਗਲ-ਕਾਲੀ ਵਪਾਰਕ ਸ਼ਹਿਰ ਸੀ ਜਿੱਥੇ ਇੱਕ ਸਥਾਪਿਤ ਸਿੱਖ ਸੰਗਤ ਸੀ।',
+      },
+      localImpact: {
+        en: 'Takht Sri Patna Sahib anchors a small but historic Sikh community within a city where Sikhs are a minority, drawing pilgrims especially for Guru Gobind Singh Ji\'s Prakash Utsav and marking the geographic reach of Sikh heritage into eastern India.',
+        pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਪਟਨਾ ਸਾਹਿਬ ਇੱਕ ਛੋਟੇ ਪਰ ਇਤਿਹਾਸਕ ਸਿੱਖ ਭਾਈਚਾਰੇ ਨੂੰ ਸੰਭਾਲਦਾ ਹੈ, ਖ਼ਾਸ ਕਰਕੇ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਪ੍ਰਕਾਸ਼ ਉਤਸਵ ਲਈ ਸ਼ਰਧਾਲੂਆਂ ਨੂੰ ਖਿੱਚਦਾ ਹੈ।',
+      },
     },
     {
       id: 'hazur_sahib',
@@ -567,6 +676,18 @@ const displayContent: DisplayContent = {
         pa: 'ਗੈਰ-ਸਿੱਖ ਸਿਰ ਢੱਕ ਕੇ ਅਤੇ ਜੁੱਤੇ ਉਤਾਰ ਕੇ ਗੁਰਦੁਆਰੇ ਵਿੱਚ ਦਾਖਲ ਹੋ ਸਕਦੇ ਹਨ। ਸਚਖੰਡ (ਅੰਦਰੂਨੀ ਪਵਿੱਤਰ ਅਸਥਾਨ) ਵਿੱਚ ਵਾਧੂ ਪਾਬੰਦੀਆਂ ਹਨ। ਇੱਥੇ 24 ਘੰਟੇ ਕੀਰਤਨ ਹੁੰਦਾ ਹੈ।',
       },
       yearDeclared: '1708',
+      gurusVisited: {
+        en: 'Guru Gobind Singh Ji (10th Guru) is the Guru documented at this site, spending his final months here in 1708 after journeying south following his reconciliation with Emperor Bahadur Shah I.',
+        pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (10ਵੇਂ ਗੁਰੂ) ਇਸ ਅਸਥਾਨ ਨਾਲ ਦਸਤਾਵੇਜ਼ੀ ਤੌਰ ਤੇ ਜੁੜੇ ਗੁਰੂ ਹਨ, ਜਿੱਥੇ ਉਨ੍ਹਾਂ ਨੇ 1708 ਵਿੱਚ ਆਪਣੇ ਅੰਤਿਮ ਮਹੀਨੇ ਬਿਤਾਏ।',
+      },
+      areaHistory: {
+        en: 'Nanded sits on the banks of the Godavari River in the Deccan, in present-day Maharashtra. It was under Mughal administration in the early 18th century when Guru Gobind Singh Ji camped there in 1708, where he was fatally wounded by an assailant.',
+        pa: 'ਨਾਂਦੇੜ ਦੱਖਣ ਦੇ ਗੋਦਾਵਰੀ ਨਦੀ ਕੰਢੇ, ਅੱਜ ਦੇ ਮਹਾਰਾਸ਼ਟਰ ਵਿੱਚ ਸਥਿਤ ਹੈ। 18ਵੀਂ ਸਦੀ ਦੇ ਸ਼ੁਰੂ ਵਿੱਚ ਇਹ ਮੁਗਲ ਪ੍ਰਸ਼ਾਸਨ ਹੇਠ ਸੀ ਜਦੋਂ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ 1708 ਵਿੱਚ ਇੱਥੇ ਠਹਿਰੇ।',
+      },
+      localImpact: {
+        en: 'Hazur Sahib transformed Nanded into a major Sikh pilgrimage destination in the Deccan, drawing devotees from across India and sustaining a distinctive local Sikh community, including a long-standing Nihang Singh custodial tradition, far from Punjab.',
+        pa: 'ਹਜ਼ੂਰ ਸਾਹਿਬ ਨੇ ਨਾਂਦੇੜ ਨੂੰ ਦੱਖਣ ਵਿੱਚ ਇੱਕ ਵੱਡਾ ਸਿੱਖ ਤੀਰਥ ਸਥਾਨ ਬਣਾ ਦਿੱਤਾ, ਪੰਜਾਬ ਤੋਂ ਦੂਰ ਇੱਕ ਵਿਲੱਖਣ ਸਥਾਨਕ ਸਿੱਖ ਭਾਈਚਾਰੇ ਨੂੰ ਕਾਇਮ ਰੱਖਦਾ ਹੈ।',
+      },
     },
   ],
   quiz: {

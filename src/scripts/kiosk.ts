@@ -513,6 +513,20 @@ function renderPyare(): string {
        </div>`
     : '';
 
+  const lessonsHtml = selected.lessons
+    ? `<div class="story-panel mt-6">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.lessons)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.lessons)}</p>
+       </div>`
+    : '';
+
+  const languageQualitiesHtml = selected.language || selected.qualities
+    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+         ${selected.qualities ? `<p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.qualities)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.qualities)}</p>` : ''}
+         ${selected.language ? `<p class="${selected.qualities ? 'mt-5' : ''} text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.language)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.language)}</p>` : ''}
+       </div>`
+    : '';
+
   return `
     <div class="grid gap-6">
       <p class="max-w-4xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.pyareIntro)}</p>
@@ -549,6 +563,8 @@ function renderPyare(): string {
         ${afterKhalsaHtml}
         ${funFactHtml}
         ${shaheediHtml}
+        ${lessonsHtml}
+        ${languageQualitiesHtml}
 
         <div class="storyline-panel mt-8">
           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
@@ -650,6 +666,20 @@ function renderTakhts(): string {
        </div>`
     : '';
 
+  const gurusVisitedHtml = selected.gurusVisited
+    ? `<div class="story-panel mt-6">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.gurusVisited)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.gurusVisited)}</p>
+       </div>`
+    : '';
+
+  const areaImpactHtml = selected.areaHistory || selected.localImpact
+    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+         ${selected.areaHistory ? `<p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.areaHistory)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.areaHistory)}</p>` : ''}
+         ${selected.localImpact ? `<p class="${selected.areaHistory ? 'mt-5' : ''} text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.localImpact)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.localImpact)}</p>` : ''}
+       </div>`
+    : '';
+
   return `
     <div class="grid gap-6">
       <p class="max-w-4xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.takhtsIntro)}</p>
@@ -686,6 +716,8 @@ function renderTakhts(): string {
         ${funFactHtml}
         ${jathedaarHtml}
         ${visitorsHtml}
+        ${gurusVisitedHtml}
+        ${areaImpactHtml}
 
         <div class="storyline-panel mt-8">
           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>

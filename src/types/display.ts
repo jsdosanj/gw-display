@@ -56,6 +56,9 @@ export interface PanjPyaraProfile {
   roles?: LocalizedText;
   accomplishments?: LocalizedText;
   shaheedi?: LocalizedText;
+  lessons?: LocalizedText;
+  language?: LocalizedText;
+  qualities?: LocalizedText;
 }
 
 export interface TakhtProfile {
@@ -76,6 +79,9 @@ export interface TakhtProfile {
   jathedaar?: LocalizedText;
   visitorsInfo?: LocalizedText;
   yearDeclared?: string;
+  gurusVisited?: LocalizedText;
+  areaHistory?: LocalizedText;
+  localImpact?: LocalizedText;
 }
 
 export interface QuizQuestion {
@@ -158,6 +164,12 @@ export interface DisplayContent {
       collaborationWith: LocalizedText;
       livePreviews: LocalizedText;
       scanToVisit: LocalizedText;
+      lessons: LocalizedText;
+      language: LocalizedText;
+      qualities: LocalizedText;
+      gurusVisited: LocalizedText;
+      areaHistory: LocalizedText;
+      localImpact: LocalizedText;
     };
   };
   home: {
