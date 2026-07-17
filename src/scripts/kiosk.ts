@@ -115,11 +115,18 @@ function renderAttract(): void {
 function renderLanguageMenu(): string {
   return `
     <div class="relative" id="lang-dropdown-wrapper">
-      <button type="button" data-action="toggle-lang-menu" class="lang-badge">
+      <button
+        type="button"
+        data-action="toggle-lang-menu"
+        class="lang-badge"
+        aria-haspopup="menu"
+        aria-expanded="${langMenuOpen}"
+        aria-controls="lang-menu"
+        aria-label="${text(content.ui.languageLabel)}"
+      >
         ${content.ui.languages[state.language]} ▾
       </button>
-      <div class="lang-menu" id="lang-menu" ${langMenuOpen ? '' : 'hidden'}>
-        ${Object.entries(content.ui.languages)
+      <div class="lang-menu" id="lang-menu" role="menu" ${langMenuOpen ? '' : 'hidden'}>
           .map(
             ([code, label]) => `
               <button type="button" data-set-language="${code}" class="lang-option ${code === state.language ? 'active' : ''}">
