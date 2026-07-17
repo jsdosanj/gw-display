@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 320" role="img" aria-label="Silhouette of a turbaned Khalsa Singh">
+  <defs>
+    <radialGradient id="singh-glow" cx="50%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="#e4bb5e" stop-opacity="0.28" />
+      <stop offset="100%" stop-color="#050b14" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="singh-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f7d989" />
+      <stop offset="60%" stop-color="#e4bb5e" />
+      <stop offset="100%" stop-color="#bd8a22" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="320" fill="#050b14" />
+  <circle cx="100" cy="90" r="90" fill="url(#singh-glow)" />
+
+  <!-- Dastar (turban), tall and wrapped, distinctive silhouette -->
+  <path
+    fill="url(#singh-fill)"
+    d="M100 18
+       C74 18 54 30 46 50
+       C40 64 40 76 44 86
+       L42 92
+       C38 96 36 102 40 108
+       L48 108
+       C46 118 48 126 56 130
+       L58 138
+       C58 146 64 150 72 150
+       L128 150
+       C136 150 142 146 142 138
+       L144 130
+       C152 126 154 118 152 108
+       L160 108
+       C164 102 162 96 158 92
+       L156 86
+       C160 76 160 64 154 50
+       C146 30 126 18 100 18 Z"
+  />
+  <!-- Turban wrap lines -->
+  <path fill="none" stroke="#050b14" stroke-width="2" stroke-opacity="0.35"
+    d="M48 76 C70 68 130 68 152 76 M46 92 C70 82 130 82 154 92 M52 106 C72 98 128 98 148 106" />
+  <!-- Small rise (jura) at front of turban -->
+  <path fill="url(#singh-fill)" d="M92 14 C92 6 108 6 108 14 L108 24 L92 24 Z" />
+
+  <!-- Face / beard silhouette -->
+  <path
+    fill="url(#singh-fill)"
+    d="M70 150
+       C70 172 78 190 100 194
+       C122 190 130 172 130 150
+       L128 150
+       C126 176 116 188 100 190
+       C84 188 74 176 72 150
+       Z"
+  />
+  <path
+    fill="url(#singh-fill)"
+    d="M76 168
+       C74 200 78 226 100 234
+       C122 226 126 200 124 168
+       C120 186 112 196 100 198
+       C88 196 80 186 76 168 Z"
+  />
+
+  <!-- Neck and shoulders -->
+  <path
+    fill="url(#singh-fill)"
+    d="M84 192
+       L116 192
+       L118 214
+       C150 220 170 240 176 268
+       L172 300
+       L28 300
+       L24 268
+       C30 240 50 220 82 214
+       Z"
+  />
+
+  <!-- Kirpan (ceremonial sword) across the body -->
+  <path
+    fill="#f7d989"
+    fill-opacity="0.92"
+    d="M40 232 L150 200 L154 208 L44 240 Z"
+  />
+  <path fill="#bd8a22" d="M36 236 L44 232 L48 242 L40 246 Z" />
+
+  <!-- Base plinth suggestion -->
+  <rect x="18" y="300" width="164" height="10" fill="url(#singh-fill)" fill-opacity="0.4" rx="3" />
+</svg>

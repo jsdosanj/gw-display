@@ -10,8 +10,8 @@ import {
   restartQuiz,
   selectPyara,
   selectTakht,
+  setLanguage,
   submitQuizAnswer,
-  toggleLanguage,
   wakeKiosk,
 } from './kiosk-state';
 
@@ -26,10 +26,10 @@ describe('kiosk state helpers', () => {
     expect(state.selectedTakhtId).toBe(displayContent.takhts[0]?.id);
   });
 
-  it('toggles language and wakes the kiosk', () => {
+  it('sets language and wakes the kiosk', () => {
     const initial = createInitialState(displayContent);
     const awake = wakeKiosk(initial);
-    const toggled = toggleLanguage(awake);
+    const toggled = setLanguage(awake, 'pa');
 
     expect(awake.awake).toBe(true);
     expect(toggled.language).toBe('pa');
@@ -44,14 +44,23 @@ describe('kiosk state helpers', () => {
     expect(next.selectedTakhtId).toBe('hazur_sahib');
   });
 
+  it('sets hasChosenMode to true on navigate', () => {
+    const state = wakeKiosk(createInitialState(displayContent));
+    expect(state.hasChosenMode).toBe(false);
+    const navigated = navigate(state, 'pyare');
+    expect(navigated.hasChosenMode).toBe(true);
+  });
+
   it('records quiz answers, advances, and scores the round', () => {
     let state = createInitialState(displayContent);
-    state = submitQuizAnswer(state, displayContent.quiz.questions[0]?.correctIndex ?? 0);
+    const firstQuestionIndex = state.quizQuestionOrder[0] ?? 0;
+    const secondQuestionIndex = state.quizQuestionOrder[1] ?? 0;
+    state = submitQuizAnswer(state, displayContent.quiz.questions[firstQuestionIndex]?.correctIndex ?? 0);
     state = advanceQuiz(state);
-    state = submitQuizAnswer(state, 1);
+    state = submitQuizAnswer(state, (displayContent.quiz.questions[secondQuestionIndex]?.correctIndex ?? 1) + 1);
 
-    expect(state.quizAnswers[0]).toBe(displayContent.quiz.questions[0]?.correctIndex);
-    expect(state.quizAnswers[1]).toBe(1);
+    expect(state.quizAnswers[0]).toBe(displayContent.quiz.questions[firstQuestionIndex]?.correctIndex);
+    expect(state.quizQuestionOrder).toHaveLength(displayContent.quiz.questionsPerRound);
     expect(getQuizScore(state, displayContent)).toBe(1);
   });
 
@@ -59,9 +68,10 @@ describe('kiosk state helpers', () => {
     let state = createInitialState(displayContent);
     state = wakeKiosk(navigate(state, 'quiz'));
     state = submitQuizAnswer(state, 0);
-    state = restartQuiz(state);
+    state = restartQuiz(state, displayContent);
 
     expect(state.quizIndex).toBe(0);
+    expect(state.quizQuestionOrder).toHaveLength(displayContent.quiz.questionsPerRound);
     expect(state.quizAnswers).toHaveLength(0);
 
     const reset = resetForInactivity(displayContent);

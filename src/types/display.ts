@@ -1,9 +1,12 @@
-export type Language = 'en' | 'pa';
-export type View = 'home' | 'pyare' | 'takhts' | 'quiz';
+export type Language = 'en' | 'pa' | 'hi' | 'es' | 'ar';
+export type View = 'home' | 'pyare' | 'takhts' | 'quiz' | 'about' | 'resources' | 'leaflets';
 
 export interface LocalizedText {
   en: string;
   pa: string;
+  hi?: string;
+  es?: string;
+  ar?: string;
 }
 
 export interface ReviewMeta {
@@ -35,6 +38,7 @@ export interface PrincipleCard {
 export interface PanjPyaraProfile {
   id: number;
   imagePath: string;
+  silhouettePath: string;
   mapPoint: {
     x: string;
     y: string;
@@ -80,6 +84,18 @@ export interface QuizQuestion {
   insight: LocalizedText;
 }
 
+export interface FaqItem {
+  question: LocalizedText;
+  answer: LocalizedText;
+}
+
+export interface TimelineEvent {
+  year: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  mapPoint?: { x: string; y: string };
+}
+
 export interface DisplayContent {
   settings: {
     timeoutSeconds: number;
@@ -94,7 +110,8 @@ export interface DisplayContent {
     attractInstruction: LocalizedText;
     attractButton: LocalizedText;
     nav: Record<View, LocalizedText>;
-    langToggle: Record<Language, string>;
+    languageLabel: LocalizedText;
+    languages: Record<Language, string>;
     reset: LocalizedText;
     reviewHeading: LocalizedText;
     reviewAction: LocalizedText;
@@ -124,18 +141,78 @@ export interface DisplayContent {
       shaheedi: LocalizedText;
       jathedaar: LocalizedText;
       visitorsInfo: LocalizedText;
+      aiTranslationDisclaimer: LocalizedText;
+      openInBrowser: LocalizedText;
+      visitSite: LocalizedText;
+      takhtsIntro: LocalizedText;
+      pyareIntro: LocalizedText;
+      selectOnMap: LocalizedText;
+      learnMore: LocalizedText;
+      beforeKhalsa: LocalizedText;
+      afterKhalsa: LocalizedText;
+      timelineTitle: LocalizedText;
+      faqTitle: LocalizedText;
+      leafletsHelper: LocalizedText;
+      recapTitle: LocalizedText;
     };
   };
   home: {
     heroTitle: LocalizedText;
     heroDescription: LocalizedText;
+    collaborationBanner: LocalizedText;
+    differentiationTitle: LocalizedText;
+    differentiationDescription: LocalizedText;
+    differentiationCards: {
+      id: 'pyare' | 'takhts';
+      imagePath: string;
+      title: LocalizedText;
+      description: LocalizedText;
+    }[];
     featureCards: HomeFeature[];
+  };
+  about: {
+    title: LocalizedText;
+    collaboration: LocalizedText;
+    partnerships: LocalizedText;
+    futureUpdates: LocalizedText;
     principles: PrincipleCard[];
+  };
+  resources: {
+    title: LocalizedText;
+    intro: LocalizedText;
+    sites: {
+      id: string;
+      title: string;
+      url: string;
+      previewTitle: LocalizedText;
+      previewDescription: LocalizedText;
+      details: LocalizedText;
+    }[];
+  };
+  leaflets: {
+    title: LocalizedText;
+    intro: LocalizedText;
+    cta: LocalizedText;
+    hubUrl: string;
   };
   panjPyare: PanjPyaraProfile[];
   takhts: TakhtProfile[];
   quiz: {
     intro: LocalizedText;
+    questionsPerRound: number;
     questions: QuizQuestion[];
+  };
+  faq: FaqItem[];
+  timeline: TimelineEvent[];
+  onboarding: {
+    welcomeTitle: LocalizedText;
+    welcomeSubtitle: LocalizedText;
+    modeTitle: LocalizedText;
+    modes: {
+      id: 'start-here' | 'pyare' | 'takhts';
+      icon: string;
+      title: LocalizedText;
+      description: LocalizedText;
+    }[];
   };
 }
