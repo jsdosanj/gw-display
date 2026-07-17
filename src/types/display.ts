@@ -61,6 +61,7 @@ export interface PanjPyaraProfile {
 export interface TakhtProfile {
   id: string;
   imagePath: string;
+  silhouettePath?: string;
   name: LocalizedText;
   location: LocalizedText;
   establishedBy: LocalizedText;
@@ -154,6 +155,9 @@ export interface DisplayContent {
       faqTitle: LocalizedText;
       leafletsHelper: LocalizedText;
       recapTitle: LocalizedText;
+      collaborationWith: LocalizedText;
+      livePreviews: LocalizedText;
+      scanToVisit: LocalizedText;
     };
   };
   home: {
