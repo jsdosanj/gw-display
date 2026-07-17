@@ -33,6 +33,18 @@ const displayContent: DisplayContent = {
       title: { en: 'Interactive Quiz', pa: 'ਇੰਟਰਐਕਟਿਵ ਕਵਿਜ਼' },
       subtitle: { en: 'A touch-friendly learning mode for families, students, and sangat', pa: 'ਪਰਿਵਾਰਾਂ, ਵਿਦਿਆਰਥੀਆਂ ਅਤੇ ਸੰਗਤ ਲਈ ਟਚ-ਦੋਸਤ ਸਿੱਖਣ ਮੋਡ' },
     },
+    about: {
+      title: { en: 'About', pa: 'ਸਾਡੇ ਬਾਰੇ' },
+      subtitle: { en: 'Collaboration, quality standards, and project direction', pa: 'ਸਹਿਯੋਗ, ਗੁਣਵੱਤਾ ਮਾਪਦੰਡ ਅਤੇ ਪ੍ਰੋਜੈਕਟ ਦੀ ਦਿਸ਼ਾ' },
+    },
+    resources: {
+      title: { en: 'Resources', pa: 'ਸਰੋਤ' },
+      subtitle: { en: 'Trusted Sikh learning platforms and partner sites', pa: 'ਭਰੋਸੇਯੋਗ ਸਿੱਖ ਸਿਖਲਾਈ ਪਲੇਟਫਾਰਮ ਅਤੇ ਭਾਗੀਦਾਰ ਸਾਈਟਾਂ' },
+    },
+    leaflets: {
+      title: { en: 'Leaflets', pa: 'ਲੀਫਲੈਟ' },
+      subtitle: { en: 'Download and continue learning beyond the kiosk', pa: 'ਡਾਊਨਲੋਡ ਕਰੋ ਅਤੇ ਕਿਓਸਕ ਤੋਂ ਬਾਅਦ ਵੀ ਸਿੱਖਣਾ ਜਾਰੀ ਰੱਖੋ' },
+    },
   },
   ui: {
     experienceLabel: { en: 'Premium Interactive Display', pa: 'ਪ੍ਰੀਮੀਅਮ ਇੰਟਰਐਕਟਿਵ ਪ੍ਰਦਰਸ਼ਨੀ' },
@@ -46,10 +58,20 @@ const displayContent: DisplayContent = {
       pyare: { en: '5 Pyare', pa: '੫ ਪਿਆਰੇ' },
       takhts: { en: '5 Takht', pa: '੫ ਤਖ਼ਤ' },
       quiz: { en: 'Quiz', pa: 'ਕਵਿਜ਼' },
+      about: { en: 'About', pa: 'ਬਾਰੇ' },
+      resources: { en: 'Resources', pa: 'ਸਰੋਤ' },
+      leaflets: { en: 'Leaflets', pa: 'ਲੀਫਲੈਟ' },
     },
-    langToggle: {
-      en: 'ਪੰਜਾਬੀ',
-      pa: 'ENGLISH',
+    languageLabel: {
+      en: 'Language',
+      pa: 'ਭਾਸ਼ਾ',
+    },
+    languages: {
+      en: 'English',
+      pa: 'ਪੰਜਾਬੀ',
+      hi: 'हिन्दी',
+      es: 'Español',
+      ar: 'العربية',
     },
     reset: { en: 'Reset display', pa: 'ਪ੍ਰਦਰਸ਼ਨੀ ਰੀਸੈੱਟ ਕਰੋ' },
     reviewHeading: { en: 'Scholar review status', pa: 'ਵਿਦਵਤ ਸਮੀਖਿਆ ਦੀ ਸਥਿਤੀ' },
@@ -91,6 +113,32 @@ const displayContent: DisplayContent = {
       en: 'Explore the formation of the Khalsa, the lives of the Panj Pyare, and the sacred authority of the Panj Takht through a focused bilingual experience designed for kiosk screens.',
       pa: 'ਖ਼ਾਲਸੇ ਦੀ ਰਚਨਾ, ਪੰਜ ਪਿਆਰਿਆਂ ਦੇ ਜੀਵਨ ਅਤੇ ਪੰਜ ਤਖ਼ਤਾਂ ਦੀ ਪਵਿੱਤਰ ਅਧਿਕਾਰਤਾ ਨੂੰ ਕਿਓਸਕ ਸਕ੍ਰੀਨਾਂ ਲਈ ਤਿਆਰ ਕੀਤੇ ਕੇਂਦ੍ਰਿਤ ਦੋਭਾਸ਼ੀ ਅਨੁਭਵ ਰਾਹੀਂ ਜਾਣੋ।',
     },
+    collaborationBanner: {
+      en: 'Collaboratively created by the Mata Gujri Ji Group from San Jose Gurmat Camp (July 2026).',
+      pa: 'ਸੈਨ ਹੋਜੇ ਗੁਰਮਤ ਕੈਂਪ (ਜੁਲਾਈ 2026) ਦੇ ਮਾਤਾ ਗੁਜਰੀ ਜੀ ਗਰੁੱਪ ਦੀ ਸਾਂਝੀ ਤਿਆਰੀ।',
+    },
+    differentiationTitle: {
+      en: 'Know the difference: Panj Pyare and Panj Takht',
+      pa: 'ਫ਼ਰਕ ਸਮਝੋ: ਪੰਜ ਪਿਆਰੇ ਅਤੇ ਪੰਜ ਤਖ਼ਤ',
+    },
+    differentiationDescription: {
+      en: 'Panj Pyare are the first five initiated Sikhs who modeled courage and equality. Panj Takht are the five highest seats of Sikh authority that guide the Panth across geography and time.',
+      pa: 'ਪੰਜ ਪਿਆਰੇ ਪਹਿਲੇ ਪੰਜ ਅੰਮ੍ਰਿਤਧਾਰੀ ਸਿੱਖ ਹਨ ਜਿਨ੍ਹਾਂ ਨੇ ਹਿੰਮਤ ਅਤੇ ਬਰਾਬਰੀ ਦਾ ਮਿਸਾਲ ਦਿੱਤਾ। ਪੰਜ ਤਖ਼ਤ ਸਿੱਖ ਅਧਿਕਾਰ ਦੇ ਪੰਜ ਸਰਵੋੱਚ ਅਸਥਾਨ ਹਨ ਜੋ ਪੰਥ ਨੂੰ ਮਾਰਗਦਰਸ਼ਨ ਦਿੰਦੇ ਹਨ।',
+    },
+    differentiationCards: [
+      {
+        id: 'pyare',
+        imagePath: '/assets/images/singh-silhouette.svg',
+        title: { en: 'Panj Pyare', pa: 'ਪੰਜ ਪਿਆਰੇ' },
+        description: { en: 'Five historic individuals who offered their heads to Guru Gobind Singh Ji and became the founding exemplars of the Khalsa.', pa: 'ਪੰਜ ਇਤਿਹਾਸਕ ਵਿਅਕਤੀ ਜਿਨ੍ਹਾਂ ਨੇ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਅੱਗੇ ਸਿਰ ਭੇਟ ਕੀਤਾ ਅਤੇ ਖ਼ਾਲਸੇ ਦੇ ਪ੍ਰਥਮ ਮਿਸਾਲ ਬਣੇ।' },
+      },
+      {
+        id: 'takhts',
+        imagePath: '/assets/images/gurdwara-silhouette.svg',
+        title: { en: 'Panj Takht', pa: 'ਪੰਜ ਤਖ਼ਤ' },
+        description: { en: 'Five sacred institutions and seats of authority that preserve Sikh doctrine, governance, and collective memory.', pa: 'ਪੰਜ ਪਵਿੱਤਰ ਸੰਸਥਾਗਤ ਅਸਥਾਨ ਜੋ ਸਿੱਖ ਮਰਯਾਦਾ, ਨਿਰਣੇ ਅਤੇ ਸਾਂਝੀ ਸਮੂਹਕ ਯਾਦ ਨੂੰ ਸੰਭਾਲਦੇ ਹਨ।' },
+      },
+    ],
     featureCards: [
       {
         id: 'pyare',
@@ -117,6 +165,21 @@ const displayContent: DisplayContent = {
         cta: { en: 'Start quiz', pa: 'ਕਵਿਜ਼ ਸ਼ੁਰੂ ਕਰੋ' },
       },
     ],
+  },
+  about: {
+    title: { en: 'About this project', pa: 'ਇਸ ਪ੍ਰੋਜੈਕਟ ਬਾਰੇ' },
+    collaboration: {
+      en: 'This display was collaborated on by the Mata Gujri Ji Group from the San Jose Gurmat Camp in July 2026.',
+      pa: 'ਇਹ ਪ੍ਰਦਰਸ਼ਨੀ ਜੁਲਾਈ 2026 ਵਿੱਚ ਸੈਨ ਹੋਜੇ ਗੁਰਮਤ ਕੈਂਪ ਦੇ ਮਾਤਾ ਗੁਜਰੀ ਜੀ ਗਰੁੱਪ ਦੇ ਸਹਿਯੋਗ ਨਾਲ ਤਿਆਰ ਕੀਤੀ ਗਈ।',
+    },
+    partnerships: {
+      en: 'Built in partnership with Sikhi.io and SikhiUni.com, with curated pathways to trusted Sikh education resources.',
+      pa: 'Sikhi.io ਅਤੇ SikhiUni.com ਦੇ ਸਾਥ ਨਾਲ ਬਣਾਇਆ ਗਿਆ, ਭਰੋਸੇਯੋਗ ਸਿੱਖ ਸਿੱਖਿਆ ਸਰੋਤਾਂ ਵੱਲ ਮਾਰਗਦਰਸ਼ਨ ਸਮੇਤ।',
+    },
+    futureUpdates: {
+      en: 'This experience will continue receiving updates, expanded content, and improved visuals.',
+      pa: 'ਇਸ ਅਨੁਭਵ ਵਿੱਚ ਆਉਣ ਵਾਲੇ ਸਮੇਂ ਵਿੱਚ ਨਵੇਂ ਅੱਪਡੇਟ, ਵਧੀਕ ਸਮੱਗਰੀ ਅਤੇ ਸੁਧਰੇ ਦ੍ਰਿਸ਼ ਜੋੜੇ ਜਾਣਗੇ।',
+    },
     principles: [
       {
         title: { en: 'Bilingual by design', pa: 'ਡਿਜ਼ਾਇਨ ਤੋਂ ਦੋਭਾਸ਼ੀ' },
@@ -131,6 +194,50 @@ const displayContent: DisplayContent = {
         description: { en: 'The experience visibly distinguishes drafted material from scholar-reviewed authority.', pa: 'ਇਹ ਅਨੁਭਵ ਖਾਕਾ ਸਮੱਗਰੀ ਅਤੇ ਵਿਦਵਤ-ਪ੍ਰਮਾਣਿਤ ਅਧਿਕਾਰ ਵਿਚਕਾਰ ਸਪਸ਼ਟ ਫ਼ਰਕ ਦਿਖਾਉਂਦਾ ਹੈ।' },
       },
     ],
+  },
+  resources: {
+    title: { en: 'Sikh learning resources', pa: 'ਸਿੱਖ ਸਿੱਖਣ ਦੇ ਸਰੋਤ' },
+    intro: { en: 'Discover partner and community platforms for deeper study beyond this interactive display.', pa: 'ਇਸ ਇੰਟਰਐਕਟਿਵ ਪ੍ਰਦਰਸ਼ਨੀ ਤੋਂ ਅੱਗੇ ਗਹਿਰੇ ਅਧਿਐਨ ਲਈ ਭਾਗੀਦਾਰ ਅਤੇ ਕਮਿਊਨਟੀ ਪਲੇਟਫਾਰਮ ਖੋਜੋ।' },
+    sites: [
+      {
+        id: 'sikhi-io',
+        title: 'Sikhi.io',
+        url: 'https://sikhi.io',
+        previewTitle: { en: 'Sikhi.io', pa: 'Sikhi.io' },
+        previewDescription: { en: 'Interactive Sikh learning paths and curated teaching tools.', pa: 'ਇੰਟਰਐਕਟਿਵ ਸਿੱਖ ਸਿੱਖਣ ਮਾਰਗ ਅਤੇ ਚੁਣੀ ਹੋਈ ਸਿੱਖਿਆ ਸਮੱਗਰੀ।' },
+        details: { en: 'Use for structured onboarding and community-focused study paths.', pa: 'ਸੰਰਚਿਤ ਸ਼ੁਰੂਆਤੀ ਸਿੱਖਿਆ ਅਤੇ ਕਮਿਊਨਟੀ ਕੇਂਦ੍ਰਿਤ ਅਧਿਐਨ ਲਈ।' },
+      },
+      {
+        id: 'sikhiuni',
+        title: 'SikhiUni.com',
+        url: 'https://sikhiuni.com',
+        previewTitle: { en: 'SikhiUni.com', pa: 'SikhiUni.com' },
+        previewDescription: { en: 'Courses, lectures, and long-form educational study for Sikhi.', pa: 'ਸਿੱਖੀ ਲਈ ਕੋਰਸ, ਲੈਕਚਰ ਅਤੇ ਵਿਸਤ੍ਰਿਤ ਅਧਿਐਨ ਸਮੱਗਰੀ।' },
+        details: { en: 'Ideal for learners wanting guided, classroom-style progression.', pa: 'ਉਨ੍ਹਾਂ ਲਈ ਬਿਹਤਰ ਜੋ ਕਲਾਸਰੂਮ-ਸ਼ੈਲੀ ਮਾਰਗਦਰਸ਼ਿਤ ਅੱਗੇ ਵੱਧਣਾ ਚਾਹੁੰਦੇ ਹਨ।' },
+      },
+      {
+        id: 'gursevak',
+        title: 'Gursevak.com',
+        url: 'https://gursevak.com',
+        previewTitle: { en: 'Gursevak.com', pa: 'Gursevak.com' },
+        previewDescription: { en: 'Gurbani-focused materials, references, and Sikh educational media.', pa: 'ਗੁਰਬਾਣੀ-ਕੇਂਦ੍ਰਿਤ ਸਮੱਗਰੀ, ਸੰਦਰਭ ਅਤੇ ਸਿੱਖ ਸਿੱਖਿਆ ਮੀਡੀਆ।' },
+        details: { en: 'Useful for learners who want scripture-centered exploration.', pa: 'ਉਨ੍ਹਾਂ ਸਿਖਿਆਰਥੀਆਂ ਲਈ ਜੋ ਗੁਰਬਾਣੀ ਕੇਂਦ੍ਰਿਤ ਖੋਜ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹਨ।' },
+      },
+      {
+        id: 'basicsofsikhi',
+        title: 'BasicsOfSikhi.com',
+        url: 'https://www.basicsofsikhi.com',
+        previewTitle: { en: 'BasicsOfSikhi.com', pa: 'BasicsOfSikhi.com' },
+        previewDescription: { en: 'Videos, explainers, and practical learning resources.', pa: 'ਵੀਡੀਓ, ਵਿਆਖਿਆਕਾਰੀ ਸਮੱਗਰੀ ਅਤੇ ਪ੍ਰਯੋਗਕਾਰੀ ਸਿੱਖਣ ਸਰੋਤ।' },
+        details: { en: 'Strong for quick introductions and practical everyday Sikh guidance.', pa: 'ਤੁਰੰਤ ਜਾਣ-ਪਛਾਣ ਅਤੇ ਰੋਜ਼ਾਨਾ ਸਿੱਖ ਜੀਵਨ ਮਾਰਗਦਰਸ਼ਨ ਲਈ ਉਪਯੋਗੀ।' },
+      },
+    ],
+  },
+  leaflets: {
+    title: { en: 'Leaflets and handouts', pa: 'ਲੀਫਲੈਟ ਅਤੇ ਹੈਂਡਆਉਟ' },
+    intro: { en: 'Download trusted Sikh learning leaflets to continue your journey after this exhibit.', pa: 'ਇਸ ਪ੍ਰਦਰਸ਼ਨੀ ਤੋਂ ਬਾਅਦ ਵੀ ਸਿੱਖਣ ਜਾਰੀ ਰੱਖਣ ਲਈ ਭਰੋਸੇਯੋਗ ਸਿੱਖ ਲੀਫਲੈਟ ਡਾਊਨਲੋਡ ਕਰੋ।' },
+    cta: { en: 'Open leaflet library', pa: 'ਲੀਫਲੈਟ ਲਾਇਬ੍ਰੇਰੀ ਖੋਲ੍ਹੋ' },
+    hubUrl: 'https://www.basicsofsikhi.com/resources',
   },
   panjPyare: [
     {
