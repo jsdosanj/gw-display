@@ -84,6 +84,18 @@ export interface QuizQuestion {
   insight: LocalizedText;
 }
 
+export interface FaqItem {
+  question: LocalizedText;
+  answer: LocalizedText;
+}
+
+export interface TimelineEvent {
+  year: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  mapPoint?: { x: string; y: string };
+}
+
 export interface DisplayContent {
   settings: {
     timeoutSeconds: number;
@@ -129,6 +141,15 @@ export interface DisplayContent {
       shaheedi: LocalizedText;
       jathedaar: LocalizedText;
       visitorsInfo: LocalizedText;
+      aiTranslationDisclaimer: LocalizedText;
+      openInBrowser: LocalizedText;
+      visitSite: LocalizedText;
+      takhtsIntro: LocalizedText;
+      pyareIntro: LocalizedText;
+      selectOnMap: LocalizedText;
+      learnMore: LocalizedText;
+      beforeKhalsa: LocalizedText;
+      afterKhalsa: LocalizedText;
     };
   };
   home: {
@@ -176,5 +197,18 @@ export interface DisplayContent {
     intro: LocalizedText;
     questionsPerRound: number;
     questions: QuizQuestion[];
+  };
+  faq: FaqItem[];
+  timeline: TimelineEvent[];
+  onboarding: {
+    welcomeTitle: LocalizedText;
+    welcomeSubtitle: LocalizedText;
+    modeTitle: LocalizedText;
+    modes: {
+      id: 'start-here' | 'pyare' | 'takhts';
+      icon: string;
+      title: LocalizedText;
+      description: LocalizedText;
+    }[];
   };
 }

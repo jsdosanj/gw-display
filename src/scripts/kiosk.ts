@@ -9,13 +9,14 @@ import {
   restartQuiz,
   selectPyara,
   selectTakht,
+  setLanguage,
   submitQuizAnswer,
-  toggleLanguage,
   wakeKiosk,
 } from '../lib/kiosk-state';
 import type {
   DisplayContent,
   HomeFeature,
+  Language,
   LocalizedText,
   PanjPyaraProfile,
   QuizQuestion,
@@ -43,20 +44,33 @@ const bottomNav = requireElement('bottom-nav');
 
 let state = createInitialState(content);
 let inactivityTimer = 0;
+let langMenuOpen = false;
+let openFaqIndex: number | null = null;
+let hasCelebratedPerfect = false;
+let resourceCarouselIndex = 0;
+let resourceCarouselTimer = 0;
 
 const icons: Record<View, string> = {
   home: '🏛️',
   pyare: '⚔️',
   takhts: '🕌',
   quiz: '✨',
+  about: 'ℹ️',
+  resources: '🌐',
+  leaflets: '📄',
 };
 
 function text(value: LocalizedText, language = state.language): string {
-  return value[language];
+  return value[language] ?? value.en;
 }
 
 function classForLanguage(language = state.language): string {
   return language === 'pa' ? 'gurmukhi' : '';
+}
+
+function applyDocumentDirection(language: Language): void {
+  document.documentElement.lang = language;
+  document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
 }
 
 function renderAttract(): void {
@@ -98,6 +112,27 @@ function renderAttract(): void {
   `;
 }
 
+function renderLanguageMenu(): string {
+  return `
+    <div class="relative" id="lang-dropdown-wrapper">
+      <button type="button" data-action="toggle-lang-menu" class="lang-badge">
+        ${content.ui.languages[state.language]} ▾
+      </button>
+      <div class="lang-menu" id="lang-menu" ${langMenuOpen ? '' : 'hidden'}>
+        ${Object.entries(content.ui.languages)
+          .map(
+            ([code, label]) => `
+              <button type="button" data-set-language="${code}" class="lang-option ${code === state.language ? 'active' : ''}">
+                ${label}
+              </button>
+            `,
+          )
+          .join('')}
+      </div>
+    </div>
+  `;
+}
+
 function renderHeader(): void {
   const copy = content.sections[state.view];
 
@@ -112,7 +147,7 @@ function renderHeader(): void {
         </div>
       </div>
       <div class="flex items-center gap-3">
-        <button type="button" data-action="toggle-language" class="rounded-full border border-gold-300/40 px-4 py-3 text-sm font-semibold text-gold-300 transition active:scale-[0.98]">${content.ui.langToggle[state.language]}</button>
+        ${renderLanguageMenu()}
         <button type="button" data-action="reset" class="hidden rounded-full border border-white/10 px-4 py-3 text-sm font-semibold text-cloud-200 transition active:scale-[0.98] md:block ${classForLanguage()}">${text(content.ui.reset)}</button>
       </div>
     </div>
@@ -120,22 +155,22 @@ function renderHeader(): void {
 }
 
 function renderNav(): void {
-  const views: View[] = ['home', 'pyare', 'takhts', 'quiz'];
+  const views: View[] = ['home', 'pyare', 'takhts', 'quiz', 'about', 'resources', 'leaflets'];
 
   bottomNav.innerHTML = `
-    <div class="glass-header grid min-h-20 grid-cols-4 gap-2 px-2 pt-2 md:min-h-24 md:px-5 md:py-2">
+    <div class="glass-header flex min-h-20 gap-2 overflow-x-auto px-2 pt-2 md:grid md:min-h-24 md:grid-cols-7 md:gap-2 md:overflow-visible md:px-5 md:py-2">
       ${views
         .map(
           (view) => `
             <button
               type="button"
               data-nav="${view}"
-              class="nav-pill"
+              class="nav-pill min-w-[4.75rem] md:min-w-0"
               data-active="${state.view === view}"
               aria-current="${state.view === view ? 'page' : 'false'}"
             >
               <span class="text-xl">${icons[view]}</span>
-              <span class="text-xs font-semibold uppercase tracking-[0.18em] ${classForLanguage()}">${text(content.ui.nav[view])}</span>
+              <span class="text-[0.65rem] font-semibold uppercase tracking-[0.14em] md:text-xs md:tracking-[0.18em] ${classForLanguage()}">${text(content.ui.nav[view])}</span>
             </button>
           `,
         )
@@ -223,7 +258,7 @@ function renderSubcontinentBackdrop(): string {
 
 function renderPyareMap(selected: PanjPyaraProfile): string {
   return `
-    <div class="glass-panel geo-map-panel relative min-h-[22rem] overflow-hidden p-5">
+    <div class="glass-panel geo-map-panel relative min-h-[28rem] overflow-hidden p-5">
       <div class="soft-grid absolute inset-0 opacity-15"></div>
       ${renderSubcontinentBackdrop()}
       ${content.panjPyare
@@ -251,12 +286,97 @@ function renderPyareMap(selected: PanjPyaraProfile): string {
   `;
 }
 
+function renderTimelineSection(): string {
+  return `
+    <section class="glass-panel p-7 md:p-10">
+      <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">Key Events Timeline</h3>
+      <div class="mt-6">
+        ${content.timeline
+          .map(
+            (event) => `
+              <div class="timeline-node">
+                <span class="timeline-year">${event.year}</span>
+                <div class="pt-1">
+                  <h4 class="text-base font-semibold text-white ${classForLanguage()}">${text(event.title)}</h4>
+                  <p class="mt-2 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(event.description)}</p>
+                </div>
+              </div>
+            `,
+          )
+          .join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderFaqSection(): string {
+  return `
+    <section class="glass-panel p-7 md:p-10">
+      <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">Frequently Asked Questions</h3>
+      <div class="mt-6 grid gap-3">
+        ${content.faq
+          .map(
+            (item, index) => `
+              <div class="faq-item" data-open="${openFaqIndex === index}">
+                <button type="button" data-faq-toggle="${index}" class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left">
+                  <span class="text-base font-semibold text-white ${classForLanguage()}">${text(item.question)}</span>
+                  <span class="text-gold-300">${openFaqIndex === index ? '−' : '+'}</span>
+                </button>
+                ${
+                  openFaqIndex === index
+                    ? `<p class="px-5 pb-5 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(item.answer)}</p>`
+                    : ''
+                }
+              </div>
+            `,
+          )
+          .join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderOnboarding(): string {
+  return `
+    <div class="grid min-h-[62vh] place-items-center">
+      <div class="grid max-w-4xl gap-10 text-center slide-up">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold-300">${text(content.ui.experienceLabel)}</p>
+          <h2 class="title-gradient mt-4 text-4xl font-semibold md:text-5xl ${classForLanguage()}">${text(content.onboarding.welcomeTitle)}</h2>
+          <p class="mt-4 text-lg text-cloud-200 ${classForLanguage()}">${text(content.onboarding.welcomeSubtitle)}</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-white ${classForLanguage()}">${text(content.onboarding.modeTitle)}</h3>
+          <div class="mt-6 grid gap-5 sm:grid-cols-3">
+            ${content.onboarding.modes
+              .map(
+                (mode) => `
+                  <button type="button" data-onboarding-mode="${mode.id}" class="onboarding-card">
+                    <div class="mb-4 text-5xl">${mode.icon}</div>
+                    <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(mode.title)}</h4>
+                    <p class="mt-3 text-sm leading-6 text-cloud-300 ${classForLanguage()}">${text(mode.description)}</p>
+                  </button>
+                `,
+              )
+              .join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function renderHome(): string {
-  const primaryFeatures = content.home.featureCards.filter((feature) => feature.id === 'pyare' || feature.id === 'takhts');
-  const secondaryFeatures = content.home.featureCards.filter((feature) => feature.id !== 'pyare' && feature.id !== 'takhts');
+  if (!state.hasChosenMode) {
+    return renderOnboarding();
+  }
 
   return `
     <div class="grid gap-6">
+      <div class="lang-badge slide-up w-full justify-center rounded-[22px] bg-gold-400/12 px-6 py-4 text-center text-sm md:text-base ${classForLanguage()}">
+        ${text(content.home.collaborationBanner)}
+      </div>
+
       <section class="glass-panel overflow-hidden p-7 md:p-10">
         <div class="soft-grid absolute inset-0 opacity-20"></div>
         <div class="relative">
@@ -266,26 +386,30 @@ function renderHome(): string {
         </div>
       </section>
 
-      <section class="grid gap-6 lg:grid-cols-2">
-        ${primaryFeatures.map(renderFeatureCard).join('')}
-      </section>
-
-      <section class="grid gap-6 xl:grid-cols-[1fr_0.95fr]">
-        <aside class="grid gap-6">
-          ${content.home.principles
+      <section class="glass-panel p-7 md:p-10">
+        <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(content.home.differentiationTitle)}</h3>
+        <p class="mt-3 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.home.differentiationDescription)}</p>
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
+          ${content.home.differentiationCards
             .map(
-              (principle) => `
-                <article class="glass-panel p-6">
-                  <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(principle.title)}</h4>
-                  <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(principle.description)}</p>
-                </article>
+              (card) => `
+                <button type="button" data-home-target="${card.id}" class="art-panel text-left transition duration-200 hover:border-gold-300/40 active:scale-[0.99]" data-has-image="true" style="--art-image:url('${card.imagePath}');">
+                  <div class="art-panel__glow"></div>
+                  <div class="relative z-10">
+                    <h4 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(card.title)}</h4>
+                    <p class="mt-3 max-w-md text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(card.description)}</p>
+                  </div>
+                </button>
               `,
             )
             .join('')}
-        </aside>
-        <div class="grid gap-6">
-          ${secondaryFeatures.map(renderFeatureCard).join('')}
         </div>
+      </section>
+
+      ${renderTimelineSection()}
+
+      <section class="grid gap-6 lg:grid-cols-3">
+        ${content.home.featureCards.map(renderFeatureCard).join('')}
       </section>
     </div>
   `;
@@ -303,103 +427,97 @@ function renderInfoBox(labelObj: LocalizedText, value: string): string {
 function renderPyare(): string {
   const selected = content.panjPyare.find((item) => item.id === state.selectedPyaraId) ?? content.panjPyare[0];
 
-  const storyHtml = selected.story
-    ? `<div class="story-panel mt-6">
-         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
-         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.story)}</p>
+  const beforeKhalsaHtml = `
+    <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.beforeKhalsa)}</p>
+      <div class="mt-3 grid gap-3 sm:grid-cols-3">
+        ${renderInfoBox(content.ui.labels.previousOccupation, text(selected.occupation))}
+        ${renderInfoBox(content.ui.labels.fromRegion, text(selected.from))}
+        ${renderInfoBox(content.ui.labels.representing, text(selected.caste))}
+      </div>
+    </div>
+  `;
+
+  const storyHtml = `
+    <div class="story-panel mt-6">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
+      <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.story ?? selected.details)}</p>
+    </div>
+  `;
+
+  const afterKhalsaHtml = selected.accomplishments || selected.roles
+    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.afterKhalsa)}</p>
+         ${selected.accomplishments ? `<p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}"><strong class="${classForLanguage()}">${text(content.ui.labels.accomplishments)}:</strong> ${text(selected.accomplishments)}</p>` : ''}
+         ${selected.roles ? `<p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}"><strong class="${classForLanguage()}">${text(content.ui.labels.roles)}:</strong> ${text(selected.roles)}</p>` : ''}
        </div>`
     : '';
 
   const funFactHtml = selected.funFact
-    ? `<div class="fact-card mt-4">
+    ? `<div class="fact-card mt-6">
          <div class="fact-card__icon">✦</div>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.funFact)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.funFact)}</p>
        </div>`
     : '';
 
-  const accomplishmentsHtml = selected.accomplishments
-    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-4">
-         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.accomplishments)}</p>
-         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.accomplishments)}</p>
-       </div>`
-    : '';
-
   const shaheediHtml = selected.shaheedi
-    ? `<div class="rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5 mt-4">
+    ? `<div class="rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5 mt-6">
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-rose-300 ${classForLanguage()}">${text(content.ui.labels.shaheedi)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.shaheedi)}</p>
        </div>`
     : '';
 
   return `
-    <div class="grid gap-6 xl:grid-cols-[23rem_1fr]">
-      <aside class="glass-panel p-4 md:p-5">
-        <div class="mb-4 flex items-center justify-between gap-3">
-          <h3 class="text-lg font-semibold text-white ${classForLanguage()}">${text(content.sections.pyare.title)}</h3>
-          <span class="rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.22em] text-cloud-400">${content.panjPyare.length}</span>
-        </div>
-        <div class="grid gap-3">
-          ${content.panjPyare
-            .map(
-              (item) => `
-                <button type="button" data-pyara="${item.id}" class="rounded-[22px] border px-4 py-4 text-left transition ${
-                  item.id === selected.id
-                    ? 'border-gold-300/50 bg-gold-400/10 text-gold-300'
-                    : 'border-white/8 bg-white/[0.03] text-cloud-200 active:scale-[0.99]'
-                }">
-                  <div class="flex items-center justify-between gap-4">
-                    <div>
-                      <p class="text-lg font-semibold ${classForLanguage()}">${text(item.name)}</p>
-                      <p class="mt-1 text-sm text-cloud-400 ${classForLanguage()}">${text(item.from)}</p>
-                    </div>
-                    <span class="shrink-0 rounded-full border border-current/20 px-2 py-1 text-xs uppercase tracking-[0.14em] ${classForLanguage()}">${text(item.caste)}</span>
-                  </div>
-                </button>
-              `,
-            )
-            .join('')}
-        </div>
-      </aside>
-      <section class="glass-panel overflow-hidden p-8 md:p-10">
-        <div class="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
+    <div class="grid gap-6">
+      <p class="max-w-4xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.pyareIntro)}</p>
+
+      ${renderPyareMap(selected)}
+
+      <div class="flex flex-wrap gap-2">
+        ${content.panjPyare
+          .map(
+            (item) => `
+              <button type="button" data-pyara="${item.id}" class="rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                item.id === selected.id
+                  ? 'border-gold-300/50 bg-gold-400/10 text-gold-300'
+                  : 'border-white/10 bg-white/[0.03] text-cloud-200 active:scale-[0.98]'
+              } ${classForLanguage()}">${text(item.name)}</button>
+            `,
+          )
+          .join('')}
+      </div>
+
+      <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
+        ${renderArtworkPanel(selected.silhouettePath, text(selected.name), text(content.sections.pyare.title))}
+        <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
-            ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title))}
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
-            <h3 class="mt-4 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h3>
-            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.birthName)} &middot; ${selected.years}</p>
-            <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.details)}</p>
-            ${storyHtml}
-            ${funFactHtml}
-            ${accomplishmentsHtml}
-            ${shaheediHtml}
-            <div class="storyline-panel mt-8">
-              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
-              <div class="mt-4 grid gap-2">
-                ${content.panjPyare
-                  .map(
-                    (item, index) => `
-                      <button type="button" data-pyara="${item.id}" class="storyline-step" data-active="${item.id === selected.id}">
-                        <span class="storyline-step__index">${index + 1}</span>
-                        <span class="${classForLanguage()}">${text(item.name)} — ${text(item.from)}</span>
-                      </button>
-                    `,
-                  )
-                  .join('')}
-              </div>
-            </div>
+            <h3 class="mt-2 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
+            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.birthName)}: ${text(selected.birthName)} &middot; ${selected.years}</p>
           </div>
-          <div class="grid gap-4 content-start">
-            ${renderPyareMap(selected)}
-            ${renderInfoBox(content.ui.labels.birthName, text(selected.birthName))}
-            ${renderInfoBox(content.ui.labels.birthDeath, selected.years)}
-            ${renderInfoBox(content.ui.labels.previousOccupation, text(selected.occupation))}
-            ${renderInfoBox(content.ui.labels.fromRegion, text(selected.from))}
-            ${renderInfoBox(content.ui.labels.representing, text(selected.representing))}
-            ${selected.roles ? `<article class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.roles)}</p>
-              <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.roles)}</p>
-            </article>` : ''}
+          <span class="ai-badge">⚠ ${text(content.review.label)}</span>
+        </div>
+
+        ${beforeKhalsaHtml}
+        ${storyHtml}
+        ${afterKhalsaHtml}
+        ${funFactHtml}
+        ${shaheediHtml}
+
+        <div class="storyline-panel mt-8">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
+          <div class="mt-4 grid gap-2">
+            ${content.panjPyare
+              .map(
+                (item, index) => `
+                  <button type="button" data-pyara="${item.id}" class="storyline-step" data-active="${item.id === selected.id}">
+                    <span class="storyline-step__index">${index + 1}</span>
+                    <span class="${classForLanguage()}">${text(item.name)} — ${text(item.from)}</span>
+                  </button>
+                `,
+              )
+              .join('')}
           </div>
         </div>
       </section>
@@ -440,6 +558,17 @@ function renderTakhtMap(selected: TakhtProfile): string {
 function renderTakhts(): string {
   const selected = content.takhts.find((item) => item.id === state.selectedTakhtId) ?? content.takhts[0];
 
+  const locationHtml = `
+    <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>
+      <p class="mt-3 text-base font-medium text-white ${classForLanguage()}">${text(selected.establishedBy)}</p>
+    </div>
+    <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-4">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.significance)}</p>
+      <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.significance)}</p>
+    </div>
+  `;
+
   const storyHtml = selected.story
     ? `<div class="story-panel mt-6">
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
@@ -448,7 +577,7 @@ function renderTakhts(): string {
     : '';
 
   const funFactHtml = selected.funFact
-    ? `<div class="fact-card mt-4">
+    ? `<div class="fact-card mt-6">
          <div class="fact-card__icon">✦</div>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.funFact)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.funFact)}</p>
@@ -456,79 +585,191 @@ function renderTakhts(): string {
     : '';
 
   const jathedaarHtml = selected.jathedaar
-    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    ? `<div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 mt-6">
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.jathedaar)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.jathedaar)}</p>
        </div>`
     : '';
 
   const visitorsHtml = selected.visitorsInfo
-    ? `<div class="rounded-[24px] border border-emerald-300/15 bg-emerald-400/5 p-5">
+    ? `<div class="rounded-[24px] border border-emerald-300/15 bg-emerald-400/5 p-5 mt-4">
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300 ${classForLanguage()}">${text(content.ui.labels.visitorsInfo)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.visitorsInfo)}</p>
        </div>`
     : '';
 
   return `
-    <div class="grid gap-6 2xl:grid-cols-[24rem_1fr]">
-      <aside class="grid gap-4">
+    <div class="grid gap-6">
+      <p class="max-w-4xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.takhtsIntro)}</p>
+
+      ${renderTakhtMap(selected)}
+
+      <div class="flex flex-wrap gap-2">
         ${content.takhts
           .map(
-            (takht, index) => `
-              <button type="button" data-takht="${takht.id}" class="glass-panel p-5 text-left transition ${
-                takht.id === selected.id ? 'border-gold-300/40 bg-gold-400/10' : 'active:scale-[0.99]'
-              }">
-                <div class="flex items-start justify-between gap-3">
-                  <div class="min-w-0">
-                    <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(takht.location)}</p>
-                    <h3 class="mt-2 text-lg font-semibold text-white ${classForLanguage()}">${text(takht.name)}</h3>
-                  </div>
-                  <span class="shrink-0 rounded-full border border-gold-300/25 px-2 py-1 text-xs font-semibold text-gold-300">${index + 1}</span>
-                </div>
-                <p class="mt-2 text-xs leading-6 text-cloud-400 ${classForLanguage()} line-clamp-2">${text(takht.significance)}</p>
-              </button>
+            (takht) => `
+              <button type="button" data-takht="${takht.id}" class="rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                takht.id === selected.id
+                  ? 'border-gold-300/50 bg-gold-400/10 text-gold-300'
+                  : 'border-white/10 bg-white/[0.03] text-cloud-200 active:scale-[0.98]'
+              } ${classForLanguage()}">${text(takht.name)}</button>
             `,
           )
           .join('')}
-      </aside>
-      <section class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        ${renderTakhtMap(selected)}
-        <article class="glass-panel p-8 md:p-10">
-          ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
-          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>
-          <h3 class="mt-4 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)}</h3>
-          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
-          ${storyHtml}
-          ${funFactHtml}
-          <div class="storyline-panel mt-6">
-            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
-            <div class="mt-4 grid gap-2">
-              ${content.takhts
-                .map(
-                  (takht, index) => `
-                    <button type="button" data-takht="${takht.id}" class="storyline-step" data-active="${takht.id === selected.id}">
-                      <span class="storyline-step__index">${index + 1}</span>
-                      <span class="${classForLanguage()}">${text(takht.name)} — ${text(takht.location)}</span>
-                    </button>
-                  `,
-                )
-                .join('')}
-            </div>
+      </div>
+
+      <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title))}
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
+            <h3 class="mt-2 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
+            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
           </div>
-          <div class="mt-6 grid gap-4">
-            <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>
-              <p class="mt-3 text-base font-medium text-white ${classForLanguage()}">${text(selected.establishedBy)}</p>
-            </div>
-            <div class="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.significance)}</p>
-              <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.significance)}</p>
-            </div>
-            ${jathedaarHtml}
-            ${visitorsHtml}
+          <span class="ai-badge">⚠ ${text(content.review.label)}</span>
+        </div>
+
+        ${locationHtml}
+        ${storyHtml}
+        ${funFactHtml}
+        ${jathedaarHtml}
+        ${visitorsHtml}
+
+        <div class="storyline-panel mt-8">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
+          <div class="mt-4 grid gap-2">
+            ${content.takhts
+              .map(
+                (takht, index) => `
+                  <button type="button" data-takht="${takht.id}" class="storyline-step" data-active="${takht.id === selected.id}">
+                    <span class="storyline-step__index">${index + 1}</span>
+                    <span class="${classForLanguage()}">${text(takht.name)} — ${text(takht.location)}</span>
+                  </button>
+                `,
+              )
+              .join('')}
           </div>
-        </article>
+        </div>
       </section>
+    </div>
+  `;
+}
+
+function renderAbout(): string {
+  return `
+    <div class="grid gap-6">
+      <section class="glass-panel p-8 md:p-10">
+        <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.about.title)}</h2>
+        <div class="mt-6 rounded-[24px] border border-gold-300/25 bg-gold-400/8 p-6">
+          <p class="text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.collaboration)}</p>
+        </div>
+        <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.partnerships)}</p>
+        <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.futureUpdates)}</p>
+      </section>
+
+      <section class="grid gap-6 md:grid-cols-3">
+        ${content.about.principles
+          .map(
+            (principle) => `
+              <article class="glass-panel p-6">
+                <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(principle.title)}</h4>
+                <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(principle.description)}</p>
+              </article>
+            `,
+          )
+          .join('')}
+      </section>
+
+      <section class="glass-panel flex flex-wrap items-center gap-4 p-8">
+        <span class="scholar-badge">✓ ${text(content.ui.reviewHeading)}</span>
+        <span class="ai-badge">⚠ ${text(content.review.label)}</span>
+        <p class="text-sm text-cloud-300 ${classForLanguage()}">${text(content.review.detail)}</p>
+      </section>
+
+      <section class="glass-panel p-8">
+        <p class="lang-badge ${classForLanguage()}">${text(content.ui.labels.aiTranslationDisclaimer)}</p>
+      </section>
+
+      ${renderFaqSection()}
+    </div>
+  `;
+}
+
+function renderResources(): string {
+  const sites = content.resources.sites;
+  const slideWidth = 100 / sites.length;
+
+  return `
+    <div class="grid gap-6">
+      <section class="glass-panel p-8 md:p-10">
+        <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.resources.title)}</h2>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.resources.intro)}</p>
+      </section>
+
+      <section class="glass-panel relative min-h-[22rem] overflow-hidden p-0">
+        <div
+          id="resource-carousel-track"
+          class="flex h-[22rem] transition-transform duration-700 ease-out"
+          style="width:${sites.length * 100}%; transform:translateX(-${slideWidth * resourceCarouselIndex}%);"
+        >
+          ${sites
+            .map(
+              (site) => `
+                <div class="relative h-full" style="width:${slideWidth}%;">
+                  <iframe src="${site.url}" class="resource-iframe" loading="lazy" sandbox="allow-scripts allow-same-origin" title="${site.title}"></iframe>
+                  <div class="resource-card__overlay p-6 md:p-8">
+                    <div>
+                      <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
+                      <p class="mt-2 max-w-xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(site.previewDescription)}</p>
+                      <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.visitSite)}</a>
+                    </div>
+                  </div>
+                </div>
+              `,
+            )
+            .join('')}
+        </div>
+        <div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2" id="resource-carousel-dots">
+          ${sites
+            .map(
+              (_, index) => `
+                <button type="button" data-carousel-dot="${index}" class="h-2 w-2 rounded-full transition ${index === resourceCarouselIndex ? 'bg-gold-400' : 'bg-white/30'}"></button>
+              `,
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        ${sites
+          .map(
+            (site) => `
+              <article class="resource-card">
+                <div class="p-6">
+                  <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h4>
+                  <p class="mt-2 text-sm leading-6 text-cloud-300 ${classForLanguage()}">${text(site.details)}</p>
+                  <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gold-300 ${classForLanguage()}">${text(content.ui.labels.openInBrowser)} →</a>
+                </div>
+              </article>
+            `,
+          )
+          .join('')}
+      </section>
+    </div>
+  `;
+}
+
+function renderLeaflets(): string {
+  return `
+    <div class="glass-panel p-10 text-center">
+      <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.leaflets.title)}</h2>
+      <p class="intro mx-auto mt-4 max-w-2xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.leaflets.intro)}</p>
+      <div class="leaflet-hero my-8 text-7xl">📄</div>
+      <p class="text-base text-cloud-200 ${classForLanguage()}">Access the full Basics of Sikhi leaflet library:</p>
+      <a href="${content.leaflets.hubUrl}" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.leaflets.cta)}</a>
+      <p class="mt-4 text-sm text-cloud-400">basicsofsikhi.com/resources</p>
+      <div class="mx-auto mt-8 flex h-32 w-32 items-center justify-center rounded-2xl border border-dashed border-white/20 bg-white/[0.03] text-xs uppercase tracking-[0.18em] text-cloud-400">QR Code</div>
+      <p class="mt-3 text-xs text-cloud-400">Scan the QR code or visit basicsofsikhi.com/resources</p>
     </div>
   `;
 }
@@ -549,13 +790,19 @@ function quizState(question: QuizQuestion, optionIndex: number): 'default' | 'se
   return 'default';
 }
 
+function currentQuizTotal(): number {
+  return Math.min(content.quiz.questionsPerRound, state.quizQuestionOrder.length);
+}
+
 function renderQuizQuestion(question: QuizQuestion): string {
+  const total = currentQuizTotal();
+
   return `
     <article class="glass-panel p-8 md:p-10">
       <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.quizProgress)} ${state.quizIndex + 1} / ${content.quiz.questions.length}</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.quizProgress)} ${state.quizIndex + 1} / ${total}</p>
         <div class="h-2 w-full max-w-xs overflow-hidden rounded-full bg-white/8">
-          <div class="h-full rounded-full bg-gold-400 transition duration-300" style="width:${((state.quizIndex + 1) / content.quiz.questions.length) * 100}%"></div>
+          <div class="h-full rounded-full bg-gold-400 transition duration-300" style="width:${((state.quizIndex + 1) / total) * 100}%"></div>
         </div>
       </div>
       <h3 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(question.prompt)}</h3>
@@ -593,9 +840,30 @@ function renderQuizQuestion(question: QuizQuestion): string {
   `;
 }
 
+function renderRecapCard(): string {
+  const topics = state.quizQuestionOrder
+    .map((questionIndex) => content.quiz.questions[questionIndex])
+    .filter((question): question is QuizQuestion => Boolean(question));
+
+  return `
+    <div class="recap-card mt-6 text-left">
+      <p class="text-center text-xs font-semibold uppercase tracking-[0.24em] text-gold-300">What you learned</p>
+      <ul class="mt-5 grid gap-3">
+        ${topics
+          .map(
+            (question) => `
+              <li class="rounded-[18px] border border-white/10 bg-white/[0.03] px-4 py-3 text-sm leading-6 text-cloud-200 ${classForLanguage()}">${text(question.prompt)}</li>
+            `,
+          )
+          .join('')}
+      </ul>
+    </div>
+  `;
+}
+
 function renderQuizResults(): string {
   const score = getQuizScore(state, content);
-  const total = content.quiz.questions.length;
+  const total = currentQuizTotal();
 
   return `
     <article class="glass-panel p-8 text-center md:p-12">
@@ -604,11 +872,66 @@ function renderQuizResults(): string {
       <p class="mt-4 text-xl text-cloud-200 ${classForLanguage()}">${text(content.ui.labels.yourScore)}</p>
       <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${score === total ? text(content.ui.labels.perfectScore) : text(content.ui.labels.replayPrompt)}</p>
       <button type="button" data-action="restart-quiz" class="mt-8 rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 transition active:scale-[0.98]">${text(content.ui.labels.restartQuiz)}</button>
+      ${renderRecapCard()}
     </article>
   `;
 }
 
+function clearResourceCarouselTimer(): void {
+  window.clearInterval(resourceCarouselTimer);
+  resourceCarouselTimer = 0;
+}
+
+function updateResourceCarousel(): void {
+  const track = document.getElementById('resource-carousel-track');
+  const total = content.resources.sites.length;
+  if (track) {
+    track.style.transform = `translateX(-${(100 / total) * resourceCarouselIndex}%)`;
+  }
+
+  const dots = document.querySelectorAll<HTMLElement>('[data-carousel-dot]');
+  dots.forEach((dot) => {
+    const isActive = Number(dot.dataset.carouselDot) === resourceCarouselIndex;
+    dot.classList.toggle('bg-gold-400', isActive);
+    dot.classList.toggle('bg-white/30', !isActive);
+  });
+}
+
+function setupResourceCarousel(): void {
+  clearResourceCarouselTimer();
+  const total = content.resources.sites.length;
+  if (total <= 1) {
+    return;
+  }
+  resourceCarouselTimer = window.setInterval(() => {
+    resourceCarouselIndex = (resourceCarouselIndex + 1) % total;
+    updateResourceCarousel();
+  }, 4000);
+}
+
+function launchConfetti(): void {
+  const colors = ['#e4bb5e', '#f8fafc', '#f97316', '#60a5fa'];
+
+  for (let i = 0; i < 80; i += 1) {
+    const particle = document.createElement('div');
+    particle.className = 'confetti-particle';
+    particle.style.left = `${Math.random() * 100}vw`;
+    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)] ?? '#e4bb5e';
+    particle.style.animationDuration = `${1.5 + Math.random() * 1.5}s`;
+    particle.style.animationDelay = `${Math.random() * 0.4}s`;
+    document.body.appendChild(particle);
+
+    window.setTimeout(() => {
+      particle.remove();
+    }, 4000);
+  }
+}
+
 function renderView(): void {
+  if (state.view !== 'resources') {
+    clearResourceCarouselTimer();
+  }
+
   if (!state.awake) {
     viewContent.innerHTML = '';
     return;
@@ -624,11 +947,26 @@ function renderView(): void {
     case 'takhts':
       viewContent.innerHTML = renderTakhts();
       break;
+    case 'about':
+      viewContent.innerHTML = renderAbout();
+      break;
+    case 'resources':
+      viewContent.innerHTML = renderResources();
+      setupResourceCarousel();
+      break;
+    case 'leaflets':
+      viewContent.innerHTML = renderLeaflets();
+      break;
     case 'quiz': {
       if (isQuizComplete(state, content)) {
         viewContent.innerHTML = renderQuizResults();
+        if (getQuizScore(state, content) === currentQuizTotal() && !hasCelebratedPerfect) {
+          hasCelebratedPerfect = true;
+          launchConfetti();
+        }
       } else {
-        const question = content.quiz.questions[state.quizIndex];
+        const questionIndex = state.quizQuestionOrder[state.quizIndex];
+        const question = questionIndex === undefined ? undefined : content.quiz.questions[questionIndex];
         if (!question) {
           viewContent.innerHTML = renderQuizResults();
           break;
@@ -644,6 +982,11 @@ function scheduleInactivityReset(): void {
   window.clearTimeout(inactivityTimer);
   inactivityTimer = window.setTimeout(() => {
     state = resetForInactivity(content);
+    hasCelebratedPerfect = false;
+    openFaqIndex = null;
+    langMenuOpen = false;
+    resourceCarouselIndex = 0;
+    applyDocumentDirection(state.language);
     render();
   }, content.settings.timeoutSeconds * 1000);
 }
@@ -696,6 +1039,15 @@ document.addEventListener('click', (event) => {
     return;
   }
 
+  const onboardingTarget = target.closest<HTMLElement>('[data-onboarding-mode]');
+  if (onboardingTarget?.dataset.onboardingMode) {
+    const mode = onboardingTarget.dataset.onboardingMode;
+    state = navigate(state, mode === 'start-here' ? 'home' : (mode as View));
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
   const navTarget = target.closest<HTMLElement>('[data-nav]');
   if (navTarget?.dataset.nav) {
     state = navigate(state, navTarget.dataset.nav as View);
@@ -712,8 +1064,18 @@ document.addEventListener('click', (event) => {
     return;
   }
 
-  if (target.closest('[data-action="toggle-language"]')) {
-    state = toggleLanguage(state);
+  if (target.closest('[data-action="toggle-lang-menu"]')) {
+    langMenuOpen = !langMenuOpen;
+    renderHeader();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const languageTarget = target.closest<HTMLElement>('[data-set-language]');
+  if (languageTarget?.dataset.setLanguage) {
+    state = setLanguage(state, languageTarget.dataset.setLanguage as Language);
+    langMenuOpen = false;
+    applyDocumentDirection(state.language);
     render();
     scheduleInactivityReset();
     return;
@@ -721,6 +1083,11 @@ document.addEventListener('click', (event) => {
 
   if (target.closest('[data-action="reset"]')) {
     state = resetForInactivity(content);
+    hasCelebratedPerfect = false;
+    openFaqIndex = null;
+    langMenuOpen = false;
+    resourceCarouselIndex = 0;
+    applyDocumentDirection(state.language);
     render();
     return;
   }
@@ -741,6 +1108,24 @@ document.addEventListener('click', (event) => {
     return;
   }
 
+  const faqTarget = target.closest<HTMLElement>('[data-faq-toggle]');
+  if (faqTarget?.dataset.faqToggle !== undefined) {
+    const index = Number(faqTarget.dataset.faqToggle);
+    openFaqIndex = openFaqIndex === index ? null : index;
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const carouselDotTarget = target.closest<HTMLElement>('[data-carousel-dot]');
+  if (carouselDotTarget?.dataset.carouselDot !== undefined) {
+    resourceCarouselIndex = Number(carouselDotTarget.dataset.carouselDot);
+    updateResourceCarousel();
+    setupResourceCarousel();
+    scheduleInactivityReset();
+    return;
+  }
+
   const answerTarget = target.closest<HTMLElement>('[data-quiz-answer]');
   if (answerTarget?.dataset.quizAnswer) {
     state = submitQuizAnswer(state, Number(answerTarget.dataset.quizAnswer));
@@ -757,10 +1142,12 @@ document.addEventListener('click', (event) => {
   }
 
   if (target.closest('[data-action="restart-quiz"]')) {
-    state = restartQuiz(state);
+    state = restartQuiz(state, content);
+    hasCelebratedPerfect = false;
     render();
     scheduleInactivityReset();
   }
 });
 
+applyDocumentDirection(state.language);
 render();

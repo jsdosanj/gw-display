@@ -44,6 +44,13 @@ describe('kiosk state helpers', () => {
     expect(next.selectedTakhtId).toBe('hazur_sahib');
   });
 
+  it('sets hasChosenMode to true on navigate', () => {
+    const state = wakeKiosk(createInitialState(displayContent));
+    expect(state.hasChosenMode).toBe(false);
+    const navigated = navigate(state, 'pyare');
+    expect(navigated.hasChosenMode).toBe(true);
+  });
+
   it('records quiz answers, advances, and scores the round', () => {
     let state = createInitialState(displayContent);
     const firstQuestionIndex = state.quizQuestionOrder[0] ?? 0;

@@ -10,6 +10,7 @@ export interface KioskState {
   quizQuestionOrder: number[];
   quizAnswers: number[];
   revealedAnswer: number | null;
+  hasChosenMode: boolean;
 }
 
 function createQuizOrder(content: DisplayContent): number[] {
@@ -32,6 +33,7 @@ export function createInitialState(content: DisplayContent): KioskState {
     quizQuestionOrder: createQuizOrder(content),
     quizAnswers: [],
     revealedAnswer: null,
+    hasChosenMode: false,
   };
 }
 
@@ -39,6 +41,7 @@ export function wakeKiosk(state: KioskState): KioskState {
   return {
     ...state,
     awake: true,
+    hasChosenMode: false,
   };
 }
 
@@ -53,6 +56,7 @@ export function navigate(state: KioskState, view: View): KioskState {
   return {
     ...state,
     view,
+    hasChosenMode: true,
   };
 }
 

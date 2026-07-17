@@ -49,18 +49,18 @@ const displayContent: DisplayContent = {
   ui: {
     experienceLabel: { en: 'Premium Interactive Display', pa: 'ਪ੍ਰੀਮੀਅਮ ਇੰਟਰਐਕਟਿਵ ਪ੍ਰਦਰਸ਼ਨੀ' },
     attractEyebrow: { en: 'Immersive Kiosk Experience', pa: 'ਡੁੱਬਕੀਵਾਂ ਕਿਓਸਕ ਅਨੁਭਵ' },
-    attractTitle: { en: 'Panj Pyare & Panj Takht', pa: 'ਪੰਜ ਪਿਆਰੇ ਅਤੇ ਪੰਜ ਤਖ਼ਤ' },
-    attractSubtitle: { en: 'A ceremonial digital doorway into memory, identity, and Sikh institutional history.', pa: 'ਸਮ੍ਰਿਤੀ, ਪਹਿਚਾਣ ਅਤੇ ਸਿੱਖ ਸੰਸਥਾਗਤ ਇਤਿਹਾਸ ਵੱਲ ਇਕ ਰਸਮੀ ਡਿਜ਼ਿਟਲ ਦਰਵਾਜ਼ਾ।' },
-    attractInstruction: { en: 'Touch anywhere to begin the guided display.', pa: 'ਮਾਰਗਦਰਸ਼ਿਤ ਪ੍ਰਦਰਸ਼ਨੀ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਤੇ ਵੀ ਛੂਹੋ।' },
-    attractButton: { en: 'Begin Experience', pa: 'ਅਨੁਭਵ ਸ਼ੁਰੂ ਕਰੋ' },
+    attractTitle: { en: 'Panj Pyare & Panj Takht', pa: 'ਪੰਜ ਪਿਆਰੇ ਅਤੇ ਪੰਜ ਤਖ਼ਤ', hi: 'पंज प्यारे और पंज तख्त', es: 'Los Cinco Amados y los Cinco Tronos', ar: 'خمسة المحبوبين وخمسة العروش' },
+    attractSubtitle: { en: 'A ceremonial digital doorway into memory, identity, and Sikh institutional history.', pa: 'ਸਮ੍ਰਿਤੀ, ਪਹਿਚਾਣ ਅਤੇ ਸਿੱਖ ਸੰਸਥਾਗਤ ਇਤਿਹਾਸ ਵੱਲ ਇਕ ਰਸਮੀ ਡਿਜ਼ਿਟਲ ਦਰਵਾਜ਼ਾ।', hi: 'स्मृति, पहचान और सिख संस्थागत इतिहास की ओर एक औपचारिक डिजिटल द्वार।', es: 'Una puerta digital ceremonial hacia la memoria, la identidad y la historia institucional sij.', ar: 'بوابة رقمية احتفالية إلى الذاكرة والهوية والتاريخ المؤسسي السيخي.' },
+    attractInstruction: { en: 'Touch anywhere to begin the guided display.', pa: 'ਮਾਰਗਦਰਸ਼ਿਤ ਪ੍ਰਦਰਸ਼ਨੀ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਤੇ ਵੀ ਛੂਹੋ।', hi: 'निर्देशित प्रदर्शन शुरू करने के लिए कहीं भी स्पर्श करें।', es: 'Toca en cualquier lugar para comenzar la presentación guiada.', ar: 'المس في أي مكان لبدء العرض الموجّه.' },
+    attractButton: { en: 'Begin Experience', pa: 'ਅਨੁਭਵ ਸ਼ੁਰੂ ਕਰੋ', hi: 'अनुभव शुरू करें', es: 'Comenzar experiencia', ar: 'ابدأ التجربة' },
     nav: {
-      home: { en: 'Home', pa: 'ਮੁੱਖ' },
-      pyare: { en: '5 Pyare', pa: '੫ ਪਿਆਰੇ' },
-      takhts: { en: '5 Takht', pa: '੫ ਤਖ਼ਤ' },
-      quiz: { en: 'Quiz', pa: 'ਕਵਿਜ਼' },
-      about: { en: 'About', pa: 'ਬਾਰੇ' },
-      resources: { en: 'Resources', pa: 'ਸਰੋਤ' },
-      leaflets: { en: 'Leaflets', pa: 'ਲੀਫਲੈਟ' },
+      home: { en: 'Home', pa: 'ਮੁੱਖ', hi: 'होम', es: 'Inicio', ar: 'الرئيسية' },
+      pyare: { en: '5 Pyare', pa: '੫ ਪਿਆਰੇ', hi: '5 प्यारे', es: '5 Amados', ar: '٥ محبوبين' },
+      takhts: { en: '5 Takht', pa: '੫ ਤਖ਼ਤ', hi: '5 तख्त', es: '5 Tronos', ar: '٥ عروش' },
+      quiz: { en: 'Quiz', pa: 'ਕਵਿਜ਼', hi: 'प्रश्नोत्तरी', es: 'Cuestionario', ar: 'اختبار' },
+      about: { en: 'About', pa: 'ਬਾਰੇ', hi: 'परिचय', es: 'Acerca de', ar: 'حول' },
+      resources: { en: 'Resources', pa: 'ਸਰੋਤ', hi: 'संसाधन', es: 'Recursos', ar: 'موارد' },
+      leaflets: { en: 'Leaflets', pa: 'ਲੀਫਲੈਟ', hi: 'पत्रक', es: 'Folletos', ar: 'نشرات' },
     },
     languageLabel: {
       en: 'Language',
@@ -102,6 +102,15 @@ const displayContent: DisplayContent = {
       shaheedi: { en: 'Shaheedi', pa: 'ਸ਼ਹੀਦੀ' },
       jathedaar: { en: 'Current Jathedar', pa: 'ਮੌਜੂਦਾ ਜਥੇਦਾਰ' },
       visitorsInfo: { en: 'Visitor information', pa: 'ਸੈਲਾਨੀ ਜਾਣਕਾਰੀ' },
+      aiTranslationDisclaimer: { en: 'Translations to Hindi, Spanish, and Arabic are AI-generated and pending human review.', pa: 'ਹਿੰਦੀ, ਸਪੈਨਿਸ਼ ਅਤੇ ਅਰਬੀ ਅਨੁਵਾਦ ਏਆਈ ਦੁਆਰਾ ਤਿਆਰ ਕੀਤੇ ਗਏ ਹਨ ਅਤੇ ਮਨੁੱਖੀ ਸਮੀਖਿਆ ਅਧੀਨ ਹਨ।', hi: 'हिंदी, स्पेनिश और अरबी अनुवाद AI द्वारा तैयार किए गए हैं और मानव समीक्षा के अधीन हैं।', es: 'Las traducciones al hindi, español y árabe son generadas por IA y están pendientes de revisión humana.', ar: 'الترجمات إلى الهندية والإسبانية والعربية مولّدة بالذكاء الاصطناعي وقيد مراجعة بشرية.' },
+      openInBrowser: { en: 'Open in browser', pa: 'ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਖੋਲ੍ਹੋ' },
+      visitSite: { en: 'Visit site', pa: 'ਸਾਈਟ ਵੇਖੋ' },
+      takhtsIntro: { en: 'The Panj Takht (Five Thrones) are the five most sacred seats of Sikh institutional authority. Each Takht holds supreme significance in the Sikh world — governing doctrine, issuing binding decrees (hukamnamas), and marking pivotal moments in Sikh history. They span the geography of South Asia, from Punjab to Bihar, Deccan to Karnataka.', pa: 'ਪੰਜ ਤਖ਼ਤ ਸਿੱਖ ਸੰਸਥਾਗਤ ਅਧਿਕਾਰ ਦੇ ਸਭ ਤੋਂ ਪਵਿੱਤਰ ਪੰਜ ਅਸਥਾਨ ਹਨ। ਹਰ ਤਖ਼ਤ ਸਿੱਖ ਜਗਤ ਵਿੱਚ ਸਰਵੋੱਚ ਮਹੱਤਵ ਰੱਖਦਾ ਹੈ।' },
+      pyareIntro: { en: 'On Vaisakhi of 1699, Guru Gobind Singh Ji asked for five volunteers willing to give their heads for the faith. Five men stepped forward from different corners of India — different castes, different occupations, different lives — and together became the Panj Pyare: the Five Beloved Ones. They are the founding exemplars of the Khalsa, the embodiment of courage, equality, and selfless devotion. Touch each pin on the map to learn where they came from, who they were, and the lives they led.', pa: '1699 ਦੀ ਵਿਸਾਖੀ ਨੂੰ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਨੇ ਧਰਮ ਲਈ ਆਪਣਾ ਸਿਰ ਦੇਣ ਲਈ ਤਿਆਰ ਪੰਜ ਸੇਵਾਦਾਰਾਂ ਦੀ ਮੰਗ ਕੀਤੀ। ਭਾਰਤ ਦੇ ਵੱਖ-ਵੱਖ ਕੋਨਿਆਂ ਤੋਂ ਪੰਜ ਵਿਅਕਤੀ ਅੱਗੇ ਆਏ ਅਤੇ ਪੰਜ ਪਿਆਰੇ ਬਣੇ।' },
+      selectOnMap: { en: 'Select a location on the map to begin', pa: 'ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਨਕਸ਼ੇ ਤੇ ਇੱਕ ਸਥਾਨ ਚੁਣੋ' },
+      learnMore: { en: 'Learn more →', pa: 'ਹੋਰ ਜਾਣੋ →' },
+      beforeKhalsa: { en: 'Before the Khalsa', pa: 'ਖ਼ਾਲਸੇ ਤੋਂ ਪਹਿਲਾਂ' },
+      afterKhalsa: { en: 'After initiation', pa: 'ਅੰਮ੍ਰਿਤ ਛਕਣ ਤੋਂ ਬਾਅਦ' },
     },
   },
   home: {
@@ -243,6 +252,7 @@ const displayContent: DisplayContent = {
     {
       id: 1,
       imagePath: '/assets/images/pyara1.jpg',
+      silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '40%', y: '22%' },
       name: { en: 'Bhai Daya Singh Ji', pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Daya Ram', pa: 'ਦਇਆ ਰਾਮ' },
@@ -276,6 +286,7 @@ const displayContent: DisplayContent = {
     {
       id: 2,
       imagePath: '/assets/images/pyara2.jpg',
+      silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '48%', y: '26%' },
       name: { en: 'Bhai Dharam Singh Ji', pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Dharam Das', pa: 'ਧਰਮ ਦਾਸ' },
@@ -309,6 +320,7 @@ const displayContent: DisplayContent = {
     {
       id: 3,
       imagePath: '/assets/images/pyara3.jpg',
+      silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '64%', y: '46%' },
       name: { en: 'Bhai Himmat Singh Ji', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Himmat Rai', pa: 'ਹਿੰਮਤ ਰਾਏ' },
@@ -342,6 +354,7 @@ const displayContent: DisplayContent = {
     {
       id: 4,
       imagePath: '/assets/images/pyara4.jpg',
+      silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '30%', y: '41%' },
       name: { en: 'Bhai Mohkam Singh Ji', pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Mohkam Chand', pa: 'ਮੋਹਕਮ ਚੰਦ' },
@@ -375,6 +388,7 @@ const displayContent: DisplayContent = {
     {
       id: 5,
       imagePath: '/assets/images/pyara5.jpg',
+      silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '47%', y: '50%' },
       name: { en: 'Bhai Sahib Singh Ji', pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ' },
       birthName: { en: 'Sahib Chand', pa: 'ਸਾਹਿਬ ਚੰਦ' },
@@ -545,6 +559,7 @@ const displayContent: DisplayContent = {
   ],
   quiz: {
     intro: { en: 'Quick, polished recall rounds help visitors reinforce names, places, and significance before moving on.', pa: 'ਛੋਟੇ ਨਿੱਖਰੇ ਯਾਦਗਾਰੀ ਰਾਊਂਡ ਨਾਮਾਂ, ਥਾਵਾਂ ਅਤੇ ਮਹੱਤਵ ਨੂੰ ਅੱਗੇ ਵਧਣ ਤੋਂ ਪਹਿਲਾਂ ਮਜ਼ਬੂਤ ਕਰਦੇ ਹਨ।' },
+    questionsPerRound: 5,
     questions: [
       {
         prompt: { en: 'Who was the first Pyara to step forward on Vaisakhi 1699?', pa: 'ਵਿਸਾਖੀ 1699 ਵਿੱਚ ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਕਿਹੜੇ ਪਿਆਰੇ ਅੱਗੇ ਆਏ?' },
@@ -596,6 +611,182 @@ const displayContent: DisplayContent = {
         correctIndex: 1,
         insight: { en: 'The display frames Akal Takht through its public authority and its relation to miri-piri.', pa: 'ਇਹ ਪ੍ਰਦਰਸ਼ਨੀ ਅਕਾਲ ਤਖ਼ਤ ਨੂੰ ਇਸ ਦੇ ਲੋਕ ਅਧਿਕਾਰ ਅਤੇ ਮੀਰੀ-ਪੀਰੀ ਨਾਲ ਸਬੰਧ ਰਾਹੀਂ ਦਰਸਾਉਂਦੀ ਹੈ।' },
       },
+      {
+        prompt: { en: 'What is the name of the initiation ceremony created on Vaisakhi 1699?', pa: '1699 ਦੀ ਵਿਸਾਖੀ ਨੂੰ ਸ਼ੁਰੂ ਕੀਤੇ ਦੀਖਿਆ ਸਮਾਰੋਹ ਦਾ ਨਾਮ ਕੀ ਹੈ?' },
+        options: [
+          { en: 'Anand Karaj', pa: 'ਅਨੰਦ ਕਾਰਜ' },
+          { en: 'Khande-di-Pahul', pa: 'ਖੰਡੇ ਦੀ ਪਾਹੁਲ' },
+          { en: 'Ardas', pa: 'ਅਰਦਾਸ' },
+        ],
+        correctIndex: 1,
+        insight: { en: 'Khande-di-Pahul is the Amrit ceremony where double-edged sword (khanda) stirs Amrit in an iron bowl.', pa: 'ਖੰਡੇ ਦੀ ਪਾਹੁਲ ਅੰਮ੍ਰਿਤ ਸਮਾਰੋਹ ਹੈ ਜਿੱਥੇ ਦੋ-ਧਾਰੀ ਖੰਡਾ ਲੋਹੇ ਦੇ ਬਾਟੇ ਵਿੱਚ ਅੰਮ੍ਰਿਤ ਨੂੰ ਹਿਲਾਉਂਦਾ ਹੈ।' },
+      },
+      {
+        prompt: { en: 'Bhai Himmat Singh Ji came from which city?', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ ਕਿਸ ਸ਼ਹਿਰ ਤੋਂ ਆਏ ਸਨ?' },
+        options: [
+          { en: 'Lahore', pa: 'ਲਾਹੌਰ' },
+          { en: 'Dwarka', pa: 'ਦਵਾਰਕਾ' },
+          { en: 'Jagannath Puri', pa: 'ਜਗਨਨਾਥ ਪੁਰੀ' },
+        ],
+        correctIndex: 2,
+        insight: { en: 'Bhai Himmat Singh Ji traveled from Jagannath Puri in Odisha to serve at Guru Ka Langar in Anandpur Sahib.', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ ਉੜੀਸਾ ਦੇ ਜਗਨਨਾਥ ਪੁਰੀ ਤੋਂ ਅਨੰਦਪੁਰ ਸਾਹਿਬ ਵਿੱਚ ਗੁਰੂ ਕੇ ਲੰਗਰ ਦੀ ਸੇਵਾ ਕਰਨ ਲਈ ਆਏ ਸਨ।' },
+      },
+      {
+        prompt: { en: 'What letters did Guru Gobind Singh Ji send to Emperor Aurangzeb?', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਨੇ ਔਰੰਗਜ਼ੇਬ ਬਾਦਸ਼ਾਹ ਨੂੰ ਕਿਹੜਾ ਪੱਤਰ ਭੇਜਿਆ?' },
+        options: [
+          { en: 'Zafarnama', pa: 'ਜ਼ਫ਼ਰਨਾਮਾ' },
+          { en: 'Hukamnama', pa: 'ਹੁਕਮਨਾਮਾ' },
+          { en: 'Ardas', pa: 'ਅਰਦਾਸ' },
+        ],
+        correctIndex: 0,
+        insight: { en: 'The Zafarnama (Letter of Victory) was carried by Bhai Daya Singh Ji to Aurangzeb in the Deccan.', pa: 'ਜ਼ਫ਼ਰਨਾਮਾ (ਜਿੱਤ ਦਾ ਪੱਤਰ) ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ ਦੁਆਰਾ ਦੱਖਣ ਵਿੱਚ ਔਰੰਗਜ਼ੇਬ ਤੱਕ ਪਹੁੰਚਾਇਆ ਗਿਆ।' },
+      },
+      {
+        prompt: { en: 'Which Pyara represented the south of India?', pa: 'ਕਿਹੜੇ ਪਿਆਰੇ ਨੇ ਭਾਰਤ ਦੇ ਦੱਖਣ ਦੀ ਪ੍ਰਤੀਨਿਧਤਾ ਕੀਤੀ?' },
+        options: [
+          { en: 'Bhai Dharam Singh Ji', pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ' },
+          { en: 'Bhai Mohkam Singh Ji', pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ' },
+          { en: 'Bhai Sahib Singh Ji', pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ' },
+        ],
+        correctIndex: 2,
+        insight: { en: 'Bhai Sahib Singh Ji came from Bidar in Karnataka, representing the southern regions of India.', pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ ਕਰਨਾਟਕ ਦੇ ਬੀਦਰ ਤੋਂ ਆਏ, ਭਾਰਤ ਦੇ ਦੱਖਣੀ ਖੇਤਰਾਂ ਦੀ ਪ੍ਰਤੀਨਿਧਤਾ ਕਰਦੇ ਹੋਏ।' },
+      },
+      {
+        prompt: { en: 'Takht Sri Keshgarh Sahib is located in which city?', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਕੇਸਗੜ੍ਹ ਸਾਹਿਬ ਕਿਸ ਸ਼ਹਿਰ ਵਿੱਚ ਸਥਿਤ ਹੈ?' },
+        options: [
+          { en: 'Amritsar', pa: 'ਅੰਮ੍ਰਿਤਸਰ' },
+          { en: 'Anandpur Sahib', pa: 'ਅਨੰਦਪੁਰ ਸਾਹਿਬ' },
+          { en: 'Nanded', pa: 'ਨਾਂਦੇੜ' },
+        ],
+        correctIndex: 1,
+        insight: { en: 'Keshgarh Sahib is in Anandpur Sahib, the fortress-city where the Khalsa was created.', pa: 'ਕੇਸਗੜ੍ਹ ਸਾਹਿਬ ਅਨੰਦਪੁਰ ਸਾਹਿਬ ਵਿੱਚ ਹੈ, ਉਹ ਕਿਲ੍ਹਾ-ਨਗਰੀ ਜਿੱਥੇ ਖ਼ਾਲਸੇ ਦੀ ਸਿਰਜਣਾ ਹੋਈ।' },
+      },
+      {
+        prompt: { en: 'What was Bhai Daya Singh Ji\'s birth name?', pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ ਦਾ ਜਨਮ ਨਾਮ ਕੀ ਸੀ?' },
+        options: [
+          { en: 'Daya Ram', pa: 'ਦਇਆ ਰਾਮ' },
+          { en: 'Dharam Das', pa: 'ਧਰਮ ਦਾਸ' },
+          { en: 'Himmat Rai', pa: 'ਹਿੰਮਤ ਰਾਏ' },
+        ],
+        correctIndex: 0,
+        insight: { en: 'Bhai Daya Singh Ji was born as Daya Ram in Lahore. The Guru gave him the name Daya Singh Ji.', pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ ਦਾ ਜਨਮ ਲਾਹੌਰ ਵਿੱਚ ਦਇਆ ਰਾਮ ਵਜੋਂ ਹੋਇਆ। ਗੁਰੂ ਜੀ ਨੇ ਉਨ੍ਹਾਂ ਨੂੰ ਦਯਾ ਸਿੰਘ ਜੀ ਦਾ ਨਾਮ ਦਿੱਤਾ।' },
+      },
+      {
+        prompt: { en: 'Which Takht is the birthplace of Guru Gobind Singh Ji?', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦਾ ਜਨਮ ਅਸਥਾਨ ਕਿਹੜਾ ਤਖ਼ਤ ਹੈ?' },
+        options: [
+          { en: 'Takht Sri Hazur Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਹਜ਼ੂਰ ਸਾਹਿਬ' },
+          { en: 'Takht Sri Damdama Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਦਮਦਮਾ ਸਾਹਿਬ' },
+          { en: 'Takht Sri Patna Sahib', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਪਟਨਾ ਸਾਹਿਬ' },
+        ],
+        correctIndex: 2,
+        insight: { en: 'Guru Gobind Singh Ji (born Gobind Rai) was born in Patna, Bihar in December 1666.', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ (ਜਨਮ ਨਾਮ ਗੋਬਿੰਦ ਰਾਏ) ਦਾ ਜਨਮ ਦਸੰਬਰ 1666 ਵਿੱਚ ਪਟਨਾ, ਬਿਹਾਰ ਵਿੱਚ ਹੋਇਆ।' },
+      },
+      {
+        prompt: { en: 'What occupation did Bhai Mohkam Singh Ji have before joining the Khalsa?', pa: 'ਖ਼ਾਲਸੇ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ ਦਾ ਕਿੱਤਾ ਕੀ ਸੀ?' },
+        options: [
+          { en: 'Farmer', pa: 'ਕਿਸਾਨ' },
+          { en: 'Calico printer and tailor', pa: 'ਛਾਪਾਕਾਰ ਅਤੇ ਦਰਜ਼ੀ' },
+          { en: 'Water carrier', pa: 'ਪਾਣੀ ਢੋਣ ਵਾਲਾ' },
+        ],
+        correctIndex: 1,
+        insight: { en: 'Bhai Mohkam Singh Ji was a craftsman — a calico printer and tailor — from Dwarka, Gujarat.', pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ ਗੁਜਰਾਤ ਦੇ ਦਵਾਰਕਾ ਤੋਂ ਇੱਕ ਕਾਰੀਗਰ — ਛਾਪਾਕਾਰ ਅਤੇ ਦਰਜ਼ੀ — ਸਨ।' },
+      },
+      {
+        prompt: { en: 'What does the word "Takht" mean in Punjabi?', pa: 'ਪੰਜਾਬੀ ਵਿੱਚ "ਤਖ਼ਤ" ਸ਼ਬਦ ਦਾ ਕੀ ਅਰਥ ਹੈ?' },
+        options: [
+          { en: 'Sacred river', pa: 'ਪਵਿੱਤਰ ਦਰਿਆ' },
+          { en: 'Throne or seat of authority', pa: 'ਸਿੰਘਾਸਣ ਜਾਂ ਅਧਿਕਾਰ ਦਾ ਆਸਣ' },
+          { en: 'Holy scripture', pa: 'ਪਵਿੱਤਰ ਗ੍ਰੰਥ' },
+        ],
+        correctIndex: 1,
+        insight: { en: 'Takht means throne or seat of authority. The five Takhts are the supreme seats of Sikh institutional authority.', pa: 'ਤਖ਼ਤ ਦਾ ਅਰਥ ਹੈ ਸਿੰਘਾਸਣ ਜਾਂ ਅਧਿਕਾਰ ਦਾ ਆਸਣ। ਪੰਜ ਤਖ਼ਤ ਸਿੱਖ ਸੰਸਥਾਗਤ ਅਧਿਕਾਰ ਦੇ ਸਰਵੋੱਚ ਆਸਣ ਹਨ।' },
+      },
+      {
+        prompt: { en: 'Bhai Dharam Singh Ji came from which ancient city associated with the Mahabharata?', pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ ਮਹਾਭਾਰਤ ਨਾਲ ਸੰਬੰਧਿਤ ਕਿਸ ਪੁਰਾਤਨ ਨਗਰੀ ਤੋਂ ਆਏ ਸਨ?' },
+        options: [
+          { en: 'Hastinapur', pa: 'ਹਸਤਿਨਾਪੁਰ' },
+          { en: 'Dwarka', pa: 'ਦਵਾਰਕਾ' },
+          { en: 'Puri', pa: 'ਪੁਰੀ' },
+        ],
+        correctIndex: 0,
+        insight: { en: 'Bhai Dharam Singh Ji was from Hastinapur, the legendary capital of the Kaurava kingdom from the Mahabharata.', pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ ਹਸਤਿਨਾਪੁਰ ਤੋਂ ਸਨ, ਮਹਾਭਾਰਤ ਦੀ ਕੌਰਵ ਰਾਜਧਾਨੀ ਵਜੋਂ ਪ੍ਰਸਿੱਧ ਨਗਰੀ।' },
+      },
+      {
+        prompt: { en: 'What twin principles does Sri Akal Takht Sahib embody?', pa: 'ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ ਕਿਹੜੇ ਦੋਹਰੇ ਸਿਧਾਂਤਾਂ ਦਾ ਰੂਪ ਹੈ?' },
+        options: [
+          { en: 'Courage and Equality', pa: 'ਹਿੰਮਤ ਅਤੇ ਬਰਾਬਰੀ' },
+          { en: 'Miri-Piri (Worldly and Spiritual Authority)', pa: 'ਮੀਰੀ-ਪੀਰੀ (ਸੰਸਾਰਕ ਅਤੇ ਅਧਿਆਤਮਿਕ ਅਧਿਕਾਰ)' },
+          { en: 'Prayer and Service', pa: 'ਅਰਦਾਸ ਅਤੇ ਸੇਵਾ' },
+        ],
+        correctIndex: 1,
+        insight: { en: 'Guru Hargobind Sahib Ji established Akal Takht to embody Miri-Piri — the union of worldly sovereignty and spiritual authority.', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ ਨੇ ਮੀਰੀ-ਪੀਰੀ ਦੇ ਰੂਪ ਵਜੋਂ ਅਕਾਲ ਤਖ਼ਤ ਦੀ ਸਥਾਪਨਾ ਕੀਤੀ — ਸੰਸਾਰਕ ਪ੍ਰਭੁਸੱਤਾ ਅਤੇ ਅਧਿਆਤਮਿਕ ਅਧਿਕਾਰ ਦਾ ਸੰਯੋਗ।' },
+      },
+      {
+        prompt: { en: 'Which battle did Bhai Himmat Singh Ji attain shaheedi in?', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ ਨੇ ਕਿਹੜੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦੀ ਪਾਈ?' },
+        options: [
+          { en: 'Battle of Muktsar', pa: 'ਮੁਕਤਸਰ ਦੀ ਜੰਗ' },
+          { en: 'Battle of Chamkaur Sahib', pa: 'ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ' },
+          { en: 'Battle of Bhangani', pa: 'ਭੰਗਾਣੀ ਦੀ ਜੰਗ' },
+        ],
+        correctIndex: 1,
+        insight: { en: 'Bhai Himmat Singh Ji attained shaheedi at the Battle of Chamkaur Sahib on December 7, 1705.', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ ਨੇ 7 ਦਸੰਬਰ 1705 ਨੂੰ ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦੀ ਪਾਈ।' },
+      },
+      {
+        prompt: { en: 'Who built the golden-domed structure at Takht Sri Hazur Sahib?', pa: 'ਤਖ਼ਤ ਸ੍ਰੀ ਹਜ਼ੂਰ ਸਾਹਿਬ ਦੀ ਸੁਨਹਿਰੀ-ਗੁੰਬਦ ਵਾਲੀ ਇਮਾਰਤ ਕਿਸਨੇ ਬਣਾਈ?' },
+        options: [
+          { en: 'Guru Gobind Singh Ji', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ' },
+          { en: 'Maharaja Ranjit Singh', pa: 'ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ' },
+          { en: 'Banda Singh Bahadur', pa: 'ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ' },
+        ],
+        correctIndex: 1,
+        insight: { en: 'Maharaja Ranjit Singh (Lion of Punjab) commissioned Hazur Sahib between 1832 and 1839.', pa: 'ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ (ਸ਼ੇਰ-ਏ-ਪੰਜਾਬ) ਨੇ 1832 ਤੋਂ 1839 ਦੇ ਵਿਚਕਾਰ ਹਜ਼ੂਰ ਸਾਹਿਬ ਬਣਵਾਇਆ।' },
+      },
+      {
+        prompt: { en: 'What does Damdama Sahib mean?', pa: 'ਦਮਦਮਾ ਸਾਹਿਬ ਦਾ ਕੀ ਅਰਥ ਹੈ?' },
+        options: [
+          { en: 'Seat of power', pa: 'ਸੱਤਾ ਦਾ ਆਸਣ' },
+          { en: 'Resting or breathing place', pa: 'ਵਿਸ਼ਰਾਮ ਜਾਂ ਸਾਹ ਲੈਣ ਦਾ ਸਥਾਨ' },
+          { en: 'Birthplace', pa: 'ਜਨਮ ਅਸਥਾਨ' },
+        ],
+        correctIndex: 1,
+        insight: { en: 'Damdama means a resting or breathing place. Guru Gobind Singh Ji rested and restored his sangat here after the devastating battles of 1704-05.', pa: 'ਦਮਦਮਾ ਦਾ ਅਰਥ ਹੈ ਵਿਸ਼ਰਾਮ ਜਾਂ ਸਾਹ ਲੈਣ ਦਾ ਸਥਾਨ। ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਨੇ 1704-05 ਦੀਆਂ ਵਿਨਾਸ਼ਕਾਰੀ ਲੜਾਈਆਂ ਤੋਂ ਬਾਅਦ ਇੱਥੇ ਵਿਸ਼ਰਾਮ ਕੀਤਾ।' },
+      },
+      {
+        prompt: { en: 'The Khanda symbol consists of how many elements?', pa: 'ਖੰਡਾ ਚਿੰਨ੍ਹ ਕਿੰਨੇ ਤੱਤਾਂ ਦਾ ਬਣਿਆ ਹੈ?' },
+        options: [
+          { en: 'Two', pa: 'ਦੋ' },
+          { en: 'Three', pa: 'ਤਿੰਨ' },
+          { en: 'Four', pa: 'ਚਾਰ' },
+        ],
+        correctIndex: 2,
+        insight: { en: 'The Khanda symbol has four elements: the double-edged khanda in the center, a chakkar (circle), and two kirpans on either side.', pa: 'ਖੰਡਾ ਚਿੰਨ੍ਹ ਦੇ ਚਾਰ ਤੱਤ ਹਨ: ਵਿਚਕਾਰ ਦੋ-ਧਾਰੀ ਖੰਡਾ, ਇੱਕ ਚੱਕਰ, ਅਤੇ ਦੋਵੇਂ ਪਾਸੇ ਦੋ ਕਿਰਪਾਨਾਂ।' },
+      },
+    ],
+  },
+  faq: [
+    { question: { en: 'What is the Khalsa?', pa: 'ਖ਼ਾਲਸਾ ਕੀ ਹੈ?' }, answer: { en: 'The Khalsa is the initiated Sikh community created by Guru Gobind Singh Ji on Vaisakhi 1699. Members commit to a disciplined, egalitarian spiritual-warrior way of life, wearing five articles of faith (Panj Kakars).', pa: 'ਖ਼ਾਲਸਾ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੁਆਰਾ ਵਿਸਾਖੀ 1699 ਨੂੰ ਬਣਾਈ ਗਈ ਅੰਮ੍ਰਿਤਧਾਰੀ ਸਿੱਖ ਸੰਗਤ ਹੈ।' } },
+    { question: { en: 'What is Amrit Sanchar?', pa: 'ਅੰਮ੍ਰਿਤ ਸੰਚਾਰ ਕੀ ਹੈ?' }, answer: { en: 'Amrit Sanchar (also called Khande-di-Pahul) is the Sikh initiation ceremony, where the initiate receives sacred Amrit prepared with the double-edged khanda and Panj Banis.', pa: 'ਅੰਮ੍ਰਿਤ ਸੰਚਾਰ (ਖੰਡੇ ਦੀ ਪਾਹੁਲ) ਸਿੱਖ ਦੀਖਿਆ ਸਮਾਰੋਹ ਹੈ।' } },
+    { question: { en: 'What are the Panj Kakars?', pa: 'ਪੰਜ ਕਕਾਰ ਕੀ ਹਨ?' }, answer: { en: 'The five articles of faith worn by initiated Sikhs: Kesh (uncut hair), Kara (steel bracelet), Kanga (wooden comb), Kachera (cotton undergarment), and Kirpan (steel sword).', pa: 'ਅੰਮ੍ਰਿਤਧਾਰੀ ਸਿੱਖਾਂ ਦੁਆਰਾ ਪਹਿਨੇ ਜਾਣ ਵਾਲੇ ਪੰਜ ਵਿਸ਼ਵਾਸ ਦੇ ਲੇਖ: ਕੇਸ, ਕੜਾ, ਕੰਘਾ, ਕਛਹਿਰਾ, ਕਿਰਪਾਨ।' } },
+    { question: { en: 'What is a Hukamnama?', pa: 'ਹੁਕਮਨਾਮਾ ਕੀ ਹੈ?' }, answer: { en: 'A Hukamnama is an official edict or religious decree issued by the Jathedar of Sri Akal Takht Sahib, binding on all Sikhs worldwide.', pa: 'ਹੁਕਮਨਾਮਾ ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ ਦੇ ਜਥੇਦਾਰ ਦੁਆਰਾ ਜਾਰੀ ਕੀਤਾ ਅਧਿਕਾਰਕ ਧਾਰਮਿਕ ਫ਼ੈਸਲਾ ਹੈ।' } },
+    { question: { en: 'Who is Guru Granth Sahib Ji?', pa: 'ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਕੌਣ ਹਨ?' }, answer: { en: 'Guru Granth Sahib Ji is the eternal, living Guru of the Sikhs — the sacred scripture declared as the permanent and undying Guru by Guru Gobind Singh Ji before his passing in 1708.', pa: 'ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਸਿੱਖਾਂ ਦੇ ਸਦੀਵੀ ਜੀਵੰਤ ਗੁਰੂ ਹਨ।' } },
+    { question: { en: 'What is Miri-Piri?', pa: 'ਮੀਰੀ-ਪੀਰੀ ਕੀ ਹੈ?' }, answer: { en: 'Miri-Piri is the Sikh principle of dual sovereignty — Miri (temporal/worldly authority) and Piri (spiritual authority) held together, represented by the two swords worn by Guru Hargobind Sahib Ji.', pa: 'ਮੀਰੀ-ਪੀਰੀ ਦੋਹਰੀ ਪ੍ਰਭੂਸੱਤਾ ਦਾ ਸਿੱਖ ਸਿਧਾਂਤ ਹੈ।' } },
+  ],
+  timeline: [
+    { year: '1469', title: { en: 'Birth of Guru Nanak Dev Ji', pa: 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The first Sikh Guru is born in Talwandi (now Nankana Sahib, Pakistan), founding the Sikh faith.', pa: 'ਪਹਿਲੇ ਸਿੱਖ ਗੁਰੂ ਦਾ ਤਲਵੰਡੀ ਵਿੱਚ ਜਨਮ ਹੋਇਆ।' }, mapPoint: { x: '38%', y: '18%' } },
+    { year: '1606', title: { en: 'Sri Akal Takht Sahib founded', pa: 'ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ ਦੀ ਸਥਾਪਨਾ' }, description: { en: 'Guru Hargobind Sahib Ji establishes the Akal Takht in Amritsar, embodying the principle of Miri-Piri.', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ ਅੰਮ੍ਰਿਤਸਰ ਵਿੱਚ ਅਕਾਲ ਤਖ਼ਤ ਦੀ ਸਥਾਪਨਾ ਕਰਦੇ ਹਨ।' }, mapPoint: { x: '42%', y: '21%' } },
+    { year: '1666', title: { en: 'Birth of Guru Gobind Singh Ji', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦਾ ਜਨਮ' }, description: { en: 'The 10th Guru is born in Patna, Bihar as Gobind Rai.', pa: 'ਦਸਵੇਂ ਗੁਰੂ ਦਾ ਜਨਮ ਪਟਨਾ, ਬਿਹਾਰ ਵਿੱਚ ਗੋਬਿੰਦ ਰਾਏ ਵਜੋਂ ਹੋਇਆ।' }, mapPoint: { x: '63%', y: '34%' } },
+    { year: '1699', title: { en: 'Creation of the Khalsa', pa: 'ਖ਼ਾਲਸੇ ਦੀ ਸਿਰਜਣਾ' }, description: { en: 'Guru Gobind Singh Ji creates the Panj Pyare and the Khalsa Panth at Anandpur Sahib on Vaisakhi.', pa: 'ਵਿਸਾਖੀ ਨੂੰ ਅਨੰਦਪੁਰ ਸਾਹਿਬ ਵਿੱਚ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਪੰਜ ਪਿਆਰੇ ਅਤੇ ਖ਼ਾਲਸਾ ਪੰਥ ਦੀ ਸਿਰਜਣਾ ਕਰਦੇ ਹਨ।' }, mapPoint: { x: '45%', y: '22%' } },
+    { year: '1705', title: { en: 'Battle of Chamkaur Sahib', pa: 'ਚਮਕੌਰ ਸਾਹਿਬ ਦੀ ਜੰਗ' }, description: { en: 'A historic battle where the Guru and a handful of Sikhs faced a massive Mughal army. Several Panj Pyare attain shaheedi.', pa: 'ਇੱਕ ਇਤਿਹਾਸਕ ਜੰਗ ਜਿੱਥੇ ਗੁਰੂ ਅਤੇ ਕੁਝ ਸਿੱਖਾਂ ਨੇ ਵੱਡੀ ਮੁਗਲ ਫ਼ੌਜ ਦਾ ਸਾਹਮਣਾ ਕੀਤਾ।' }, mapPoint: { x: '44%', y: '23%' } },
+    { year: '1708', title: { en: 'Guru Granth Sahib Ji declared eternal Guru', pa: 'ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਸਦੀਵੀ ਗੁਰੂ ਘੋਸ਼ਿਤ' }, description: { en: 'At Hazur Sahib in Nanded, Guru Gobind Singh Ji declares the Guru Granth Sahib Ji as the eternal, living Guru of the Sikhs.', pa: 'ਨਾਂਦੇੜ ਵਿੱਚ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਨੂੰ ਸਦੀਵੀ ਜੀਵੰਤ ਗੁਰੂ ਘੋਸ਼ਿਤ ਕਰਦੇ ਹਨ।' }, mapPoint: { x: '47%', y: '47%' } },
+  ],
+  onboarding: {
+    welcomeTitle: { en: 'Welcome. Sat Sri Akal.', pa: 'ਜੀ ਆਇਆਂ ਨੂੰ। ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ।' },
+    welcomeSubtitle: { en: 'Choose where to begin your journey.', pa: 'ਆਪਣੀ ਯਾਤਰਾ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਚੁਣੋ।' },
+    modeTitle: { en: 'What would you like to explore?', pa: 'ਤੁਸੀਂ ਕੀ ਜਾਣਨਾ ਚਾਹੁੰਦੇ ਹੋ?' },
+    modes: [
+      { id: 'start-here', icon: '☬', title: { en: 'Start Here', pa: 'ਇੱਥੋਂ ਸ਼ੁਰੂ ਕਰੋ' }, description: { en: 'A guided first look at Sikh history and the Khalsa.', pa: 'ਸਿੱਖ ਇਤਿਹਾਸ ਅਤੇ ਖ਼ਾਲਸੇ ਬਾਰੇ ਮਾਰਗਦਰਸ਼ਿਤ ਪਹਿਲੀ ਝਲਕ।' } },
+      { id: 'pyare', icon: '⚔️', title: { en: 'Who were the Panj Pyare?', pa: 'ਪੰਜ ਪਿਆਰੇ ਕੌਣ ਸਨ?' }, description: { en: 'Five brave souls who gave their heads for the Khalsa.', pa: 'ਪੰਜ ਦਲੇਰ ਆਤਮਾਵਾਂ ਜਿਨ੍ਹਾਂ ਨੇ ਖ਼ਾਲਸੇ ਲਈ ਸਿਰ ਦਿੱਤਾ।' } },
+      { id: 'takhts', icon: '🕌', title: { en: 'What are the Panj Takht?', pa: 'ਪੰਜ ਤਖ਼ਤ ਕੀ ਹਨ?' }, description: { en: 'Five sacred seats of Sikh authority across South Asia.', pa: 'ਦੱਖਣੀ ਏਸ਼ੀਆ ਵਿੱਚ ਸਿੱਖ ਅਧਿਕਾਰ ਦੇ ਪੰਜ ਪਵਿੱਤਰ ਅਸਥਾਨ।' } },
     ],
   },
 };
