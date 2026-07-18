@@ -1,4 +1,6 @@
 import QRCode from 'qrcode';
+import { initPressFeedback, observeReveals, transitionRender } from './animate';
+import type { TransitionType } from './animate';
 import displayContent from '../data/display-content';
 import {
   advanceQuiz,
@@ -279,7 +281,7 @@ function renderAttract(): void {
               <p class="text-xs font-semibold uppercase tracking-[0.28em] text-gold-300">${text(content.ui.labels.collaborationWith)}</p>
               <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.home.collaborationBanner)}</p>
             </div>
-            <button type="button" data-action="start" class="rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 shadow-lg shadow-gold-400/20 transition active:scale-[0.98]">${text(content.ui.attractButton)}</button>
+            <button type="button" data-action="start" data-ripple class="cta-glow relative overflow-hidden rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 shadow-lg shadow-gold-400/20 transition active:scale-[0.98]">${text(content.ui.attractButton)}</button>
           </div>
         </div>
         <p class="text-sm uppercase tracking-[0.28em] text-cloud-400 ${classForLanguage()}">${text(content.ui.attractInstruction)}</p>
@@ -296,7 +298,7 @@ function renderInstallBanner(): string {
     <div class="install-banner" role="status">
       <span class="${classForLanguage()}">${isIos ? text(content.ui.labels.installBannerIos) : text(content.ui.labels.installBannerAndroid)}</span>
       <div class="flex shrink-0 items-center gap-2">
-        ${isIos ? '' : `<button type="button" data-action="install-app" class="install-banner__cta">${text(content.ui.labels.installAction)}</button>`}
+        ${isIos ? '' : `<button type="button" data-action="install-app" data-ripple class="install-banner__cta relative overflow-hidden">${text(content.ui.labels.installAction)}</button>`}
         <button type="button" data-action="dismiss-install" aria-label="${text(content.ui.labels.dismissAction)}" class="install-banner__dismiss">✕</button>
       </div>
     </div>
@@ -447,6 +449,7 @@ function renderNav(): void {
             <button
               type="button"
               data-nav="${view}"
+              data-ripple
               class="nav-pill min-w-[4.75rem] md:min-w-0"
               data-active="${state.view === view}"
               aria-current="${state.view === view ? 'page' : 'false'}"
@@ -472,7 +475,7 @@ function renderNav(): void {
 
 function renderFeatureCard(feature: HomeFeature): string {
   return `
-    <button type="button" data-home-target="${feature.id}" class="glass-panel h-full p-6 text-left transition duration-200 hover:border-gold-300/30 active:scale-[0.99]">
+    <button type="button" data-home-target="${feature.id}" data-ripple class="glass-panel relative h-full overflow-hidden p-6 text-left transition duration-200 hover:border-gold-300/30 active:scale-[0.99]">
       <div class="mb-5 flex items-center justify-between gap-4">
         <div>
           <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(feature.eyebrow)}</p>
@@ -516,6 +519,14 @@ function renderMapImage(imagePath: string): string {
 }
 
 function renderPyareMap(selected: PanjPyaraProfile): string {
+  // True only when this render reflects an actual selection change (not a
+  // re-render for an unrelated reason like a language/theme switch) — gates
+  // the one-shot pop/slide-in animations below so they don't replay every
+  // time this map happens to redraw. lastRenderedPyaraId still holds the
+  // *previous* selection at this point in the render cycle (render() only
+  // updates it after this function returns).
+  const justSelected = selected.id !== lastRenderedPyaraId;
+
   return `
     <div class="glass-panel geo-map-panel relative overflow-hidden map-expanded">
       ${renderMapImage('/assets/images/panj-pyare-map.jpg')}
@@ -527,7 +538,8 @@ function renderPyareMap(selected: PanjPyaraProfile): string {
               class="pin-button"
               data-pyara="${pyara.id}"
               data-active="${pyara.id === selected.id}"
-              style="left:${pyara.mapPoint.x}; top:${pyara.mapPoint.y};"
+              data-just-selected="${justSelected && pyara.id === selected.id}"
+              style="left:${pyara.mapPoint.x}; top:${pyara.mapPoint.y}; view-transition-name:pin-pyara-${pyara.id};"
               aria-label="${text(pyara.name)}"
             >
               ${index + 1}
@@ -535,6 +547,7 @@ function renderPyareMap(selected: PanjPyaraProfile): string {
             <div
               class="pin-label"
               data-active="${pyara.id === selected.id}"
+              data-just-selected="${justSelected && pyara.id === selected.id}"
               style="left:${pyara.mapPoint.x}; top:${pyara.mapPoint.y};"
             >
               <span class="${classForLanguage()}">${text(pyara.name).replace(/Bhai /g, '').replace(/ Ji$/, '')}</span>
@@ -542,7 +555,7 @@ function renderPyareMap(selected: PanjPyaraProfile): string {
           `,
         )
         .join('')}
-      <div class="map-info-badge">
+      <div class="map-info-badge${justSelected ? ' slide-up' : ''}">
         <p class="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.originMap)}</p>
         <p class="mt-0.5 text-sm font-semibold text-white ${classForLanguage()}">${text(selected.name)}</p>
         <p class="text-xs text-cloud-400 ${classForLanguage()}">${text(selected.from)}</p>
@@ -616,7 +629,7 @@ function renderOnboarding(): string {
             ${content.onboarding.modes
               .map(
                 (mode) => `
-                  <button type="button" data-onboarding-mode="${mode.id}" class="onboarding-card">
+                  <button type="button" data-onboarding-mode="${mode.id}" data-ripple class="onboarding-card">
                     <div class="mb-4 text-5xl">${mode.icon}</div>
                     <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(mode.title)}</h4>
                     <p class="mt-3 text-sm leading-6 text-cloud-300 ${classForLanguage()}">${text(mode.description)}</p>
@@ -661,7 +674,7 @@ function renderHome(): string {
           ${content.home.differentiationCards
             .map(
               (card) => `
-                <button type="button" data-home-target="${card.id}" class="art-panel text-left transition duration-200 hover:border-gold-300/40 active:scale-[0.99]" data-has-image="true" style="--art-image:url('${asset(card.imagePath)}');">
+                <button type="button" data-home-target="${card.id}" data-ripple class="art-panel text-left transition duration-200 hover:border-gold-300/40 active:scale-[0.99]" data-has-image="true" style="--art-image:url('${asset(card.imagePath)}');">
                   <div class="art-panel__glow"></div>
                   <div class="relative z-10">
                     <h4 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(card.title)}</h4>
@@ -767,7 +780,7 @@ function renderPyare(): string {
         ${content.panjPyare
           .map(
             (item, index) => `
-              <button type="button" data-pyara="${item.id}" class="silhouette-avatar" data-active="${item.id === selected.id}" aria-label="${text(item.name)}">
+              <button type="button" data-pyara="${item.id}" data-ripple class="silhouette-avatar" data-active="${item.id === selected.id}" aria-label="${text(item.name)}">
                 <img src="${asset(item.silhouettePath)}" alt="${text(item.name)}" class="silhouette-avatar__img" />
                 <span class="silhouette-avatar__number">${index + 1}</span>
                 <span class="silhouette-avatar__name ${classForLanguage()}">${text(item.name).replace(/Bhai /g, '').replace(/ Ji$/, '')}</span>
@@ -795,7 +808,7 @@ function renderPyare(): string {
             ${content.panjPyare
               .map(
                 (item, index) => `
-                  <button type="button" data-pyara="${item.id}" class="storyline-step" data-active="${item.id === selected.id}">
+                  <button type="button" data-pyara="${item.id}" data-ripple class="storyline-step" data-active="${item.id === selected.id}">
                     <span class="storyline-step__index">${index + 1}</span>
                     <span class="${classForLanguage()}">${text(item.name)} — ${text(item.from)}</span>
                   </button>
@@ -810,6 +823,8 @@ function renderPyare(): string {
 }
 
 function renderTakhtMap(selected: TakhtProfile): string {
+  const justSelected = selected.id !== lastRenderedTakhtId;
+
   return `
     <div class="glass-panel geo-map-panel relative overflow-hidden map-expanded">
       ${renderMapImage('/assets/images/five-takht-map.jpg')}
@@ -821,7 +836,8 @@ function renderTakhtMap(selected: TakhtProfile): string {
               class="pin-button"
               data-takht="${takht.id}"
               data-active="${takht.id === selected.id}"
-              style="left:${takht.mapPoint.x}; top:${takht.mapPoint.y};"
+              data-just-selected="${justSelected && takht.id === selected.id}"
+              style="left:${takht.mapPoint.x}; top:${takht.mapPoint.y}; view-transition-name:pin-takht-${takht.id};"
               aria-label="${text(takht.name)}"
             >
               ${takht.id === selected.id ? '☬' : index + 1}
@@ -829,6 +845,7 @@ function renderTakhtMap(selected: TakhtProfile): string {
             <div
               class="pin-label"
               data-active="${takht.id === selected.id}"
+              data-just-selected="${justSelected && takht.id === selected.id}"
               style="left:${takht.mapPoint.x}; top:${takht.mapPoint.y};"
             >
               <span class="${classForLanguage()}">${text(takht.name).replace(/Takht Sri |Sri |Takht /g, '').replace(/ Sahib$/, '')}</span>
@@ -836,7 +853,7 @@ function renderTakhtMap(selected: TakhtProfile): string {
           `,
         )
         .join('')}
-      <div class="map-info-badge">
+      <div class="map-info-badge${justSelected ? ' slide-up' : ''}">
         <p class="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.sacredGeography)}</p>
         <p class="mt-0.5 text-sm font-semibold text-white ${classForLanguage()}">${text(selected.name)}</p>
         <p class="text-xs text-cloud-400 ${classForLanguage()}">${text(selected.location)}</p>
@@ -922,7 +939,7 @@ function renderTakhts(): string {
         ${content.takhts
           .map(
             (takht, index) => `
-              <button type="button" data-takht="${takht.id}" class="silhouette-avatar" data-active="${takht.id === selected.id}" aria-label="${text(takht.name)}">
+              <button type="button" data-takht="${takht.id}" data-ripple class="silhouette-avatar" data-active="${takht.id === selected.id}" aria-label="${text(takht.name)}">
                 <img src="${asset(takht.silhouettePath ?? '/assets/images/gurdwara-silhouette.svg')}" alt="${text(takht.name)}" class="silhouette-avatar__img" />
                 <span class="silhouette-avatar__number">${index + 1}</span>
                 <span class="silhouette-avatar__name ${classForLanguage()}">${text(takht.name).replace(/Takht Sri |Sri |Takht /g, '').replace(/ Sahib$/, '')}</span>
@@ -950,7 +967,7 @@ function renderTakhts(): string {
             ${content.takhts
               .map(
                 (takht, index) => `
-                  <button type="button" data-takht="${takht.id}" class="storyline-step" data-active="${takht.id === selected.id}">
+                  <button type="button" data-takht="${takht.id}" data-ripple class="storyline-step" data-active="${takht.id === selected.id}">
                     <span class="storyline-step__index">${index + 1}</span>
                     <span class="${classForLanguage()}">${text(takht.name)} — ${text(takht.location)}</span>
                   </button>
@@ -1237,7 +1254,7 @@ function renderResources(): string {
                       <div>
                         <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
                         <p class="mt-2 max-w-xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(site.previewDescription)}</p>
-                        <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.visitSite)}</a>
+                        <a href="${site.url}" target="_blank" rel="noopener noreferrer" data-ripple class="cta-glow relative mt-4 inline-flex items-center gap-2 overflow-hidden rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.visitSite)}</a>
                       </div>
                       <div class="qr-badge">
                         ${qrDataUrls[site.id] ? `<img src="${qrDataUrls[site.id]}" alt="QR code for ${site.title}" class="qr-badge__img" width="80" height="80" />` : ''}
@@ -1254,7 +1271,7 @@ function renderResources(): string {
           ${liveSites
             .map(
               (site, index) => `
-                <button type="button" data-carousel-dot="${index}" aria-label="${text(content.ui.labels.livePreviews)}: ${site.title}" aria-current="${index === resourceCarouselIndex}" class="flex h-6 w-6 items-center justify-center">
+                <button type="button" data-carousel-dot="${index}" aria-label="${text(content.ui.labels.livePreviews)}: ${site.title}" aria-current="${index === resourceCarouselIndex}" class="flex h-11 w-11 items-center justify-center">
                   <span class="h-2 w-2 rounded-full transition ${index === resourceCarouselIndex ? 'bg-gold-400' : 'bg-white/30'}"></span>
                 </button>
               `,
@@ -1690,6 +1707,8 @@ function renderView(): void {
       break;
     }
   }
+
+  observeReveals(viewContent);
 }
 
 function scheduleInactivityReset(): void {
@@ -1707,6 +1726,8 @@ function scheduleInactivityReset(): void {
 }
 
 let lastAnnouncedView: View | null = null;
+let lastRenderedPyaraId: number | null = null;
+let lastRenderedTakhtId: string | null = null;
 
 // Aggregate-only multi-kiosk analytics: a random, non-identifying token
 // generated once per device (never tied to a visitor) lets a gurdwara with
@@ -1744,36 +1765,51 @@ function sendAnalyticsPing(view: View, event: 'view' | 'heartbeat'): void {
 }
 
 function render(): void {
-  if (state.awake && journeyViews.includes(state.view)) {
-    visitedViews.add(state.view);
-  }
+  const viewChanging = state.awake && state.view !== lastAnnouncedView;
+  const selectionChanging =
+    !viewChanging &&
+    state.awake &&
+    (state.selectedPyaraId !== lastRenderedPyaraId || state.selectedTakhtId !== lastRenderedTakhtId);
+  const transitionType: TransitionType = viewChanging ? 'view' : selectionChanging ? 'selection' : 'none';
 
-  renderAttract();
-  renderHeader();
-  renderNav();
-  renderView();
+  const usedViewTransitionApi = transitionRender(() => {
+    if (state.awake && journeyViews.includes(state.view)) {
+      visitedViews.add(state.view);
+    }
 
-  if (state.awake) {
-    attractScreen.classList.add('hidden');
-    mainShell.classList.remove('hidden');
-    mainShell.classList.add('flex');
-  } else {
-    attractScreen.classList.remove('hidden');
-    mainShell.classList.add('hidden');
-    mainShell.classList.remove('flex');
-  }
+    renderAttract();
+    renderHeader();
+    renderNav();
+    renderView();
 
-  if (state.awake && state.view !== lastAnnouncedView) {
-    lastAnnouncedView = state.view;
-    viewAnnouncer.textContent = text(content.sections[state.view].title);
-    viewContent.focus({ preventScroll: true });
-    viewContent.scrollTop = 0;
-    sendAnalyticsPing(state.view, 'view');
+    if (state.awake) {
+      attractScreen.classList.add('hidden');
+      mainShell.classList.remove('hidden');
+      mainShell.classList.add('flex');
+    } else {
+      attractScreen.classList.remove('hidden');
+      mainShell.classList.add('hidden');
+      mainShell.classList.remove('flex');
+    }
 
-    // Restart the transition animation on real navigation only (not every
-    // in-view interaction) by removing and re-adding the class to force a
-    // reflow between the two — reduced-motion users get the same class but
-    // the global media query collapses its duration to ~0.
+    if (viewChanging) {
+      lastAnnouncedView = state.view;
+      viewAnnouncer.textContent = text(content.sections[state.view].title);
+      viewContent.focus({ preventScroll: true });
+      viewContent.scrollTop = 0;
+      sendAnalyticsPing(state.view, 'view');
+    }
+  }, transitionType);
+
+  lastRenderedPyaraId = state.selectedPyaraId;
+  lastRenderedTakhtId = state.selectedTakhtId;
+
+  // Legacy fallback: only replay the CSS class-toggle animation when the
+  // native View Transition API didn't actually run (unsupported browser or
+  // reduced motion) — running both would double-animate the same swap.
+  // Reduced-motion users still get the class added, same as before; the
+  // global media query collapses its duration to ~0.
+  if (viewChanging && !usedViewTransitionApi) {
     viewContent.classList.remove('view-transition-in');
     void viewContent.offsetWidth;
     viewContent.classList.add('view-transition-in');
@@ -2026,6 +2062,7 @@ document.addEventListener('click', (event) => {
   }
 });
 
+initPressFeedback();
 applyDocumentDirection(state.language);
 applyDocumentTheme(state);
 render();
