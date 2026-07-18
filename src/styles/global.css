@@ -395,6 +395,55 @@ button {
   @apply flex h-7 w-7 items-center justify-center rounded-full border border-current/30 text-xs font-semibold;
 }
 
+/* Chapter navigation chrome for the Panj Pyare / Panj Takht guided journey —
+   reuses the .journey-indicator__dot visual language, enlarged, plus a
+   prev/next pair. Full variant sits inside the storyline panel; compact
+   variant sits beside the profile name header. */
+.chapter-bar {
+  @apply flex items-center gap-3;
+}
+
+.chapter-bar--compact {
+  @apply gap-2;
+}
+
+.chapter-bar__nav {
+  @apply relative overflow-hidden flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold-300/30 bg-white/[0.04] text-lg text-gold-300 transition duration-150 ease-out;
+}
+
+.chapter-bar__nav:hover:not(:disabled),
+.chapter-bar__nav:active:not(:disabled) {
+  @apply border-gold-300/60 bg-gold-400/12 text-white;
+}
+
+.chapter-bar__nav:disabled {
+  @apply cursor-not-allowed border-white/10 text-white/20;
+}
+
+.chapter-bar__meta {
+  @apply flex flex-1 flex-col items-center gap-2;
+}
+
+.chapter-bar__label {
+  @apply text-center text-xs font-semibold uppercase tracking-[0.22em] text-gold-300;
+}
+
+.chapter-bar__count {
+  @apply min-w-[3.5rem] text-center text-xs font-semibold uppercase tracking-[0.18em] text-gold-300;
+}
+
+.chapter-bar__dots {
+  @apply flex items-center gap-1.5;
+}
+
+.chapter-dot {
+  @apply h-2 w-2 rounded-full bg-white/20 transition;
+}
+
+.chapter-dot[data-filled='true'] {
+  @apply bg-gold-400;
+}
+
 .art-panel {
   @apply relative overflow-hidden rounded-[24px] border border-gold-300/20 bg-night-900/60 px-6 py-6;
   min-height: 16rem;

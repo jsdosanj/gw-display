@@ -18,6 +18,8 @@ import {
   setLanguage,
   setTheme,
   startQuiz,
+  stepPyara,
+  stepTakht,
   submitQuizAnswer,
   wakeKiosk,
 } from '../lib/kiosk-state';
@@ -495,13 +497,19 @@ function renderArtworkPanel(
   eyebrow: string,
   imageAlt: string,
   variant: 'portrait' | 'full-photo' = 'portrait',
+  vtName = '',
 ): string {
-  const imageStyle = imagePath ? `style="--art-image:url('${asset(imagePath)}');"` : '';
+  // vtName gives this panel a stable view-transition-name so, when a Pyara/
+  // Takht selection changes (transitionRender's 'selection' type), the API
+  // automatically morphs the outgoing portrait into the incoming one instead
+  // of a flat crossfade of the whole panel.
+  const imageStyle = imagePath ? `--art-image:url('${asset(imagePath)}');` : '';
+  const vtStyle = vtName ? `view-transition-name:${vtName};` : '';
   const imageRole = imagePath ? `role="img" aria-label="${imageAlt}"` : '';
   const variantClass = variant === 'full-photo' ? ' art-panel--full-photo' : '';
 
   return `
-    <div class="art-panel${variantClass} mb-6" data-has-image="${String(Boolean(imagePath))}" ${imageStyle} ${imageRole}>
+    <div class="art-panel${variantClass} mb-6" data-has-image="${String(Boolean(imagePath))}" style="${imageStyle}${vtStyle}" ${imageRole}>
       <div class="art-panel__glow"></div>
       <div class="relative z-10">
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300">${eyebrow}</p>
@@ -705,11 +713,68 @@ function renderInfoBox(labelObj: LocalizedText, value: string): string {
   `;
 }
 
+// Shared chapter-navigation chrome for the Panj Pyare / Panj Takht "guided
+// journey" — a compact variant near the profile header (prev/next only) and
+// a full variant with the chapter name + 5-dot progress, reused by both
+// renderPyare() and renderTakhts(). `kind` feeds the data-action the click
+// delegation block (below) reads to call stepPyara/stepTakht.
+function renderChapterBar(kind: 'pyara' | 'takht', total: number, currentIndex: number, chapterName: string, compact: boolean): string {
+  const canPrev = currentIndex > 0;
+  const canNext = currentIndex < total - 1;
+
+  const prevButton = `
+    <button
+      type="button"
+      data-action="${kind}-step"
+      data-step="-1"
+      data-ripple
+      class="chapter-bar__nav"
+      ${canPrev ? '' : 'disabled aria-disabled="true"'}
+      aria-label="${text(content.ui.labels.previousChapter)}"
+    ><span aria-hidden="true">←</span></button>
+  `;
+
+  const nextButton = `
+    <button
+      type="button"
+      data-action="${kind}-step"
+      data-step="1"
+      data-ripple
+      class="chapter-bar__nav"
+      ${canNext ? '' : 'disabled aria-disabled="true"'}
+      aria-label="${text(content.ui.labels.nextChapter)}"
+    ><span aria-hidden="true">→</span></button>
+  `;
+
+  const dots = Array.from({ length: total }, (_, index) => `<span class="chapter-dot" data-filled="${index <= currentIndex}"></span>`).join('');
+
+  if (compact) {
+    return `
+      <div class="chapter-bar chapter-bar--compact">
+        ${prevButton}
+        <span class="chapter-bar__count ${classForLanguage()}">${currentIndex + 1} / ${total}</span>
+        ${nextButton}
+      </div>
+    `;
+  }
+
+  return `
+    <div class="chapter-bar">
+      ${prevButton}
+      <div class="chapter-bar__meta">
+        <p class="chapter-bar__label ${classForLanguage()}">${text(content.ui.labels.chapterLabel)} ${currentIndex + 1} / ${total} — ${chapterName}</p>
+        <div class="chapter-bar__dots" role="status" aria-label="${text(content.ui.labels.chapterLabel)} ${currentIndex + 1} / ${total}">${dots}</div>
+      </div>
+      ${nextButton}
+    </div>
+  `;
+}
+
 function renderPyare(): string {
   const selected = content.panjPyare.find((item) => item.id === state.selectedPyaraId) ?? content.panjPyare[0];
 
   const beforeKhalsaHtml = `
-    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2" data-reveal>
       <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.beforeKhalsa)}</p>
       <div class="mt-3 grid gap-3 sm:grid-cols-3">
         ${renderInfoBox(content.ui.labels.previousOccupation, text(selected.occupation))}
@@ -720,7 +785,7 @@ function renderPyare(): string {
   `;
 
   const storyHtml = `
-    <div class="story-panel detail-card">
+    <div class="story-panel detail-card" data-reveal>
       <div class="flex flex-wrap items-center justify-between gap-3">
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
         ${renderListenButton(selected.story ?? selected.details)}
@@ -730,7 +795,7 @@ function renderPyare(): string {
   `;
 
   const afterKhalsaHtml = selected.accomplishments || selected.roles
-    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.afterKhalsa)}</p>
          ${selected.accomplishments ? `<p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}"><strong class="${classForLanguage()}">${text(content.ui.labels.accomplishments)}:</strong> ${text(selected.accomplishments)}</p>` : ''}
          ${selected.roles ? `<p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}"><strong class="${classForLanguage()}">${text(content.ui.labels.roles)}:</strong> ${text(selected.roles)}</p>` : ''}
@@ -738,7 +803,7 @@ function renderPyare(): string {
     : '';
 
   const funFactHtml = selected.funFact
-    ? `<div class="fact-card detail-card">
+    ? `<div class="fact-card detail-card" data-reveal>
          <div class="fact-card__icon">✦</div>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.funFact)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.funFact)}</p>
@@ -746,21 +811,21 @@ function renderPyare(): string {
     : '';
 
   const shaheediHtml = selected.shaheedi
-    ? `<div class="detail-card rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5">
+    ? `<div class="detail-card rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-rose-300 ${classForLanguage()}">${text(content.ui.labels.shaheedi)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.shaheedi)}</p>
        </div>`
     : '';
 
   const lessonsHtml = selected.lessons
-    ? `<div class="story-panel detail-card">
+    ? `<div class="story-panel detail-card" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.lessons)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.lessons)}</p>
        </div>`
     : '';
 
   const languageQualitiesHtml = selected.language || selected.qualities
-    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
          ${selected.qualities ? `<p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.qualities)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.qualities)}</p>` : ''}
          ${selected.language ? `<p class="${selected.qualities ? 'mt-5' : ''} text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.language)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.language)}</p>` : ''}
        </div>`
@@ -769,6 +834,8 @@ function renderPyare(): string {
   const pyareDetailCards = [beforeKhalsaHtml, storyHtml, afterKhalsaHtml, funFactHtml, shaheediHtml, lessonsHtml, languageQualitiesHtml]
     .filter(Boolean)
     .join('');
+
+  const pyareIndex = Math.max(content.panjPyare.findIndex((item) => item.id === selected.id), 0);
 
   return `
     <div class="grid gap-6">
@@ -791,19 +858,22 @@ function renderPyare(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title), `Commemorative portrait artwork of ${text(selected.name, 'en')}, one of the Panj Pyare`)}
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
-          <h3 class="mt-2 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
-          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.birthName)}: ${text(selected.birthName)} &middot; ${selected.years}</p>
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title), `Commemorative portrait artwork of ${text(selected.name, 'en')}, one of the Panj Pyare`, 'portrait', 'profile-art')}
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
+            <h3 class="mt-2 text-4xl font-semibold text-white ${classForLanguage()}" style="view-transition-name:profile-title;">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
+            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.birthName)}: ${text(selected.birthName)} &middot; ${selected.years}</p>
+          </div>
+          ${renderChapterBar('pyara', content.panjPyare.length, pyareIndex, text(selected.name), true)}
         </div>
 
-        <div class="detail-grid mt-6">
+        <div class="detail-grid mt-6" data-reveal-group>
           ${pyareDetailCards}
         </div>
 
         <div class="storyline-panel mt-8">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
+          ${renderChapterBar('pyara', content.panjPyare.length, pyareIndex, text(selected.name), false)}
           <div class="mt-4 grid gap-2 lg:grid-cols-2">
             ${content.panjPyare
               .map(
@@ -866,21 +936,21 @@ function renderTakhts(): string {
   const selected = content.takhts.find((item) => item.id === state.selectedTakhtId) ?? content.takhts[0];
 
   const establishedByHtml = `
-    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
       <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>
       <p class="mt-3 text-base font-medium text-white ${classForLanguage()}">${text(selected.establishedBy)}</p>
     </div>
   `;
 
   const significanceHtml = `
-    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
       <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.significance)}</p>
       <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.significance)}</p>
     </div>
   `;
 
   const storyHtml = selected.story
-    ? `<div class="story-panel detail-card">
+    ? `<div class="story-panel detail-card" data-reveal>
          <div class="flex flex-wrap items-center justify-between gap-3">
            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
            ${renderListenButton(selected.story)}
@@ -890,7 +960,7 @@ function renderTakhts(): string {
     : '';
 
   const funFactHtml = selected.funFact
-    ? `<div class="fact-card detail-card">
+    ? `<div class="fact-card detail-card" data-reveal>
          <div class="fact-card__icon">✦</div>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.funFact)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.funFact)}</p>
@@ -898,28 +968,28 @@ function renderTakhts(): string {
     : '';
 
   const jathedaarHtml = selected.jathedaar
-    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.jathedaar)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.jathedaar)}</p>
        </div>`
     : '';
 
   const visitorsHtml = selected.visitorsInfo
-    ? `<div class="detail-card rounded-[24px] border border-emerald-300/15 bg-emerald-400/5 p-5">
+    ? `<div class="detail-card rounded-[24px] border border-emerald-300/15 bg-emerald-400/5 p-5" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300 ${classForLanguage()}">${text(content.ui.labels.visitorsInfo)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.visitorsInfo)}</p>
        </div>`
     : '';
 
   const gurusVisitedHtml = selected.gurusVisited
-    ? `<div class="story-panel detail-card">
+    ? `<div class="story-panel detail-card" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.gurusVisited)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.gurusVisited)}</p>
        </div>`
     : '';
 
   const areaImpactHtml = selected.areaHistory || selected.localImpact
-    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
          ${selected.areaHistory ? `<p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.areaHistory)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.areaHistory)}</p>` : ''}
          ${selected.localImpact ? `<p class="${selected.areaHistory ? 'mt-5' : ''} text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.localImpact)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.localImpact)}</p>` : ''}
        </div>`
@@ -928,6 +998,8 @@ function renderTakhts(): string {
   const takhtDetailCards = [establishedByHtml, significanceHtml, storyHtml, funFactHtml, jathedaarHtml, visitorsHtml, gurusVisitedHtml, areaImpactHtml]
     .filter(Boolean)
     .join('');
+
+  const takhtIndex = Math.max(content.takhts.findIndex((item) => item.id === selected.id), 0);
 
   return `
     <div class="grid gap-6">
@@ -950,19 +1022,22 @@ function renderTakhts(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title), `Photograph of ${text(selected.name, 'en')} in ${text(selected.location, 'en')}`, 'full-photo')}
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
-          <h3 class="mt-2 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
-          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title), `Photograph of ${text(selected.name, 'en')} in ${text(selected.location, 'en')}`, 'full-photo', 'profile-art')}
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
+            <h3 class="mt-2 text-3xl font-semibold text-white ${classForLanguage()}" style="view-transition-name:profile-title;">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
+            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
+          </div>
+          ${renderChapterBar('takht', content.takhts.length, takhtIndex, text(selected.name), true)}
         </div>
 
-        <div class="detail-grid mt-6">
+        <div class="detail-grid mt-6" data-reveal-group>
           ${takhtDetailCards}
         </div>
 
         <div class="storyline-panel mt-8">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
+          ${renderChapterBar('takht', content.takhts.length, takhtIndex, text(selected.name), false)}
           <div class="mt-4 grid gap-2 lg:grid-cols-2">
             ${content.takhts
               .map(
@@ -1978,6 +2053,15 @@ document.addEventListener('click', (event) => {
   const takhtTarget = target.closest<HTMLElement>('[data-takht]');
   if (takhtTarget?.dataset.takht) {
     state = selectTakht(state, takhtTarget.dataset.takht);
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const chapterStepTarget = target.closest<HTMLElement>('[data-action="pyara-step"], [data-action="takht-step"]');
+  if (chapterStepTarget) {
+    const delta = Number(chapterStepTarget.dataset.step ?? 0);
+    state = chapterStepTarget.dataset.action === 'pyara-step' ? stepPyara(state, content, delta) : stepTakht(state, content, delta);
     render();
     scheduleInactivityReset();
     return;

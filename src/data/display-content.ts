@@ -133,6 +133,9 @@ const displayContent: DisplayContent = {
       installBannerIos: { en: 'Tap Share, then "Add to Home Screen" for quick access.', pa: 'ਤੁਰੰਤ ਪਹੁੰਚ ਲਈ ਸ਼ੇਅਰ ਤੇ, ਫਿਰ "ਹੋਮ ਸਕ੍ਰੀਨ ਤੇ ਸ਼ਾਮਲ ਕਰੋ" ਤੇ ਟੈਪ ਕਰੋ।' },
       installAction: { en: 'Install', pa: 'ਇੰਸਟਾਲ ਕਰੋ' },
       dismissAction: { en: 'Dismiss', pa: 'ਖਾਰਜ ਕਰੋ' },
+      chapterLabel: { en: 'Chapter', pa: 'ਅਧਿਆਇ' },
+      previousChapter: { en: 'Previous', pa: 'ਪਿਛਲਾ' },
+      nextChapter: { en: 'Next', pa: 'ਅਗਲਾ' },
     },
   },
   home: {

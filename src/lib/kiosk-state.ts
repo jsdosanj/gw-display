@@ -114,6 +114,25 @@ export function selectTakht(state: KioskState, selectedTakhtId: string): KioskSt
   };
 }
 
+// Chapter-style stepping through the five profiles, clamped (not wrapping) —
+// a guided journey has a start and an end, unlike the tap-any-pin selectors
+// above. `delta` is typically -1 or 1.
+export function stepPyara(state: KioskState, content: DisplayContent, delta: number): KioskState {
+  const ids = content.panjPyare.map((item) => item.id);
+  const currentIndex = ids.indexOf(state.selectedPyaraId);
+  const nextIndex = Math.min(Math.max(currentIndex + delta, 0), ids.length - 1);
+  const nextId = ids[nextIndex];
+  return nextId === undefined ? state : selectPyara(state, nextId);
+}
+
+export function stepTakht(state: KioskState, content: DisplayContent, delta: number): KioskState {
+  const ids = content.takhts.map((item) => item.id);
+  const currentIndex = ids.indexOf(state.selectedTakhtId);
+  const nextIndex = Math.min(Math.max(currentIndex + delta, 0), ids.length - 1);
+  const nextId = ids[nextIndex];
+  return nextId === undefined ? state : selectTakht(state, nextId);
+}
+
 export function selectQuizLevel(state: KioskState, level: QuizLevel): KioskState {
   return {
     ...state,

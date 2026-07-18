@@ -264,6 +264,9 @@ export interface DisplayContent {
       installBannerIos: LocalizedText;
       installAction: LocalizedText;
       dismissAction: LocalizedText;
+      chapterLabel: LocalizedText;
+      previousChapter: LocalizedText;
+      nextChapter: LocalizedText;
     };
   };
   home: {
