@@ -521,7 +521,7 @@ const displayContent: DisplayContent = {
       establishedBy: { en: 'Guru Hargobind Sahib Ji — 6th Guru (1606 CE)', pa: 'ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ — ਛੇਵੇਂ ਗੁਰੂ (1606 ਈ.)' },
       significance: { en: 'The supreme seat of Sikh temporal authority (Miri), standing directly opposite Sri Harmandir Sahib to embody the dual principle of Miri-Piri — worldly sovereignty and spiritual authority united.', pa: 'ਸਿੱਖ ਸੰਸਾਰਕ ਅਧਿਕਾਰ (ਮੀਰੀ) ਦਾ ਸਰਵੋੱਚ ਆਸਣ, ਜੋ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਦੇ ਬਿਲਕੁਲ ਸਾਹਮਣੇ ਖੜ੍ਹਾ ਹੈ ਅਤੇ ਮੀਰੀ-ਪੀਰੀ ਦੇ ਦੋਹਰੇ ਸਿਧਾਂਤ ਦਾ ਰੂਪ ਹੈ।' },
       details: { en: 'Akal Takht anchors Sikh institutional leadership and is the source of all official hukamnamas (edicts) that govern the Sikh Panth worldwide.', pa: 'ਅਕਾਲ ਤਖ਼ਤ ਸਿੱਖ ਸੰਸਥਾਗਤ ਨੇਤ੍ਰਿਤਵ ਦਾ ਕੇਂਦਰ ਹੈ ਅਤੇ ਵਿਸ਼ਵਵਿਆਪੀ ਸਿੱਖ ਪੰਥ ਨੂੰ ਸੇਧਿਤ ਕਰਨ ਵਾਲੇ ਸਾਰੇ ਸਰਕਾਰੀ ਹੁਕਮਨਾਮਿਆਂ ਦਾ ਸਰੋਤ ਹੈ।' },
-      mapPoint: { x: '12.0%', y: '12.0%' },
+      mapPoint: { x: '15.1%', y: '14.7%' },
       story: {
         en: 'In 1606, after the Mughal Empire imprisoned Guru Hargobind Sahib Ji\'s father (Guru Arjan Dev Ji, the 5th Guru), the 6th Guru responded boldly upon his release: the Sikh Panth would embrace both spiritual authority (Piri) AND worldly sovereignty (Miri). He built the Akal Takht — the "Eternal Throne" — directly opposite the Harmandir Sahib, and wore two swords simultaneously for the first time: Miri and Piri. The Akal Takht has since been the supreme seat of Sikh political and institutional authority. It issues hukamnamas (royal edicts) that are binding on all Sikhs worldwide.',
         pa: '1606 ਵਿੱਚ, ਜਦੋਂ ਮੁਗਲ ਸਾਮਰਾਜ ਨੇ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ (5ਵੇਂ ਗੁਰੂ) ਨੂੰ ਸ਼ਹੀਦ ਕੀਤਾ, ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ (6ਵੇਂ ਗੁਰੂ) ਨੇ ਜੇਲ੍ਹ ਤੋਂ ਰਿਹਾਈ ਤੋਂ ਬਾਅਦ ਦਲੇਰੀ ਨਾਲ ਅਕਾਲ ਤਖ਼ਤ ਦੀ ਉਸਾਰੀ ਕੀਤੀ।',
@@ -601,7 +601,7 @@ const displayContent: DisplayContent = {
       establishedBy: { en: 'Guru Gobind Singh Ji — 10th Guru (1705–06 CE)', pa: 'ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ — ਦਸਵੇਂ ਗੁਰੂ (1705–06 ਈ.)' },
       significance: { en: 'Called "Guru Ki Kashi" — the Guru\'s Varanasi — a supreme center of Sikh learning where Guru Gobind Singh Ji compiled the final and definitive version of Guru Granth Sahib Ji.', pa: '"ਗੁਰੂ ਕੀ ਕਾਸ਼ੀ" ਵਜੋਂ ਪ੍ਰਸਿੱਧ — ਸਿੱਖ ਵਿੱਦਿਆ ਦਾ ਸਰਵੋੱਚ ਕੇਂਦਰ ਜਿੱਥੇ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਨੇ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦਾ ਅੰਤਿਮ ਅਤੇ ਅਧਿਕਾਰਕ ਸੰਸਕਰਣ ਤਿਆਰ ਕੀਤਾ।' },
       details: { en: 'Damdama Sahib represents the sacred transmission, study, and disciplined preservation of Gurbani — the living word of the Guru Granth Sahib Ji.', pa: 'ਦਮਦਮਾ ਸਾਹਿਬ ਗੁਰਬਾਣੀ ਦੀ ਪਵਿੱਤਰ ਪਰੰਪਰਾ, ਅਧਿਐਨ ਅਤੇ ਅਨੁਸ਼ਾਸਿਤ ਸੰਭਾਲ ਦਾ ਪ੍ਰਤੀਕ ਹੈ।' },
-      mapPoint: { x: '16.0%', y: '27.0%' },
+      mapPoint: { x: '17.1%', y: '22.0%' },
       story: {
         en: 'After the devastating battles of 1704–05 — having lost his four sons, his mother Mata Gujri Ji, and countless companions — Guru Gobind Singh Ji arrived at Talwandi Sabo. Here, for approximately nine months, the Guru "breathed" (damdama = resting/breathing place) and gathered his scattered sangat. Most profoundly, he re-established the entire Guru Granth Sahib Ji from memory — reciting it to Bhai Mani Singh Ji who transcribed it — and added the bani of Guru Tegh Bahadur Ji (the 9th Guru, his own father). This final version, the Damdama Sahib Beed, became the definitive scripture of the Sikhs.',
         pa: 'ਵਿਨਾਸ਼ਕਾਰੀ ਲੜਾਈਆਂ ਤੋਂ ਬਾਅਦ — ਆਪਣੇ ਚਾਰੇ ਸਾਹਿਬਜ਼ਾਦਿਆਂ ਅਤੇ ਅਣਗਿਣਤ ਸਾਥੀਆਂ ਨੂੰ ਗੁਆ ਕੇ — ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਤਲਵੰਡੀ ਸਾਬੋ ਪਹੁੰਚੇ। ਇੱਥੇ ਉਨ੍ਹਾਂ ਨੇ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੀ ਅੰਤਮ ਬੀੜ ਤਿਆਰ ਕੀਤੀ।',
