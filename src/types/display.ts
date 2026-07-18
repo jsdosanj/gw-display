@@ -267,6 +267,9 @@ export interface DisplayContent {
       chapterLabel: LocalizedText;
       previousChapter: LocalizedText;
       nextChapter: LocalizedText;
+      pauseRotation: LocalizedText;
+      resumeRotation: LocalizedText;
+      heroSlide: LocalizedText;
     };
   };
   home: {

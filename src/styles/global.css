@@ -1427,3 +1427,122 @@ html[data-vt-type='selection']::view-transition-old(view-content) {
 html[data-vt-type='selection']::view-transition-new(view-content) {
   animation: viewContentIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+/* ==========================================
+   ROTATING BANNERS (src/scripts/banner.ts)
+   ========================================== */
+
+/* Stacked-slide crossfade rotator, shared by the attract screen and the
+   Home hero. Compositor-only (opacity + the standalone `scale` property, not
+   background-position), so it stays cheap on kiosk hardware. Slides are
+   absolutely positioned and stacked; createRotator() toggles data-active. */
+.hero-rotator {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-rotator__slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  scale: 1;
+  transition: opacity 1.1s ease;
+}
+
+.hero-rotator__slide[data-active='true'] {
+  opacity: 1;
+  z-index: 1;
+  animation: rotatorKenBurns var(--rotator-dwell, 8000ms) ease-out both;
+}
+
+@keyframes rotatorKenBurns {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 1.06;
+  }
+}
+
+/* Home hero variant: rounded card treatment + progress bars + pause toggle
+   (the "hero" suffix mirrors .journey-indicator naming, not a semantic
+   distinction). The attract screen's full-bleed rotator needs neither. */
+.hero-rotator--hero {
+  position: relative;
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.hero-rotator--hero .hero-rotator__slide {
+  opacity: 0.8;
+}
+
+.hero-rotator--hero .hero-rotator__slide[data-active='true'] {
+  opacity: 0.8;
+}
+
+.hero-rotator__bars {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  top: 0.75rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.35rem;
+}
+
+.rotator-bar {
+  flex: 1;
+  height: 0.2rem;
+  border-radius: 999px;
+  border: none;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.rotator-bar__fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--color-gold-400);
+  border-radius: inherit;
+}
+
+.rotator-bar[data-active='true'] .rotator-bar__fill {
+  animation: rotatorFill var(--rotator-dwell, 10000ms) linear forwards;
+}
+
+.hero-rotator[data-paused='true'] .rotator-bar[data-active='true'] .rotator-bar__fill {
+  animation-play-state: paused;
+}
+
+@keyframes rotatorFill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.hero-rotator__toggle {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  z-index: 2;
+  display: flex;
+  height: 2rem;
+  width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(5, 11, 20, 0.55);
+  color: #fff;
+  font-size: 0.7rem;
+  backdrop-filter: blur(4px);
+}

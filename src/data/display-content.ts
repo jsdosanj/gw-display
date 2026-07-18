@@ -136,6 +136,9 @@ const displayContent: DisplayContent = {
       chapterLabel: { en: 'Chapter', pa: 'ਅਧਿਆਇ' },
       previousChapter: { en: 'Previous', pa: 'ਪਿਛਲਾ' },
       nextChapter: { en: 'Next', pa: 'ਅਗਲਾ' },
+      pauseRotation: { en: 'Pause slideshow', pa: 'ਸਲਾਈਡਸ਼ੋ ਰੋਕੋ' },
+      resumeRotation: { en: 'Resume slideshow', pa: 'ਸਲਾਈਡਸ਼ੋ ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ' },
+      heroSlide: { en: 'Slide', pa: 'ਸਲਾਈਡ' },
     },
   },
   home: {

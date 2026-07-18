@@ -1,6 +1,8 @@
 import QRCode from 'qrcode';
 import { initPressFeedback, observeReveals, transitionRender } from './animate';
 import type { TransitionType } from './animate';
+import { createRotator } from './banner';
+import type { Rotator } from './banner';
 import displayContent from '../data/display-content';
 import {
   advanceQuiz,
@@ -85,6 +87,16 @@ let hasCelebratedPerfect = false;
 let resourceCarouselIndex = 0;
 let resourceCarouselTimer = 0;
 const qrDataUrls: Record<string, string> = {};
+
+// Rotating crossfade banners (Phase 3) — the attract screen rotates
+// unconditionally while asleep (any touch wakes the kiosk, which is itself
+// the "pause"); the Home hero rotates only while its visible pause/play
+// toggle allows it, per WCAG 2.2.2, with that choice persisted across
+// re-renders since the DOM (and any live rotator instance) is rebuilt fresh
+// every render() call.
+let attractRotator: Rotator | null = null;
+let homeRotator: Rotator | null = null;
+let homeRotatorPaused = false;
 
 // "Add to home screen" nudge — a personal phone visitor gets a native app
 // icon and chrome-less standalone window; a gurdwara kiosk stays exactly as
@@ -252,9 +264,27 @@ function applyDocumentTheme(current: KioskState): void {
   }
 }
 
+const attractBannerImages = [
+  '/assets/images/IMG_3198.jpeg',
+  '/assets/images/IMG_3199.jpeg',
+  '/assets/images/IMG_8284.jpeg',
+  '/assets/images/sikh-fresco-·-restoration-3-restored.png',
+];
+
+const homeBannerImages = ['/assets/images/IMG_8284.jpeg', '/assets/images/IMG_3199.jpeg'];
+
 function renderAttract(): void {
   attractScreen.innerHTML = `
-    <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12" style="background-image:url('${asset('/assets/images/IMG_3198.jpeg')}');background-size:cover;background-position:center;">
+    <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12">
+      <div class="hero-rotator absolute inset-0" id="attract-rotator" style="--rotator-dwell:8000ms;">
+        ${attractBannerImages
+          .map(
+            (src, index) => `
+              <div class="hero-rotator__slide" data-rotator-slide data-active="${index === 0}" style="background-image:url('${asset(src)}');"></div>
+            `,
+          )
+          .join('')}
+      </div>
       <div class="absolute inset-0 bg-night-950/80"></div>
       <div class="attract-halo absolute h-[32rem] w-[32rem] rounded-full bg-gold-400/18 blur-3xl"></div>
       <div class="float-slow absolute left-[12%] top-[18%] h-32 w-32 rounded-full bg-sky-400/12 blur-3xl"></div>
@@ -291,6 +321,19 @@ function renderAttract(): void {
       ${shouldShowInstallBanner() ? renderInstallBanner() : ''}
     </div>
   `;
+
+  attractRotator?.destroy();
+  attractRotator = null;
+  const attractRotatorEl = document.getElementById('attract-rotator');
+  if (attractRotatorEl) {
+    attractRotator = createRotator({ container: attractRotatorEl, dwellMs: 8000 });
+    // Only ever runs pre-wake — any touch wakes the kiosk, which swaps to
+    // the main shell and stops this from rendering at all, so that touch is
+    // itself the "pause" required by WCAG 2.2.2. No separate control needed.
+    if (!state.awake) {
+      attractRotator.start();
+    }
+  }
 }
 
 function renderInstallBanner(): string {
@@ -671,7 +714,39 @@ function renderHome(): string {
             <h3 class="mt-4 max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl ${classForLanguage()}">${text(content.home.heroTitle)}</h3>
             <p class="mt-6 max-w-3xl text-lg leading-8 text-cloud-200 ${classForLanguage()}">${text(content.home.heroDescription)}</p>
           </div>
-          <img src="${asset('/assets/images/IMG_8284.jpeg')}" alt="Ten Sikh Gurus — traditional painting" class="hidden md:block w-56 rounded-[20px] object-cover opacity-80" style="aspect-ratio:4/3;" />
+          <div class="hero-rotator hero-rotator--hero hidden md:block w-56" id="home-hero-rotator" data-paused="${homeRotatorPaused}" style="--rotator-dwell:10000ms;aspect-ratio:4/3;">
+            ${homeBannerImages
+              .map(
+                (src, index) => `
+                  <div class="hero-rotator__slide" data-rotator-slide data-active="${index === 0}" style="background-image:url('${asset(src)}');"></div>
+                `,
+              )
+              .join('')}
+            <div class="hero-rotator__bars">
+              ${homeBannerImages
+                .map(
+                  (_src, index) => `
+                    <button
+                      type="button"
+                      data-rotator-dot
+                      data-action="hero-dot"
+                      data-index="${index}"
+                      data-active="${index === 0}"
+                      class="rotator-bar"
+                      aria-label="${text(content.ui.labels.heroSlide)} ${index + 1}"
+                    ><span class="rotator-bar__fill"></span></button>
+                  `,
+                )
+                .join('')}
+            </div>
+            <button
+              type="button"
+              data-action="toggle-hero-rotation"
+              data-ripple
+              class="hero-rotator__toggle"
+              aria-label="${text(homeRotatorPaused ? content.ui.labels.resumeRotation : content.ui.labels.pauseRotation)}"
+            >${homeRotatorPaused ? '▶' : '❙❙'}</button>
+          </div>
         </div>
       </section>
 
@@ -1702,6 +1777,21 @@ function setupResourceCarousel(): void {
   }, 5000);
 }
 
+function setupHomeRotator(): void {
+  homeRotator?.destroy();
+  homeRotator = null;
+  const rotatorEl = document.getElementById('home-hero-rotator');
+  if (!rotatorEl) {
+    return;
+  }
+  homeRotator = createRotator({ container: rotatorEl, dwellMs: 10000 });
+  if (homeRotatorPaused) {
+    homeRotator.pause();
+  } else {
+    homeRotator.start();
+  }
+}
+
 function launchConfetti(): void {
   const colors = ['#e4bb5e', '#f8fafc', '#f97316', '#60a5fa'];
 
@@ -1724,6 +1814,10 @@ function renderView(): void {
   if (state.view !== 'resources') {
     clearResourceCarouselTimer();
   }
+  if (state.view !== 'home') {
+    homeRotator?.destroy();
+    homeRotator = null;
+  }
 
   if (!state.awake) {
     viewContent.innerHTML = '';
@@ -1733,6 +1827,7 @@ function renderView(): void {
   switch (state.view) {
     case 'home':
       viewContent.innerHTML = renderHome();
+      setupHomeRotator();
       break;
     case 'pyare':
       viewContent.innerHTML = renderPyare();
@@ -1986,6 +2081,20 @@ document.addEventListener('click', (event) => {
     langMenuOpen = false;
     applyDocumentDirection(state.language);
     render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  if (target.closest('[data-action="toggle-hero-rotation"]')) {
+    homeRotatorPaused = !homeRotatorPaused;
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const heroDotTarget = target.closest<HTMLElement>('[data-action="hero-dot"]');
+  if (heroDotTarget?.dataset.index !== undefined) {
+    homeRotator?.goTo(Number(heroDotTarget.dataset.index));
     scheduleInactivityReset();
     return;
   }
