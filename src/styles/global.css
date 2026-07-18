@@ -137,6 +137,113 @@ body::after {
   background: linear-gradient(180deg, rgba(5, 11, 20, 0.72) 0%, rgba(5, 11, 20, 0.85) 55%, rgba(5, 11, 20, 0.93) 100%);
 }
 
+/* Ambient "digital darbar" layer (Phase 6) — sits above the fresco/scrim
+   but below #app-root's z-index:1 content (see #app-root rule below).
+   Lives outside kiosk.ts's re-rendered mount points in index.astro, so it
+   survives every render() untouched; only its canvas particle mode changes,
+   via ambient.ts's setAmbientMode(). */
+#ambient-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ambient-blob {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(70px);
+  opacity: 0.28;
+  will-change: transform;
+}
+
+/* Kept clear of the viewport center, where the attract screen's and most
+   view panels' glass-panel content sits — backdrop-blur samples whatever is
+   behind it, so a blob positioned right under a panel washes out its text
+   contrast instead of reading as ambiance. */
+.ambient-blob--a {
+  left: -14%;
+  top: -12%;
+  height: 30rem;
+  width: 30rem;
+  background: color-mix(in srgb, var(--color-gold-400) 22%, transparent);
+  animation: ambientDrift 24s ease-in-out infinite;
+}
+
+.ambient-blob--b {
+  right: -16%;
+  bottom: -10%;
+  height: 28rem;
+  width: 28rem;
+  background: rgba(96, 165, 250, 0.12);
+  animation: ambientDrift 20s ease-in-out infinite reverse;
+}
+
+.ambient-blob--c {
+  left: 38%;
+  bottom: -18%;
+  height: 26rem;
+  width: 26rem;
+  background: color-mix(in srgb, var(--color-gold-300) 14%, transparent);
+  animation: ambientDrift 26s ease-in-out infinite 3s;
+}
+
+@keyframes ambientDrift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(3%, -4%) scale(1.08);
+  }
+}
+
+/* A faint, extremely slow-rotating conic sheen — reads as light drifting
+   across the space rather than a literal spotlight. */
+.ambient-rays {
+  position: absolute;
+  left: 50%;
+  top: -20%;
+  height: 140%;
+  width: 140%;
+  transform: translateX(-50%);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in srgb, var(--color-gold-300) 6%, transparent) 8deg,
+    transparent 20deg,
+    transparent 340deg,
+    color-mix(in srgb, var(--color-gold-300) 6%, transparent) 352deg,
+    transparent 360deg
+  );
+  animation: ambientRotate 90s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes ambientRotate {
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+#ambient-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Static (non-animated) film grain — a single feTurbulence data URI, not a
+   binary asset, so the service worker's cache-first strategy never has to
+   account for it. mix-blend-mode:overlay keeps it from muddying dark areas. */
+.ambient-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -161,6 +268,11 @@ button {
 
 .glass-panel {
   @apply rounded-[28px] border border-white/10 bg-white/[0.06] shadow-2xl shadow-black/30 backdrop-blur-2xl;
+  /* Warm hairline + inset glow, layered onto the existing drop shadow above
+     rather than increasing blur radius (blur is the expensive part on kiosk
+     hardware — this is compositor-cheap by comparison). */
+  border-color: color-mix(in srgb, var(--color-gold-300) 18%, rgba(255, 255, 255, 0.1));
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3), inset 0 0 0 1px color-mix(in srgb, var(--color-gold-300) 12%, transparent);
 }
 
 .glass-header {
@@ -592,6 +704,15 @@ button {
 
 .float-delay {
   animation: floatSlow 12s ease-in-out infinite 1.5s;
+}
+
+/* Establishes a real stacking context above #ambient-layer (z-index 0) and
+   the fresco/scrim (body::before/after, z-index -2/-1) without disturbing
+   any positioned descendant — fixed-position children still position
+   relative to the viewport regardless of an ancestor's position:relative. */
+#app-root {
+  position: relative;
+  z-index: 1;
 }
 
 #app-root,

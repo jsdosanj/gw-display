@@ -3,6 +3,7 @@ import { initPressFeedback, observeReveals, transitionRender } from './animate';
 import type { TransitionType } from './animate';
 import { createRotator } from './banner';
 import type { Rotator } from './banner';
+import { initAmbient, setAmbientMode } from './ambient';
 import displayContent from '../data/display-content';
 import {
   advanceQuiz,
@@ -1961,6 +1962,7 @@ function render(): void {
       mainShell.classList.add('hidden');
       mainShell.classList.remove('flex');
     }
+    setAmbientMode(state.awake ? 'active' : 'attract');
 
     if (viewChanging) {
       lastAnnouncedView = state.view;
@@ -2256,6 +2258,7 @@ document.addEventListener('click', (event) => {
 });
 
 initPressFeedback();
+initAmbient();
 applyDocumentDirection(state.language);
 applyDocumentTheme(state);
 render();

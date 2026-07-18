@@ -4,6 +4,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout title="Panj Pyare and Panj Takht Display">
   <a href="#view-content" class="skip-link">Skip to main content</a>
+  <!-- Sits outside kiosk.ts's re-rendered mount points (#app-root's children
+       get their innerHTML fully replaced on every render) so this ambient
+       "digital darbar" backdrop survives every interaction untouched — only
+       setAmbientMode() (called from render()) ever changes its behavior. -->
+  <div id="ambient-layer" aria-hidden="true">
+    <div class="ambient-blob ambient-blob--a"></div>
+    <div class="ambient-blob ambient-blob--b"></div>
+    <div class="ambient-blob ambient-blob--c"></div>
+    <div class="ambient-rays"></div>
+    <canvas id="ambient-canvas"></canvas>
+    <div class="ambient-grain"></div>
+  </div>
   <div id="app-root">
     <section id="attract-screen"></section>
     <main id="main-shell" class="hidden flex-col">
