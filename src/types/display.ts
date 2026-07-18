@@ -264,6 +264,12 @@ export interface DisplayContent {
       installBannerIos: LocalizedText;
       installAction: LocalizedText;
       dismissAction: LocalizedText;
+      chapterLabel: LocalizedText;
+      previousChapter: LocalizedText;
+      nextChapter: LocalizedText;
+      pauseRotation: LocalizedText;
+      resumeRotation: LocalizedText;
+      heroSlide: LocalizedText;
     };
   };
   home: {

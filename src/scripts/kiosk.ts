@@ -1,4 +1,9 @@
 import QRCode from 'qrcode';
+import { initPressFeedback, observeReveals, transitionRender } from './animate';
+import type { TransitionType } from './animate';
+import { createRotator } from './banner';
+import type { Rotator } from './banner';
+import { initAmbient, setAmbientMode } from './ambient';
 import displayContent from '../data/display-content';
 import {
   advanceQuiz,
@@ -16,6 +21,8 @@ import {
   setLanguage,
   setTheme,
   startQuiz,
+  stepPyara,
+  stepTakht,
   submitQuizAnswer,
   wakeKiosk,
 } from '../lib/kiosk-state';
@@ -81,6 +88,16 @@ let hasCelebratedPerfect = false;
 let resourceCarouselIndex = 0;
 let resourceCarouselTimer = 0;
 const qrDataUrls: Record<string, string> = {};
+
+// Rotating crossfade banners (Phase 3) — the attract screen rotates
+// unconditionally while asleep (any touch wakes the kiosk, which is itself
+// the "pause"); the Home hero rotates only while its visible pause/play
+// toggle allows it, per WCAG 2.2.2, with that choice persisted across
+// re-renders since the DOM (and any live rotator instance) is rebuilt fresh
+// every render() call.
+let attractRotator: Rotator | null = null;
+let homeRotator: Rotator | null = null;
+let homeRotatorPaused = false;
 
 // "Add to home screen" nudge — a personal phone visitor gets a native app
 // icon and chrome-less standalone window; a gurdwara kiosk stays exactly as
@@ -248,9 +265,27 @@ function applyDocumentTheme(current: KioskState): void {
   }
 }
 
+const attractBannerImages = [
+  '/assets/images/IMG_3198.jpeg',
+  '/assets/images/IMG_3199.jpeg',
+  '/assets/images/IMG_8284.jpeg',
+  '/assets/images/sikh-fresco-·-restoration-3-restored.png',
+];
+
+const homeBannerImages = ['/assets/images/IMG_8284.jpeg', '/assets/images/IMG_3199.jpeg'];
+
 function renderAttract(): void {
   attractScreen.innerHTML = `
-    <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12" style="background-image:url('${asset('/assets/images/IMG_3198.jpeg')}');background-size:cover;background-position:center;">
+    <div class="relative flex h-screen items-center justify-center overflow-hidden px-6 py-12">
+      <div class="hero-rotator absolute inset-0" id="attract-rotator" style="--rotator-dwell:8000ms;">
+        ${attractBannerImages
+          .map(
+            (src, index) => `
+              <div class="hero-rotator__slide" data-rotator-slide data-active="${index === 0}" style="background-image:url('${asset(src)}');"></div>
+            `,
+          )
+          .join('')}
+      </div>
       <div class="absolute inset-0 bg-night-950/80"></div>
       <div class="attract-halo absolute h-[32rem] w-[32rem] rounded-full bg-gold-400/18 blur-3xl"></div>
       <div class="float-slow absolute left-[12%] top-[18%] h-32 w-32 rounded-full bg-sky-400/12 blur-3xl"></div>
@@ -279,7 +314,7 @@ function renderAttract(): void {
               <p class="text-xs font-semibold uppercase tracking-[0.28em] text-gold-300">${text(content.ui.labels.collaborationWith)}</p>
               <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.home.collaborationBanner)}</p>
             </div>
-            <button type="button" data-action="start" class="rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 shadow-lg shadow-gold-400/20 transition active:scale-[0.98]">${text(content.ui.attractButton)}</button>
+            <button type="button" data-action="start" data-ripple class="cta-glow relative overflow-hidden rounded-full bg-gold-400 px-6 py-4 text-base font-semibold text-night-950 shadow-lg shadow-gold-400/20 transition active:scale-[0.98]">${text(content.ui.attractButton)}</button>
           </div>
         </div>
         <p class="text-sm uppercase tracking-[0.28em] text-cloud-400 ${classForLanguage()}">${text(content.ui.attractInstruction)}</p>
@@ -287,6 +322,19 @@ function renderAttract(): void {
       ${shouldShowInstallBanner() ? renderInstallBanner() : ''}
     </div>
   `;
+
+  attractRotator?.destroy();
+  attractRotator = null;
+  const attractRotatorEl = document.getElementById('attract-rotator');
+  if (attractRotatorEl) {
+    attractRotator = createRotator({ container: attractRotatorEl, dwellMs: 8000 });
+    // Only ever runs pre-wake — any touch wakes the kiosk, which swaps to
+    // the main shell and stops this from rendering at all, so that touch is
+    // itself the "pause" required by WCAG 2.2.2. No separate control needed.
+    if (!state.awake) {
+      attractRotator.start();
+    }
+  }
 }
 
 function renderInstallBanner(): string {
@@ -296,7 +344,7 @@ function renderInstallBanner(): string {
     <div class="install-banner" role="status">
       <span class="${classForLanguage()}">${isIos ? text(content.ui.labels.installBannerIos) : text(content.ui.labels.installBannerAndroid)}</span>
       <div class="flex shrink-0 items-center gap-2">
-        ${isIos ? '' : `<button type="button" data-action="install-app" class="install-banner__cta">${text(content.ui.labels.installAction)}</button>`}
+        ${isIos ? '' : `<button type="button" data-action="install-app" data-ripple class="install-banner__cta relative overflow-hidden">${text(content.ui.labels.installAction)}</button>`}
         <button type="button" data-action="dismiss-install" aria-label="${text(content.ui.labels.dismissAction)}" class="install-banner__dismiss">✕</button>
       </div>
     </div>
@@ -447,6 +495,7 @@ function renderNav(): void {
             <button
               type="button"
               data-nav="${view}"
+              data-ripple
               class="nav-pill min-w-[4.75rem] md:min-w-0"
               data-active="${state.view === view}"
               aria-current="${state.view === view ? 'page' : 'false'}"
@@ -472,7 +521,7 @@ function renderNav(): void {
 
 function renderFeatureCard(feature: HomeFeature): string {
   return `
-    <button type="button" data-home-target="${feature.id}" class="glass-panel h-full p-6 text-left transition duration-200 hover:border-gold-300/30 active:scale-[0.99]">
+    <button type="button" data-home-target="${feature.id}" data-ripple class="glass-panel relative h-full overflow-hidden p-6 text-left transition duration-200 hover:border-gold-300/30 active:scale-[0.99]">
       <div class="mb-5 flex items-center justify-between gap-4">
         <div>
           <p class="text-xs font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(feature.eyebrow)}</p>
@@ -492,13 +541,19 @@ function renderArtworkPanel(
   eyebrow: string,
   imageAlt: string,
   variant: 'portrait' | 'full-photo' = 'portrait',
+  vtName = '',
 ): string {
-  const imageStyle = imagePath ? `style="--art-image:url('${asset(imagePath)}');"` : '';
+  // vtName gives this panel a stable view-transition-name so, when a Pyara/
+  // Takht selection changes (transitionRender's 'selection' type), the API
+  // automatically morphs the outgoing portrait into the incoming one instead
+  // of a flat crossfade of the whole panel.
+  const imageStyle = imagePath ? `--art-image:url('${asset(imagePath)}');` : '';
+  const vtStyle = vtName ? `view-transition-name:${vtName};` : '';
   const imageRole = imagePath ? `role="img" aria-label="${imageAlt}"` : '';
   const variantClass = variant === 'full-photo' ? ' art-panel--full-photo' : '';
 
   return `
-    <div class="art-panel${variantClass} mb-6" data-has-image="${String(Boolean(imagePath))}" ${imageStyle} ${imageRole}>
+    <div class="art-panel${variantClass} mb-6" data-has-image="${String(Boolean(imagePath))}" style="${imageStyle}${vtStyle}" ${imageRole}>
       <div class="art-panel__glow"></div>
       <div class="relative z-10">
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300">${eyebrow}</p>
@@ -516,6 +571,14 @@ function renderMapImage(imagePath: string): string {
 }
 
 function renderPyareMap(selected: PanjPyaraProfile): string {
+  // True only when this render reflects an actual selection change (not a
+  // re-render for an unrelated reason like a language/theme switch) — gates
+  // the one-shot pop/slide-in animations below so they don't replay every
+  // time this map happens to redraw. lastRenderedPyaraId still holds the
+  // *previous* selection at this point in the render cycle (render() only
+  // updates it after this function returns).
+  const justSelected = selected.id !== lastRenderedPyaraId;
+
   return `
     <div class="glass-panel geo-map-panel relative overflow-hidden map-expanded">
       ${renderMapImage('/assets/images/panj-pyare-map.jpg')}
@@ -527,7 +590,8 @@ function renderPyareMap(selected: PanjPyaraProfile): string {
               class="pin-button"
               data-pyara="${pyara.id}"
               data-active="${pyara.id === selected.id}"
-              style="left:${pyara.mapPoint.x}; top:${pyara.mapPoint.y};"
+              data-just-selected="${justSelected && pyara.id === selected.id}"
+              style="left:${pyara.mapPoint.x}; top:${pyara.mapPoint.y}; view-transition-name:pin-pyara-${pyara.id};"
               aria-label="${text(pyara.name)}"
             >
               ${index + 1}
@@ -535,6 +599,7 @@ function renderPyareMap(selected: PanjPyaraProfile): string {
             <div
               class="pin-label"
               data-active="${pyara.id === selected.id}"
+              data-just-selected="${justSelected && pyara.id === selected.id}"
               style="left:${pyara.mapPoint.x}; top:${pyara.mapPoint.y};"
             >
               <span class="${classForLanguage()}">${text(pyara.name).replace(/Bhai /g, '').replace(/ Ji$/, '')}</span>
@@ -542,7 +607,7 @@ function renderPyareMap(selected: PanjPyaraProfile): string {
           `,
         )
         .join('')}
-      <div class="map-info-badge">
+      <div class="map-info-badge${justSelected ? ' slide-up' : ''}">
         <p class="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.originMap)}</p>
         <p class="mt-0.5 text-sm font-semibold text-white ${classForLanguage()}">${text(selected.name)}</p>
         <p class="text-xs text-cloud-400 ${classForLanguage()}">${text(selected.from)}</p>
@@ -616,7 +681,7 @@ function renderOnboarding(): string {
             ${content.onboarding.modes
               .map(
                 (mode) => `
-                  <button type="button" data-onboarding-mode="${mode.id}" class="onboarding-card">
+                  <button type="button" data-onboarding-mode="${mode.id}" data-ripple class="onboarding-card">
                     <div class="mb-4 text-5xl">${mode.icon}</div>
                     <h4 class="text-lg font-semibold text-white ${classForLanguage()}">${text(mode.title)}</h4>
                     <p class="mt-3 text-sm leading-6 text-cloud-300 ${classForLanguage()}">${text(mode.description)}</p>
@@ -650,7 +715,39 @@ function renderHome(): string {
             <h3 class="mt-4 max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl ${classForLanguage()}">${text(content.home.heroTitle)}</h3>
             <p class="mt-6 max-w-3xl text-lg leading-8 text-cloud-200 ${classForLanguage()}">${text(content.home.heroDescription)}</p>
           </div>
-          <img src="${asset('/assets/images/IMG_8284.jpeg')}" alt="Ten Sikh Gurus — traditional painting" class="hidden md:block w-56 rounded-[20px] object-cover opacity-80" style="aspect-ratio:4/3;" />
+          <div class="hero-rotator hero-rotator--hero hidden md:block w-56" id="home-hero-rotator" data-paused="${homeRotatorPaused}" style="--rotator-dwell:10000ms;aspect-ratio:4/3;">
+            ${homeBannerImages
+              .map(
+                (src, index) => `
+                  <div class="hero-rotator__slide" data-rotator-slide data-active="${index === 0}" style="background-image:url('${asset(src)}');"></div>
+                `,
+              )
+              .join('')}
+            <div class="hero-rotator__bars">
+              ${homeBannerImages
+                .map(
+                  (_src, index) => `
+                    <button
+                      type="button"
+                      data-rotator-dot
+                      data-action="hero-dot"
+                      data-index="${index}"
+                      data-active="${index === 0}"
+                      class="rotator-bar"
+                      aria-label="${text(content.ui.labels.heroSlide)} ${index + 1}"
+                    ><span class="rotator-bar__fill"></span></button>
+                  `,
+                )
+                .join('')}
+            </div>
+            <button
+              type="button"
+              data-action="toggle-hero-rotation"
+              data-ripple
+              class="hero-rotator__toggle"
+              aria-label="${text(homeRotatorPaused ? content.ui.labels.resumeRotation : content.ui.labels.pauseRotation)}"
+            >${homeRotatorPaused ? '▶' : '❙❙'}</button>
+          </div>
         </div>
       </section>
 
@@ -661,7 +758,7 @@ function renderHome(): string {
           ${content.home.differentiationCards
             .map(
               (card) => `
-                <button type="button" data-home-target="${card.id}" class="art-panel text-left transition duration-200 hover:border-gold-300/40 active:scale-[0.99]" data-has-image="true" style="--art-image:url('${asset(card.imagePath)}');">
+                <button type="button" data-home-target="${card.id}" data-ripple class="art-panel text-left transition duration-200 hover:border-gold-300/40 active:scale-[0.99]" data-has-image="true" style="--art-image:url('${asset(card.imagePath)}');">
                   <div class="art-panel__glow"></div>
                   <div class="relative z-10">
                     <h4 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(card.title)}</h4>
@@ -692,11 +789,68 @@ function renderInfoBox(labelObj: LocalizedText, value: string): string {
   `;
 }
 
+// Shared chapter-navigation chrome for the Panj Pyare / Panj Takht "guided
+// journey" — a compact variant near the profile header (prev/next only) and
+// a full variant with the chapter name + 5-dot progress, reused by both
+// renderPyare() and renderTakhts(). `kind` feeds the data-action the click
+// delegation block (below) reads to call stepPyara/stepTakht.
+function renderChapterBar(kind: 'pyara' | 'takht', total: number, currentIndex: number, chapterName: string, compact: boolean): string {
+  const canPrev = currentIndex > 0;
+  const canNext = currentIndex < total - 1;
+
+  const prevButton = `
+    <button
+      type="button"
+      data-action="${kind}-step"
+      data-step="-1"
+      data-ripple
+      class="chapter-bar__nav"
+      ${canPrev ? '' : 'disabled aria-disabled="true"'}
+      aria-label="${text(content.ui.labels.previousChapter)}"
+    ><span aria-hidden="true">←</span></button>
+  `;
+
+  const nextButton = `
+    <button
+      type="button"
+      data-action="${kind}-step"
+      data-step="1"
+      data-ripple
+      class="chapter-bar__nav"
+      ${canNext ? '' : 'disabled aria-disabled="true"'}
+      aria-label="${text(content.ui.labels.nextChapter)}"
+    ><span aria-hidden="true">→</span></button>
+  `;
+
+  const dots = Array.from({ length: total }, (_, index) => `<span class="chapter-dot" data-filled="${index <= currentIndex}"></span>`).join('');
+
+  if (compact) {
+    return `
+      <div class="chapter-bar chapter-bar--compact">
+        ${prevButton}
+        <span class="chapter-bar__count ${classForLanguage()}">${currentIndex + 1} / ${total}</span>
+        ${nextButton}
+      </div>
+    `;
+  }
+
+  return `
+    <div class="chapter-bar">
+      ${prevButton}
+      <div class="chapter-bar__meta">
+        <p class="chapter-bar__label ${classForLanguage()}">${text(content.ui.labels.chapterLabel)} ${currentIndex + 1} / ${total} — ${chapterName}</p>
+        <div class="chapter-bar__dots" role="status" aria-label="${text(content.ui.labels.chapterLabel)} ${currentIndex + 1} / ${total}">${dots}</div>
+      </div>
+      ${nextButton}
+    </div>
+  `;
+}
+
 function renderPyare(): string {
   const selected = content.panjPyare.find((item) => item.id === state.selectedPyaraId) ?? content.panjPyare[0];
 
   const beforeKhalsaHtml = `
-    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2" data-reveal>
       <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.beforeKhalsa)}</p>
       <div class="mt-3 grid gap-3 sm:grid-cols-3">
         ${renderInfoBox(content.ui.labels.previousOccupation, text(selected.occupation))}
@@ -707,7 +861,7 @@ function renderPyare(): string {
   `;
 
   const storyHtml = `
-    <div class="story-panel detail-card">
+    <div class="story-panel detail-card" data-reveal>
       <div class="flex flex-wrap items-center justify-between gap-3">
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
         ${renderListenButton(selected.story ?? selected.details)}
@@ -717,7 +871,7 @@ function renderPyare(): string {
   `;
 
   const afterKhalsaHtml = selected.accomplishments || selected.roles
-    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.afterKhalsa)}</p>
          ${selected.accomplishments ? `<p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}"><strong class="${classForLanguage()}">${text(content.ui.labels.accomplishments)}:</strong> ${text(selected.accomplishments)}</p>` : ''}
          ${selected.roles ? `<p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}"><strong class="${classForLanguage()}">${text(content.ui.labels.roles)}:</strong> ${text(selected.roles)}</p>` : ''}
@@ -725,7 +879,7 @@ function renderPyare(): string {
     : '';
 
   const funFactHtml = selected.funFact
-    ? `<div class="fact-card detail-card">
+    ? `<div class="fact-card detail-card" data-reveal>
          <div class="fact-card__icon">✦</div>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.funFact)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.funFact)}</p>
@@ -733,21 +887,21 @@ function renderPyare(): string {
     : '';
 
   const shaheediHtml = selected.shaheedi
-    ? `<div class="detail-card rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5">
+    ? `<div class="detail-card rounded-[24px] border border-rose-300/15 bg-rose-400/5 p-5" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-rose-300 ${classForLanguage()}">${text(content.ui.labels.shaheedi)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.shaheedi)}</p>
        </div>`
     : '';
 
   const lessonsHtml = selected.lessons
-    ? `<div class="story-panel detail-card">
+    ? `<div class="story-panel detail-card" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.lessons)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.lessons)}</p>
        </div>`
     : '';
 
   const languageQualitiesHtml = selected.language || selected.qualities
-    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
          ${selected.qualities ? `<p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.qualities)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.qualities)}</p>` : ''}
          ${selected.language ? `<p class="${selected.qualities ? 'mt-5' : ''} text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.language)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.language)}</p>` : ''}
        </div>`
@@ -756,6 +910,8 @@ function renderPyare(): string {
   const pyareDetailCards = [beforeKhalsaHtml, storyHtml, afterKhalsaHtml, funFactHtml, shaheediHtml, lessonsHtml, languageQualitiesHtml]
     .filter(Boolean)
     .join('');
+
+  const pyareIndex = Math.max(content.panjPyare.findIndex((item) => item.id === selected.id), 0);
 
   return `
     <div class="grid gap-6">
@@ -767,7 +923,7 @@ function renderPyare(): string {
         ${content.panjPyare
           .map(
             (item, index) => `
-              <button type="button" data-pyara="${item.id}" class="silhouette-avatar" data-active="${item.id === selected.id}" aria-label="${text(item.name)}">
+              <button type="button" data-pyara="${item.id}" data-ripple class="silhouette-avatar" data-active="${item.id === selected.id}" aria-label="${text(item.name)}">
                 <img src="${asset(item.silhouettePath)}" alt="${text(item.name)}" class="silhouette-avatar__img" />
                 <span class="silhouette-avatar__number">${index + 1}</span>
                 <span class="silhouette-avatar__name ${classForLanguage()}">${text(item.name).replace(/Bhai /g, '').replace(/ Ji$/, '')}</span>
@@ -778,24 +934,27 @@ function renderPyare(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title), `Commemorative portrait artwork of ${text(selected.name, 'en')}, one of the Panj Pyare`)}
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
-          <h3 class="mt-2 text-4xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
-          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.birthName)}: ${text(selected.birthName)} &middot; ${selected.years}</p>
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title), `Commemorative portrait artwork of ${text(selected.name, 'en')}, one of the Panj Pyare`, 'portrait', 'profile-art')}
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>
+            <h3 class="mt-2 text-4xl font-semibold text-white ${classForLanguage()}" style="view-transition-name:profile-title;">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
+            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(content.ui.labels.birthName)}: ${text(selected.birthName)} &middot; ${selected.years}</p>
+          </div>
+          ${renderChapterBar('pyara', content.panjPyare.length, pyareIndex, text(selected.name), true)}
         </div>
 
-        <div class="detail-grid mt-6">
+        <div class="detail-grid mt-6" data-reveal-group>
           ${pyareDetailCards}
         </div>
 
         <div class="storyline-panel mt-8">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
+          ${renderChapterBar('pyara', content.panjPyare.length, pyareIndex, text(selected.name), false)}
           <div class="mt-4 grid gap-2 lg:grid-cols-2">
             ${content.panjPyare
               .map(
                 (item, index) => `
-                  <button type="button" data-pyara="${item.id}" class="storyline-step" data-active="${item.id === selected.id}">
+                  <button type="button" data-pyara="${item.id}" data-ripple class="storyline-step" data-active="${item.id === selected.id}">
                     <span class="storyline-step__index">${index + 1}</span>
                     <span class="${classForLanguage()}">${text(item.name)} — ${text(item.from)}</span>
                   </button>
@@ -810,6 +969,8 @@ function renderPyare(): string {
 }
 
 function renderTakhtMap(selected: TakhtProfile): string {
+  const justSelected = selected.id !== lastRenderedTakhtId;
+
   return `
     <div class="glass-panel geo-map-panel relative overflow-hidden map-expanded">
       ${renderMapImage('/assets/images/five-takht-map.jpg')}
@@ -821,7 +982,8 @@ function renderTakhtMap(selected: TakhtProfile): string {
               class="pin-button"
               data-takht="${takht.id}"
               data-active="${takht.id === selected.id}"
-              style="left:${takht.mapPoint.x}; top:${takht.mapPoint.y};"
+              data-just-selected="${justSelected && takht.id === selected.id}"
+              style="left:${takht.mapPoint.x}; top:${takht.mapPoint.y}; view-transition-name:pin-takht-${takht.id};"
               aria-label="${text(takht.name)}"
             >
               ${takht.id === selected.id ? '☬' : index + 1}
@@ -829,6 +991,7 @@ function renderTakhtMap(selected: TakhtProfile): string {
             <div
               class="pin-label"
               data-active="${takht.id === selected.id}"
+              data-just-selected="${justSelected && takht.id === selected.id}"
               style="left:${takht.mapPoint.x}; top:${takht.mapPoint.y};"
             >
               <span class="${classForLanguage()}">${text(takht.name).replace(/Takht Sri |Sri |Takht /g, '').replace(/ Sahib$/, '')}</span>
@@ -836,7 +999,7 @@ function renderTakhtMap(selected: TakhtProfile): string {
           `,
         )
         .join('')}
-      <div class="map-info-badge">
+      <div class="map-info-badge${justSelected ? ' slide-up' : ''}">
         <p class="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.sacredGeography)}</p>
         <p class="mt-0.5 text-sm font-semibold text-white ${classForLanguage()}">${text(selected.name)}</p>
         <p class="text-xs text-cloud-400 ${classForLanguage()}">${text(selected.location)}</p>
@@ -849,21 +1012,21 @@ function renderTakhts(): string {
   const selected = content.takhts.find((item) => item.id === state.selectedTakhtId) ?? content.takhts[0];
 
   const establishedByHtml = `
-    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
       <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.establishedBy)}</p>
       <p class="mt-3 text-base font-medium text-white ${classForLanguage()}">${text(selected.establishedBy)}</p>
     </div>
   `;
 
   const significanceHtml = `
-    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    <div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
       <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.significance)}</p>
       <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.significance)}</p>
     </div>
   `;
 
   const storyHtml = selected.story
-    ? `<div class="story-panel detail-card">
+    ? `<div class="story-panel detail-card" data-reveal>
          <div class="flex flex-wrap items-center justify-between gap-3">
            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
            ${renderListenButton(selected.story)}
@@ -873,7 +1036,7 @@ function renderTakhts(): string {
     : '';
 
   const funFactHtml = selected.funFact
-    ? `<div class="fact-card detail-card">
+    ? `<div class="fact-card detail-card" data-reveal>
          <div class="fact-card__icon">✦</div>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.funFact)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.funFact)}</p>
@@ -881,28 +1044,28 @@ function renderTakhts(): string {
     : '';
 
   const jathedaarHtml = selected.jathedaar
-    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.jathedaar)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.jathedaar)}</p>
        </div>`
     : '';
 
   const visitorsHtml = selected.visitorsInfo
-    ? `<div class="detail-card rounded-[24px] border border-emerald-300/15 bg-emerald-400/5 p-5">
+    ? `<div class="detail-card rounded-[24px] border border-emerald-300/15 bg-emerald-400/5 p-5" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300 ${classForLanguage()}">${text(content.ui.labels.visitorsInfo)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.visitorsInfo)}</p>
        </div>`
     : '';
 
   const gurusVisitedHtml = selected.gurusVisited
-    ? `<div class="story-panel detail-card">
+    ? `<div class="story-panel detail-card" data-reveal>
          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.gurusVisited)}</p>
          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.gurusVisited)}</p>
        </div>`
     : '';
 
   const areaImpactHtml = selected.areaHistory || selected.localImpact
-    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+    ? `<div class="detail-card rounded-[24px] border border-white/10 bg-white/[0.03] p-5" data-reveal>
          ${selected.areaHistory ? `<p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.areaHistory)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.areaHistory)}</p>` : ''}
          ${selected.localImpact ? `<p class="${selected.areaHistory ? 'mt-5' : ''} text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.localImpact)}</p><p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.localImpact)}</p>` : ''}
        </div>`
@@ -911,6 +1074,8 @@ function renderTakhts(): string {
   const takhtDetailCards = [establishedByHtml, significanceHtml, storyHtml, funFactHtml, jathedaarHtml, visitorsHtml, gurusVisitedHtml, areaImpactHtml]
     .filter(Boolean)
     .join('');
+
+  const takhtIndex = Math.max(content.takhts.findIndex((item) => item.id === selected.id), 0);
 
   return `
     <div class="grid gap-6">
@@ -922,7 +1087,7 @@ function renderTakhts(): string {
         ${content.takhts
           .map(
             (takht, index) => `
-              <button type="button" data-takht="${takht.id}" class="silhouette-avatar" data-active="${takht.id === selected.id}" aria-label="${text(takht.name)}">
+              <button type="button" data-takht="${takht.id}" data-ripple class="silhouette-avatar" data-active="${takht.id === selected.id}" aria-label="${text(takht.name)}">
                 <img src="${asset(takht.silhouettePath ?? '/assets/images/gurdwara-silhouette.svg')}" alt="${text(takht.name)}" class="silhouette-avatar__img" />
                 <span class="silhouette-avatar__number">${index + 1}</span>
                 <span class="silhouette-avatar__name ${classForLanguage()}">${text(takht.name).replace(/Takht Sri |Sri |Takht /g, '').replace(/ Sahib$/, '')}</span>
@@ -933,24 +1098,27 @@ function renderTakhts(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title), `Photograph of ${text(selected.name, 'en')} in ${text(selected.location, 'en')}`, 'full-photo')}
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
-          <h3 class="mt-2 text-3xl font-semibold text-white ${classForLanguage()}">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
-          <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.takhts.title), `Photograph of ${text(selected.name, 'en')} in ${text(selected.location, 'en')}`, 'full-photo', 'profile-art')}
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.location)}</p>
+            <h3 class="mt-2 text-3xl font-semibold text-white ${classForLanguage()}" style="view-transition-name:profile-title;">${text(selected.name)} <span class="pronun-tip" title="${text(selected.name, 'en')}">🔊</span></h3>
+            <p class="mt-2 text-base text-cloud-400 ${classForLanguage()}">${text(selected.location)}${selected.yearDeclared ? ' &middot; ' + selected.yearDeclared : ''}</p>
+          </div>
+          ${renderChapterBar('takht', content.takhts.length, takhtIndex, text(selected.name), true)}
         </div>
 
-        <div class="detail-grid mt-6">
+        <div class="detail-grid mt-6" data-reveal-group>
           ${takhtDetailCards}
         </div>
 
         <div class="storyline-panel mt-8">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-gold-300 ${classForLanguage()}">${text(content.ui.labels.storylineJourney)}</p>
+          ${renderChapterBar('takht', content.takhts.length, takhtIndex, text(selected.name), false)}
           <div class="mt-4 grid gap-2 lg:grid-cols-2">
             ${content.takhts
               .map(
                 (takht, index) => `
-                  <button type="button" data-takht="${takht.id}" class="storyline-step" data-active="${takht.id === selected.id}">
+                  <button type="button" data-takht="${takht.id}" data-ripple class="storyline-step" data-active="${takht.id === selected.id}">
                     <span class="storyline-step__index">${index + 1}</span>
                     <span class="${classForLanguage()}">${text(takht.name)} — ${text(takht.location)}</span>
                   </button>
@@ -1237,7 +1405,7 @@ function renderResources(): string {
                       <div>
                         <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(site.previewTitle)}</h3>
                         <p class="mt-2 max-w-xl text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(site.previewDescription)}</p>
-                        <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.visitSite)}</a>
+                        <a href="${site.url}" target="_blank" rel="noopener noreferrer" data-ripple class="cta-glow relative mt-4 inline-flex items-center gap-2 overflow-hidden rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.ui.labels.visitSite)}</a>
                       </div>
                       <div class="qr-badge">
                         ${qrDataUrls[site.id] ? `<img src="${qrDataUrls[site.id]}" alt="QR code for ${site.title}" class="qr-badge__img" width="80" height="80" />` : ''}
@@ -1254,7 +1422,7 @@ function renderResources(): string {
           ${liveSites
             .map(
               (site, index) => `
-                <button type="button" data-carousel-dot="${index}" aria-label="${text(content.ui.labels.livePreviews)}: ${site.title}" aria-current="${index === resourceCarouselIndex}" class="flex h-6 w-6 items-center justify-center">
+                <button type="button" data-carousel-dot="${index}" aria-label="${text(content.ui.labels.livePreviews)}: ${site.title}" aria-current="${index === resourceCarouselIndex}" class="flex h-11 w-11 items-center justify-center">
                   <span class="h-2 w-2 rounded-full transition ${index === resourceCarouselIndex ? 'bg-gold-400' : 'bg-white/30'}"></span>
                 </button>
               `,
@@ -1610,6 +1778,21 @@ function setupResourceCarousel(): void {
   }, 5000);
 }
 
+function setupHomeRotator(): void {
+  homeRotator?.destroy();
+  homeRotator = null;
+  const rotatorEl = document.getElementById('home-hero-rotator');
+  if (!rotatorEl) {
+    return;
+  }
+  homeRotator = createRotator({ container: rotatorEl, dwellMs: 10000 });
+  if (homeRotatorPaused) {
+    homeRotator.pause();
+  } else {
+    homeRotator.start();
+  }
+}
+
 function launchConfetti(): void {
   const colors = ['#e4bb5e', '#f8fafc', '#f97316', '#60a5fa'];
 
@@ -1632,6 +1815,10 @@ function renderView(): void {
   if (state.view !== 'resources') {
     clearResourceCarouselTimer();
   }
+  if (state.view !== 'home') {
+    homeRotator?.destroy();
+    homeRotator = null;
+  }
 
   if (!state.awake) {
     viewContent.innerHTML = '';
@@ -1641,6 +1828,7 @@ function renderView(): void {
   switch (state.view) {
     case 'home':
       viewContent.innerHTML = renderHome();
+      setupHomeRotator();
       break;
     case 'pyare':
       viewContent.innerHTML = renderPyare();
@@ -1690,6 +1878,8 @@ function renderView(): void {
       break;
     }
   }
+
+  observeReveals(viewContent);
 }
 
 function scheduleInactivityReset(): void {
@@ -1707,6 +1897,8 @@ function scheduleInactivityReset(): void {
 }
 
 let lastAnnouncedView: View | null = null;
+let lastRenderedPyaraId: number | null = null;
+let lastRenderedTakhtId: string | null = null;
 
 // Aggregate-only multi-kiosk analytics: a random, non-identifying token
 // generated once per device (never tied to a visitor) lets a gurdwara with
@@ -1744,36 +1936,52 @@ function sendAnalyticsPing(view: View, event: 'view' | 'heartbeat'): void {
 }
 
 function render(): void {
-  if (state.awake && journeyViews.includes(state.view)) {
-    visitedViews.add(state.view);
-  }
+  const viewChanging = state.awake && state.view !== lastAnnouncedView;
+  const selectionChanging =
+    !viewChanging &&
+    state.awake &&
+    (state.selectedPyaraId !== lastRenderedPyaraId || state.selectedTakhtId !== lastRenderedTakhtId);
+  const transitionType: TransitionType = viewChanging ? 'view' : selectionChanging ? 'selection' : 'none';
 
-  renderAttract();
-  renderHeader();
-  renderNav();
-  renderView();
+  const usedViewTransitionApi = transitionRender(() => {
+    if (state.awake && journeyViews.includes(state.view)) {
+      visitedViews.add(state.view);
+    }
 
-  if (state.awake) {
-    attractScreen.classList.add('hidden');
-    mainShell.classList.remove('hidden');
-    mainShell.classList.add('flex');
-  } else {
-    attractScreen.classList.remove('hidden');
-    mainShell.classList.add('hidden');
-    mainShell.classList.remove('flex');
-  }
+    renderAttract();
+    renderHeader();
+    renderNav();
+    renderView();
 
-  if (state.awake && state.view !== lastAnnouncedView) {
-    lastAnnouncedView = state.view;
-    viewAnnouncer.textContent = text(content.sections[state.view].title);
-    viewContent.focus({ preventScroll: true });
-    viewContent.scrollTop = 0;
-    sendAnalyticsPing(state.view, 'view');
+    if (state.awake) {
+      attractScreen.classList.add('hidden');
+      mainShell.classList.remove('hidden');
+      mainShell.classList.add('flex');
+    } else {
+      attractScreen.classList.remove('hidden');
+      mainShell.classList.add('hidden');
+      mainShell.classList.remove('flex');
+    }
+    setAmbientMode(state.awake ? 'active' : 'attract');
 
-    // Restart the transition animation on real navigation only (not every
-    // in-view interaction) by removing and re-adding the class to force a
-    // reflow between the two — reduced-motion users get the same class but
-    // the global media query collapses its duration to ~0.
+    if (viewChanging) {
+      lastAnnouncedView = state.view;
+      viewAnnouncer.textContent = text(content.sections[state.view].title);
+      viewContent.focus({ preventScroll: true });
+      viewContent.scrollTop = 0;
+      sendAnalyticsPing(state.view, 'view');
+    }
+  }, transitionType);
+
+  lastRenderedPyaraId = state.selectedPyaraId;
+  lastRenderedTakhtId = state.selectedTakhtId;
+
+  // Legacy fallback: only replay the CSS class-toggle animation when the
+  // native View Transition API didn't actually run (unsupported browser or
+  // reduced motion) — running both would double-animate the same swap.
+  // Reduced-motion users still get the class added, same as before; the
+  // global media query collapses its duration to ~0.
+  if (viewChanging && !usedViewTransitionApi) {
     viewContent.classList.remove('view-transition-in');
     void viewContent.offsetWidth;
     viewContent.classList.add('view-transition-in');
@@ -1879,6 +2087,20 @@ document.addEventListener('click', (event) => {
     return;
   }
 
+  if (target.closest('[data-action="toggle-hero-rotation"]')) {
+    homeRotatorPaused = !homeRotatorPaused;
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const heroDotTarget = target.closest<HTMLElement>('[data-action="hero-dot"]');
+  if (heroDotTarget?.dataset.index !== undefined) {
+    homeRotator?.goTo(Number(heroDotTarget.dataset.index));
+    scheduleInactivityReset();
+    return;
+  }
+
   if (target.closest('[data-action="toggle-theme-menu"]')) {
     themeMenuOpen = !themeMenuOpen;
     langMenuOpen = false;
@@ -1942,6 +2164,15 @@ document.addEventListener('click', (event) => {
   const takhtTarget = target.closest<HTMLElement>('[data-takht]');
   if (takhtTarget?.dataset.takht) {
     state = selectTakht(state, takhtTarget.dataset.takht);
+    render();
+    scheduleInactivityReset();
+    return;
+  }
+
+  const chapterStepTarget = target.closest<HTMLElement>('[data-action="pyara-step"], [data-action="takht-step"]');
+  if (chapterStepTarget) {
+    const delta = Number(chapterStepTarget.dataset.step ?? 0);
+    state = chapterStepTarget.dataset.action === 'pyara-step' ? stepPyara(state, content, delta) : stepTakht(state, content, delta);
     render();
     scheduleInactivityReset();
     return;
@@ -2026,6 +2257,8 @@ document.addEventListener('click', (event) => {
   }
 });
 
+initPressFeedback();
+initAmbient();
 applyDocumentDirection(state.language);
 applyDocumentTheme(state);
 render();

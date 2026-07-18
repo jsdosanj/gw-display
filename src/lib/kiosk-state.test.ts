@@ -15,6 +15,8 @@ import {
   selectTakht,
   setLanguage,
   startQuiz,
+  stepPyara,
+  stepTakht,
   submitQuizAnswer,
   wakeKiosk,
 } from './kiosk-state';
@@ -108,5 +110,46 @@ describe('kiosk state helpers', () => {
     expect(reset.awake).toBe(false);
     expect(reset.view).toBe('home');
     expect(reset.quizPhase).toBe('level');
+  });
+
+  it('steps through Panj Pyare chapters, clamped at both ends', () => {
+    const ids = displayContent.panjPyare.map((item) => item.id);
+    let state = createInitialState(displayContent);
+    expect(state.selectedPyaraId).toBe(ids[0]);
+
+    state = stepPyara(state, displayContent, 1);
+    expect(state.selectedPyaraId).toBe(ids[1]);
+
+    state = stepPyara(state, displayContent, -1);
+    expect(state.selectedPyaraId).toBe(ids[0]);
+
+    // stepping below the first chapter stays clamped, doesn't wrap
+    state = stepPyara(state, displayContent, -1);
+    expect(state.selectedPyaraId).toBe(ids[0]);
+
+    // stepping past the last chapter stays clamped, doesn't wrap
+    for (let i = 0; i < ids.length + 2; i += 1) {
+      state = stepPyara(state, displayContent, 1);
+    }
+    expect(state.selectedPyaraId).toBe(ids[ids.length - 1]);
+  });
+
+  it('steps through Panj Takht chapters, clamped at both ends', () => {
+    const ids = displayContent.takhts.map((item) => item.id);
+    let state = createInitialState(displayContent);
+    expect(state.selectedTakhtId).toBe(ids[0]);
+
+    state = stepTakht(state, displayContent, 1);
+    expect(state.selectedTakhtId).toBe(ids[1]);
+
+    for (let i = 0; i < ids.length + 2; i += 1) {
+      state = stepTakht(state, displayContent, 1);
+    }
+    expect(state.selectedTakhtId).toBe(ids[ids.length - 1]);
+
+    for (let i = 0; i < ids.length + 2; i += 1) {
+      state = stepTakht(state, displayContent, -1);
+    }
+    expect(state.selectedTakhtId).toBe(ids[0]);
   });
 });
