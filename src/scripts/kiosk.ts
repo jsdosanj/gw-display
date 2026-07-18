@@ -508,58 +508,17 @@ function renderArtworkPanel(
   `;
 }
 
-function renderSubcontinentBackdrop(): string {
-  // Accurate South Asia SVG outline. Coordinate system:
-  //   x = (longitude - 60°E) × 20   →  spans 60°E–98°E in a 760-wide viewBox
-  //   y = (37°N - latitude) × 17.5  →  spans 37°N–5°N in a 560-tall viewBox
-  // Coastal trace goes clockwise from NW Pakistan corner.
-  return `
-    <svg class="geo-map__svg" viewBox="0 0 760 560" role="img" aria-hidden="true" focusable="false">
-      <defs>
-        <radialGradient id="map-glow" cx="40%" cy="35%" r="55%">
-          <stop offset="0%" stop-color="rgba(228,187,94,0.22)" />
-          <stop offset="100%" stop-color="rgba(9,19,34,0)" />
-        </radialGradient>
-      </defs>
-      <!-- Background wash -->
-      <rect width="760" height="560" fill="url(#map-glow)" />
-      <!-- Main subcontinent outline (Pakistan + India + Bangladesh) -->
-      <path
-        class="geo-map__coastline"
-        d="M 0,0
-           L 100,0 L 200,0 L 260,17 L 308,52 L 355,88
-           L 395,122 L 455,140 L 535,167 L 615,167
-           L 695,175 L 720,228
-           L 680,255 L 648,257 L 618,268 L 568,268
-           L 518,300 L 474,338
-           L 413,420 L 393,445
-           L 380,490 L 362,510 L 350,512
-           L 320,476 L 296,422
-           L 268,370 L 250,316
-           L 252,295 L 252,272 L 244,257 L 228,249 L 205,252
-           L 188,258 L 178,270 L 184,284
-           L 206,276 L 216,252 L 204,232 L 180,224
-           L 148,218 L 140,212
-           L 88,210 L 40,213 L 18,196 L 0,175
-           Z"
-      />
-      <!-- Punjab / Northwest terrain (where most Takhts cluster) -->
-      <path class="geo-map__terrain" d="M 260,88 L 380,70 L 400,160 L 345,185 L 285,165 Z" />
-      <!-- Gangetic plain terrain -->
-      <path class="geo-map__terrain" d="M 370,130 L 545,155 L 580,268 L 510,305 L 380,285 L 330,198 Z" />
-      <!-- Deccan plateau -->
-      <path class="geo-map__terrain" d="M 326,270 L 446,256 L 476,338 L 418,394 L 352,382 L 316,330 Z" />
-      <!-- India-Pakistan border indicator -->
-      <line x1="145" y1="212" x2="268" y2="96" stroke="rgba(228,187,94,0.25)" stroke-width="1.5" stroke-dasharray="6 4"/>
-    </svg>
-  `;
+function renderMapImage(imagePath: string): string {
+  // Decorative illustrated India map backdrop. Purely visual — the real,
+  // accessible location info is carried by each pin's aria-label and the
+  // info badge overlay, so the image itself stays out of the a11y tree.
+  return `<img class="geo-map__image" src="${asset(imagePath)}" alt="" loading="lazy" />`;
 }
 
 function renderPyareMap(selected: PanjPyaraProfile): string {
   return `
     <div class="glass-panel geo-map-panel relative overflow-hidden map-expanded">
-      <div class="soft-grid absolute inset-0 opacity-15"></div>
-      ${renderSubcontinentBackdrop()}
+      ${renderMapImage('/assets/images/panj-pyare-map.jpg')}
       ${content.panjPyare
         .map(
           (pyara, index) => `
@@ -853,8 +812,7 @@ function renderPyare(): string {
 function renderTakhtMap(selected: TakhtProfile): string {
   return `
     <div class="glass-panel geo-map-panel relative overflow-hidden map-expanded">
-      <div class="soft-grid absolute inset-0 opacity-15"></div>
-      ${renderSubcontinentBackdrop()}
+      ${renderMapImage('/assets/images/five-takht-map.jpg')}
       ${content.takhts
         .map(
           (takht, index) => `
