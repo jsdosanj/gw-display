@@ -221,26 +221,19 @@ button {
   background: radial-gradient(circle at 12% 8%, rgba(228, 187, 94, 0.16), transparent 42%), rgba(9, 19, 34, 0.92);
 }
 
-.geo-map__svg {
+/* Illustrated map backdrop. The image is a 1:1 square, so .map-expanded's
+   aspect-ratio is tuned to make the top 80% (the image's slot, matching the
+   bottom 20% reserved for .map-info-badge) come out exactly square too —
+   that keeps the pin x/y percentages (calibrated against the source image's
+   pixel grid) landing in the right spot at every screen size, no cropping. */
+.geo-map__image {
   position: absolute;
-  inset: 8% 8% 28% 8%;
-  width: 84%;
-  height: 64%;
+  inset: 0 0 20% 0;
+  width: 100%;
+  height: 80%;
+  object-fit: cover;
+  object-position: center;
   z-index: 0;
-}
-
-.geo-map__coastline {
-  fill: rgba(12, 32, 52, 0.85);
-  stroke: rgba(228, 187, 94, 0.55);
-  stroke-width: 3;
-  stroke-linejoin: round;
-}
-
-.geo-map__terrain {
-  fill: rgba(228, 187, 94, 0.06);
-  stroke: rgba(228, 187, 94, 0.18);
-  stroke-width: 1.5;
-  stroke-linejoin: round;
 }
 
 .story-panel {
@@ -878,16 +871,16 @@ button {
    MAP EXPANSION — all 5 numbers on the map
    ========================================== */
 
+/* height = width / 0.8, so the top 80% (the image slot) renders as an exact
+   square matching the source map image — see .geo-map__image above. Capped
+   with max-width so it doesn't turn into an enormous square on wide desktop
+   screens. */
 .map-expanded {
-  min-height: 36rem;
-  padding: 0;
-}
-
-/* Expanded SVG: occupies full top portion */
-.map-expanded .geo-map__svg {
-  inset: 0 0 20% 0;
   width: 100%;
-  height: 80%;
+  padding: 0;
+  aspect-ratio: 4 / 5;
+  max-width: 34rem;
+  margin-inline: auto;
 }
 
 /* Pin labels: small text below each pin */
