@@ -27,10 +27,24 @@ let mode: 'attract' | 'active' = 'attract';
 let width = 0;
 let height = 0;
 
+// Default matches --color-gold-300's base value; retinted per-theme via
+// retintForTheme() below so the starfield's color follows the active
+// occasion theme instead of always being the default gold.
+let spriteRgb = { r: 247, g: 217, b: 137 };
+
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const match = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!match) {
+    return null;
+  }
+  const value = parseInt(match[1], 16);
+  return { r: (value >> 16) & 255, g: (value >> 8) & 255, b: value & 255 };
+}
+
 // A single pre-rendered radial-gradient dot, reused for every particle via
 // drawImage() every frame instead of re-running createRadialGradient() (or
 // worse, shadowBlur) per particle per frame — the classic canvas-perf trap
-// on modest kiosk GPUs.
+// on modest kiosk GPUs. Rebuilt (cheap, one-off) whenever the theme changes.
 function buildSprite(): HTMLCanvasElement {
   const size = 24;
   const spriteCanvas = document.createElement('canvas');
@@ -38,9 +52,10 @@ function buildSprite(): HTMLCanvasElement {
   spriteCanvas.height = size;
   const sctx = spriteCanvas.getContext('2d');
   if (sctx) {
+    const { r, g, b } = spriteRgb;
     const gradient = sctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-    gradient.addColorStop(0, 'rgba(247, 217, 137, 0.95)');
-    gradient.addColorStop(1, 'rgba(247, 217, 137, 0)');
+    gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.95)`);
+    gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
     sctx.fillStyle = gradient;
     sctx.fillRect(0, 0, size, size);
   }
@@ -170,4 +185,21 @@ export function initAmbient(): void {
 /** Called from kiosk.ts's render() on every awake/asleep transition. */
 export function setAmbientMode(next: 'attract' | 'active'): void {
   mode = next;
+}
+
+/**
+ * Rebuilds the starfield sprite in the active theme's gold tone. Cheap
+ * (one 24x24 canvas draw) and only runs on theme change, not per frame, so
+ * it's safe to call from kiosk.ts's applyDocumentTheme() every time. No-ops
+ * before initAmbient() has run or if the resolved color can't be parsed.
+ */
+export function retintForTheme(goldHex: string): void {
+  const rgb = hexToRgb(goldHex);
+  if (!rgb) {
+    return;
+  }
+  spriteRgb = rgb;
+  if (canvas) {
+    sprite = buildSprite();
+  }
 }
