@@ -14,6 +14,12 @@
   --color-cloud-200: #d9e4ef;
   --color-cloud-400: #93a6bc;
   --color-cloud-500: #6f839a;
+  /* Second hue used only in ambient/decorative layers (never on text or
+     interactive elements — gold stays the sole "brand" accent) so each
+     occasion theme reads as a genuinely distinct atmosphere, not just a
+     gold hue-shift. Default's cool blue is the original "digital darbar"
+     night-sky tone. */
+  --color-accent-secondary: #60a5fa;
 }
 
 :root {
@@ -33,18 +39,27 @@
   --color-gold-300: #ffb37a;
   --color-gold-400: #f28a3c;
   --color-gold-500: #c96a1f;
+  /* Fresh spring/harvest green — pairs with saffron the way new wheat shoots
+     meet dawn light. */
+  --color-accent-secondary: #4ad194;
 }
 
 :root[data-theme='diwali'] {
   --color-gold-300: #ffcf7a;
   --color-gold-400: #e6a23d;
   --color-gold-500: #a8471f;
+  /* Deep warm crimson — festival-of-lights richness alongside the amber
+     gold, kept muted so it never reads as an error/alert color. */
+  --color-accent-secondary: #c4404a;
 }
 
 :root[data-theme='gurpurab'] {
   --color-gold-300: #fff3d1;
   --color-gold-400: #f0cf7e;
   --color-gold-500: #c79f3f;
+  /* Soft violet-white — an ethereal, reverent counterpoint to the pale
+     ivory gold. */
+  --color-accent-secondary: #c4b5fd;
 }
 
 /* Accessibility: skip link, screen-reader-only text, focus states, reduced motion */
@@ -176,7 +191,7 @@ body::after {
   bottom: -10%;
   height: 28rem;
   width: 28rem;
-  background: rgba(96, 165, 250, 0.12);
+  background: color-mix(in srgb, var(--color-accent-secondary) 12%, transparent);
   animation: ambientDrift 20s ease-in-out infinite reverse;
 }
 
@@ -242,6 +257,95 @@ body::after {
   opacity: 0.03;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Per-occasion decorative motif — pure CSS, abstract/geometric only (no
+   figurative or literal-object imagery, consistent with this project's
+   non-figurative iconography stance). Off by default (the everyday
+   "digital darbar" look needs no extra motif); each occasion theme gets
+   one distinct pattern so the four themes read as genuinely different
+   atmospheres rather than a gold hue-shift. Motion is covered by the
+   global reduced-motion kill-switch above, same as every other animation
+   in this file. */
+.theme-motif {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+/* Vaisakhi — thin rays fanning from two corners, like dawn light over
+   harvest fields; gold and the spring-green secondary alternate. */
+:root[data-theme='vaisakhi'] .theme-motif {
+  opacity: 1;
+  background:
+    repeating-conic-gradient(
+      from 200deg at 6% -4%,
+      color-mix(in srgb, var(--color-gold-300) 10%, transparent) 0deg 1deg,
+      transparent 1deg 9deg
+    ),
+    repeating-conic-gradient(
+      from 20deg at 96% 104%,
+      color-mix(in srgb, var(--color-accent-secondary) 9%, transparent) 0deg 1deg,
+      transparent 1deg 9deg
+    );
+  animation: motifSway 34s ease-in-out infinite;
+}
+
+@keyframes motifSway {
+  0%, 100% {
+    background-position: 0 0, 0 0;
+  }
+  50% {
+    background-position: 1.5% -1%, -1.5% 1%;
+  }
+}
+
+/* Bandi Chhor Divas / Diwali — a warm glow rising from the base, like rows
+   of distant lights, alternating gold and deep crimson. */
+:root[data-theme='diwali'] .theme-motif {
+  opacity: 1;
+  background:
+    radial-gradient(circle at 14% 94%, color-mix(in srgb, var(--color-gold-300) 20%, transparent), transparent 13%),
+    radial-gradient(circle at 31% 97%, color-mix(in srgb, var(--color-accent-secondary) 16%, transparent), transparent 11%),
+    radial-gradient(circle at 51% 92%, color-mix(in srgb, var(--color-gold-400) 18%, transparent), transparent 12%),
+    radial-gradient(circle at 69% 98%, color-mix(in srgb, var(--color-accent-secondary) 14%, transparent), transparent 10%),
+    radial-gradient(circle at 86% 93%, color-mix(in srgb, var(--color-gold-300) 18%, transparent), transparent 13%),
+    linear-gradient(0deg, color-mix(in srgb, var(--color-gold-500) 9%, transparent), transparent 32%);
+  animation: motifGlimmer 5s ease-in-out infinite;
+}
+
+@keyframes motifGlimmer {
+  0%, 100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Gurpurab — a serene concentric halo glowing from the upper center, gold
+   and violet-white layered, reading as reverent light rather than any
+   figure. */
+:root[data-theme='gurpurab'] .theme-motif {
+  opacity: 1;
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--color-gold-300) 14%, transparent) 0%, transparent 22%),
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--color-accent-secondary) 10%, transparent) 10%, transparent 34%),
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--color-gold-400) 8%, transparent) 26%, transparent 46%);
+  animation: motifBreathe 11s ease-in-out infinite;
+  transform-origin: 50% 0%;
+}
+
+@keyframes motifBreathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
 }
 
 * {

@@ -3,7 +3,7 @@ import { initPressFeedback, observeReveals, transitionRender } from './animate';
 import type { TransitionType } from './animate';
 import { createRotator } from './banner';
 import type { Rotator } from './banner';
-import { initAmbient, setAmbientMode } from './ambient';
+import { initAmbient, retintForTheme, setAmbientMode } from './ambient';
 import displayContent from '../data/display-content';
 import {
   advanceQuiz,
@@ -380,6 +380,11 @@ function applyDocumentTheme(current: KioskState): void {
   } else {
     document.documentElement.dataset.theme = palette;
   }
+  // Starfield sprite color is baked at draw time (perf, see ambient.ts), so
+  // it needs an explicit retint on theme change — everything else re-tints
+  // automatically via the --color-gold-*/--color-accent-secondary variables.
+  const gold300 = getComputedStyle(document.documentElement).getPropertyValue('--color-gold-300');
+  retintForTheme(gold300);
 }
 
 const attractBannerImages = [
@@ -405,7 +410,7 @@ function renderAttract(): void {
       </div>
       <div class="absolute inset-0 bg-night-950/80"></div>
       <div class="attract-halo absolute h-[32rem] w-[32rem] rounded-full bg-gold-400/18 blur-3xl"></div>
-      <div class="float-slow absolute left-[12%] top-[18%] h-32 w-32 rounded-full bg-sky-400/12 blur-3xl"></div>
+      <div class="float-slow absolute left-[12%] top-[18%] h-32 w-32 rounded-full blur-3xl" style="background: color-mix(in srgb, var(--color-accent-secondary) 12%, transparent);"></div>
       <div class="float-delay absolute bottom-[18%] right-[10%] h-44 w-44 rounded-full bg-gold-300/10 blur-3xl"></div>
       <div class="soft-grid absolute inset-0 opacity-25"></div>
       <p class="ik-onkar-motif absolute left-1/2 top-[8%] -translate-x-1/2 text-7xl text-gold-300/90 md:text-8xl" aria-hidden="true">ੴ</p>
