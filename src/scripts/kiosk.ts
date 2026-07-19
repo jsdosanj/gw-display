@@ -415,7 +415,10 @@ function renderAttract(): void {
             <p class="mb-3 text-sm font-semibold uppercase tracking-[0.28em] text-gold-300">${text(content.ui.attractEyebrow)}</p>
             <h1 class="title-gradient text-4xl font-semibold md:text-6xl ${classForLanguage()}">${text(content.ui.attractTitle)}</h1>
           </div>
-          <div class="hidden h-24 w-24 items-center justify-center rounded-full border border-gold-300/40 bg-gold-400/10 text-5xl text-gold-300 md:flex">☬</div>
+          <div class="khanda-medallion hidden h-24 w-24 items-center justify-center rounded-full border border-gold-300/40 bg-gold-400/10 text-5xl text-gold-300 md:flex">
+            <span class="khanda-medallion__sheen" aria-hidden="true"></span>
+            <span class="khanda-medallion__glyph" aria-hidden="true">☬</span>
+          </div>
         </div>
         <div class="grid gap-8 md:grid-cols-[1.4fr_0.9fr]">
           <div>

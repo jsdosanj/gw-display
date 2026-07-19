@@ -682,6 +682,54 @@ button {
   }
 }
 
+/* Phase 8 — animates the existing static Khanda medallion on the attract
+   screen: a slow rotating gold sheen ring behind the glyph, plus a gentle
+   breathing glow on the glyph itself. No new imagery/SVG, deliberately slow
+   (9s/6.5s cycles) and low-amplitude (opacity + glow only, never scale or
+   distortion of the symbol) to read as reverent rather than decorative. */
+.khanda-medallion {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.khanda-medallion__sheen {
+  position: absolute;
+  inset: -25%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in srgb, var(--color-gold-300) 35%, transparent) 18deg,
+    transparent 50deg,
+    transparent 360deg
+  );
+  animation: khandaSheenRotate 9s linear infinite;
+}
+
+@keyframes khandaSheenRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.khanda-medallion__glyph {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  animation: khandaBreathe 6.5s ease-in-out infinite;
+}
+
+@keyframes khandaBreathe {
+  0%, 100% {
+    text-shadow: 0 0 0 transparent;
+    opacity: 0.92;
+  }
+  50% {
+    text-shadow: 0 0 18px color-mix(in srgb, var(--color-gold-300) 70%, transparent);
+    opacity: 1;
+  }
+}
+
 .cinematic-fade {
   opacity: 0;
   animation: cinematicFadeIn 1.4s ease-out 0.6s forwards;
