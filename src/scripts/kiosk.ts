@@ -219,12 +219,77 @@ function showTtsNotice(buttonEl: HTMLElement, message: string): void {
   window.setTimeout(() => notice.remove(), 5000);
 }
 
+function escapeHtml(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+interface TtsWordSpan {
+  el: HTMLElement;
+  start: number;
+}
+
+// Lazily wraps a paragraph's text into per-word spans the first time speech
+// starts on it (cached via data-tts-wrapped so replays don't re-wrap), each
+// tagged with its character offset in the original string so utterance
+// 'boundary' events (which report a charIndex, not a word index) can be
+// mapped back to the right span.
+function wrapWordsForHighlight(paragraph: HTMLElement): TtsWordSpan[] {
+  if (paragraph.dataset.ttsWrapped === 'true') {
+    return Array.from(paragraph.querySelectorAll<HTMLElement>('.tts-word')).map((el) => ({
+      el,
+      start: Number(el.dataset.start ?? 0),
+    }));
+  }
+
+  const original = paragraph.textContent ?? '';
+  let html = '';
+  let lastIndex = 0;
+  const wordPattern = /\S+/g;
+  let match: RegExpExecArray | null = wordPattern.exec(original);
+  while (match !== null) {
+    html += escapeHtml(original.slice(lastIndex, match.index));
+    html += `<span class="tts-word" data-start="${match.index}">${escapeHtml(match[0])}</span>`;
+    lastIndex = match.index + match[0].length;
+    match = wordPattern.exec(original);
+  }
+  html += escapeHtml(original.slice(lastIndex));
+
+  paragraph.innerHTML = html;
+  paragraph.dataset.ttsWrapped = 'true';
+
+  return Array.from(paragraph.querySelectorAll<HTMLElement>('.tts-word')).map((el) => ({
+    el,
+    start: Number(el.dataset.start ?? 0),
+  }));
+}
+
+let activeTtsButton: HTMLElement | null = null;
+let activeTtsWords: TtsWordSpan[] = [];
+let ttsBoundaryFallbackTimer = 0;
+
+function clearTtsWordHighlight(): void {
+  activeTtsWords.forEach((word) => word.el.classList.remove('tts-word--active'));
+}
+
+function stopActiveTtsVisuals(): void {
+  window.clearTimeout(ttsBoundaryFallbackTimer);
+  if (activeTtsButton) {
+    // Harmless if the button was detached by a re-render since — setting a
+    // dataset property on a disconnected node is a silent no-op visually.
+    activeTtsButton.dataset.speaking = 'false';
+  }
+  clearTtsWordHighlight();
+  activeTtsButton = null;
+  activeTtsWords = [];
+}
+
 function speakText(value: string, language: Language, buttonEl: HTMLElement): void {
   if (!('speechSynthesis' in window)) {
     return;
   }
 
   window.speechSynthesis.cancel();
+  stopActiveTtsVisuals();
 
   const voices = window.speechSynthesis.getVoices();
   const matchingVoice = voices.find((voice) => voice.lang.toLowerCase().startsWith(language));
@@ -242,13 +307,65 @@ function speakText(value: string, language: Language, buttonEl: HTMLElement): vo
   if (matchingVoice) {
     utterance.voice = matchingVoice;
   }
+
+  buttonEl.dataset.speaking = 'true';
+  activeTtsButton = buttonEl;
+
+  const blockId = buttonEl.dataset.ttsBlock;
+  const sourceParagraph = blockId ? document.querySelector<HTMLElement>(`[data-tts-source="${blockId}"]`) : null;
+
+  if (sourceParagraph) {
+    activeTtsWords = wrapWordsForHighlight(sourceParagraph);
+
+    // Boundary event support varies by platform/voice — if none fires
+    // shortly after speech starts, silently fall back to equalizer-only
+    // rather than leaving word spans permanently unhighlighted.
+    let boundaryFired = false;
+    ttsBoundaryFallbackTimer = window.setTimeout(() => {
+      if (!boundaryFired) {
+        activeTtsWords = [];
+      }
+    }, 1200);
+
+    utterance.onboundary = (event) => {
+      if (event.name && event.name !== 'word') {
+        return;
+      }
+      boundaryFired = true;
+      window.clearTimeout(ttsBoundaryFallbackTimer);
+      clearTtsWordHighlight();
+      let active: TtsWordSpan | null = null;
+      for (const word of activeTtsWords) {
+        if (word.start <= event.charIndex) {
+          active = word;
+        } else {
+          break;
+        }
+      }
+      active?.el.classList.add('tts-word--active');
+    };
+  }
+
+  utterance.onend = () => {
+    if (activeTtsButton === buttonEl) {
+      stopActiveTtsVisuals();
+    }
+  };
+  utterance.onerror = utterance.onend;
+
   window.speechSynthesis.speak(utterance);
 }
 
-function renderListenButton(payload: LocalizedText): string {
+function renderListenButton(payload: LocalizedText, blockId: string): string {
   const value = text(payload);
   const label = text(content.ui.labels.ttsListen);
-  return `<button type="button" class="listen-btn" data-tts-text="${escapeAttr(value)}" data-tts-lang="${state.language}" aria-label="${label}">🔊 <span class="${classForLanguage()}">${label}</span></button>`;
+  return `
+    <button type="button" class="listen-btn" data-tts-text="${escapeAttr(value)}" data-tts-lang="${state.language}" data-tts-block="${blockId}" aria-label="${label}">
+      <span class="listen-btn__icon" aria-hidden="true">🔊</span>
+      <span class="listen-btn__eq" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="${classForLanguage()}">${label}</span>
+    </button>
+  `;
 }
 
 function applyDocumentDirection(language: Language): void {
@@ -864,9 +981,9 @@ function renderPyare(): string {
     <div class="story-panel detail-card" data-reveal>
       <div class="flex flex-wrap items-center justify-between gap-3">
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
-        ${renderListenButton(selected.story ?? selected.details)}
+        ${renderListenButton(selected.story ?? selected.details, `pyara-story-${selected.id}`)}
       </div>
-      <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.story ?? selected.details)}</p>
+      <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}" data-tts-source="pyara-story-${selected.id}">${text(selected.story ?? selected.details)}</p>
     </div>
   `;
 
@@ -1029,9 +1146,9 @@ function renderTakhts(): string {
     ? `<div class="story-panel detail-card" data-reveal>
          <div class="flex flex-wrap items-center justify-between gap-3">
            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-sky-300 ${classForLanguage()}">${text(content.ui.labels.story)}</p>
-           ${renderListenButton(selected.story)}
+           ${renderListenButton(selected.story, `takht-story-${selected.id}`)}
          </div>
-         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(selected.story)}</p>
+         <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}" data-tts-source="takht-story-${selected.id}">${text(selected.story)}</p>
        </div>`
     : '';
 
@@ -1140,9 +1257,9 @@ function renderLearn(): string {
       <section class="glass-panel p-8 md:p-10">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(learn.title)}</h2>
-          ${renderListenButton(learn.intro)}
+          ${renderListenButton(learn.intro, 'learn-intro')}
         </div>
-        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.intro)}</p>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}" data-tts-source="learn-intro">${text(learn.intro)}</p>
       </section>
 
       <section class="glass-panel p-8 md:p-10">
@@ -1256,9 +1373,9 @@ function renderLearn(): string {
       <section class="glass-panel p-8 md:p-10">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(learn.introTitle)}</h3>
-          ${renderListenButton(learn.whatIsSikhi)}
+          ${renderListenButton(learn.whatIsSikhi, 'learn-what-is-sikhi')}
         </div>
-        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.whatIsSikhi)}</p>
+        <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}" data-tts-source="learn-what-is-sikhi">${text(learn.whatIsSikhi)}</p>
         <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.founding)}</p>
         <p class="mt-4 max-w-3xl text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(learn.sevaSimran)}</p>
         <h4 class="mt-8 text-lg font-semibold text-white ${classForLanguage()}">${text(learn.pillarsTitle)}</h4>
@@ -1286,9 +1403,9 @@ function renderLearn(): string {
                 <article class="rounded-[24px] border border-gold-300/20 bg-gold-400/5 p-6">
                   <div class="flex flex-wrap items-start justify-between gap-3">
                     <p class="gurmukhi text-2xl leading-relaxed text-white">${shabad.gurmukhi}</p>
-                    ${renderListenButton(shabad.translation)}
+                    ${renderListenButton(shabad.translation, `shabad-${shabad.ang}`)}
                   </div>
-                  <p class="mt-4 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(shabad.translation)}</p>
+                  <p class="mt-4 text-sm leading-7 text-cloud-200 ${classForLanguage()}" data-tts-source="shabad-${shabad.ang}">${text(shabad.translation)}</p>
                   <div class="mt-4 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-gold-300">
                     <span>Ang ${shabad.ang}</span>
                     <span>·</span>
@@ -1313,7 +1430,7 @@ function renderAbout(): string {
       <section class="glass-panel p-8 md:p-10">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <h2 class="text-3xl font-semibold text-white ${classForLanguage()}">${text(content.about.title)}</h2>
-          ${renderListenButton(content.about.partnerships)}
+          ${renderListenButton(content.about.partnerships, 'about-partnerships')}
         </div>
         <div class="mt-6 rounded-[24px] border border-gold-300/25 bg-gold-400/8 p-6">
           <p class="text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.collaboration)}</p>
@@ -1324,7 +1441,7 @@ function renderAbout(): string {
               .join('')}
           </div>
         </div>
-        <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.partnerships)}</p>
+        <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}" data-tts-source="about-partnerships">${text(content.about.partnerships)}</p>
         <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.futureUpdates)}</p>
       </section>
 
@@ -1812,6 +1929,14 @@ function launchConfetti(): void {
 }
 
 function renderView(): void {
+  // A re-render replaces whatever paragraph/button an in-flight utterance is
+  // tied to — without this, speech can keep talking over a UI that no longer
+  // shows what's being read (e.g. navigating away mid-speech).
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+  stopActiveTtsVisuals();
+
   if (state.view !== 'resources') {
     clearResourceCarouselTimer();
   }

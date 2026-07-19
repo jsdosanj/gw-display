@@ -915,7 +915,78 @@ button {
 
 /* Text-to-speech "listen" control */
 .listen-btn {
-  @apply inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-cloud-200 transition hover:border-gold-300/40 active:scale-[0.97];
+  @apply relative overflow-hidden inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-cloud-200 transition hover:border-gold-300/40 active:scale-[0.97];
+}
+
+/* Static color-tint fallback that applies regardless of motion preference —
+   under reduced motion this is the ONLY speaking indicator (no bar bounce). */
+.listen-btn[data-speaking='true'] {
+  @apply border-gold-300/50 bg-gold-400/12 text-gold-300;
+}
+
+.listen-btn__eq {
+  display: none;
+  align-items: flex-end;
+  gap: 2px;
+  height: 0.85em;
+}
+
+.listen-btn[data-speaking='true'] .listen-btn__icon {
+  display: none;
+}
+
+.listen-btn[data-speaking='true'] .listen-btn__eq {
+  display: inline-flex;
+}
+
+.listen-btn__eq span {
+  display: block;
+  width: 3px;
+  height: 35%;
+  border-radius: 2px;
+  background: var(--color-gold-400);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .listen-btn[data-speaking='true'] .listen-btn__eq span {
+    animation: eqBounce 0.9s ease-in-out infinite;
+  }
+
+  .listen-btn__eq span:nth-child(1) {
+    animation-delay: 0ms;
+  }
+
+  .listen-btn__eq span:nth-child(2) {
+    animation-delay: 180ms;
+  }
+
+  .listen-btn__eq span:nth-child(3) {
+    animation-delay: 90ms;
+  }
+}
+
+@keyframes eqBounce {
+  0%, 100% {
+    height: 30%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+/* Progressive word highlight, synced via utterance.onboundary when the
+   platform/voice supports it (wrapWordsForHighlight/speakText in kiosk.ts);
+   silently absent otherwise — the equalizer above is the primary signal. */
+.tts-word {
+  border-radius: 4px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.tts-word--active {
+  background: color-mix(in srgb, var(--color-gold-400) 30%, transparent);
+  color: #fff;
 }
 
 .tts-notice {
