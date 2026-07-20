@@ -89,6 +89,12 @@ let resourceCarouselIndex = 0;
 let resourceCarouselTimer = 0;
 const qrDataUrls: Record<string, string> = {};
 
+// Stable download link for the companion Android app (jsdosanj/gw-display-mobile).
+// This is a GitHub Releases "rolling tag" URL — the mobile repo's CI
+// republishes the latest-apk release's asset on every push to its main
+// branch, so this URL never needs to change here even as new builds ship.
+const MOBILE_APP_APK_URL = 'https://github.com/jsdosanj/gw-display-mobile/releases/download/latest-apk/legacy-of-the-khalsa.apk';
+
 // Rotating crossfade banners (Phase 3) — the attract screen rotates
 // unconditionally while asleep (any touch wakes the kiosk, which is itself
 // the "pause"); the Home hero rotates only while its visible pause/play
@@ -167,13 +173,23 @@ async function initQrCodes(): Promise<void> {
     }
   }
 
-  if (state.awake && (state.view === 'resources' || state.view === 'leaflets')) {
+  try {
+    qrDataUrls['mobile-app'] = await QRCode.toDataURL(MOBILE_APP_APK_URL, {
+      width: 120,
+      margin: 1,
+      color: { dark: '#f7d989', light: '#050b14' },
+    });
+  } catch {
+    qrDataUrls['mobile-app'] = '';
+  }
+
+  if (state.awake && (state.view === 'resources' || state.view === 'leaflets' || state.view === 'about')) {
     renderView();
   }
 }
 
 void initQrCodes().then(() => {
-  if (state.awake && (state.view === 'resources' || state.view === 'leaflets')) {
+  if (state.awake && (state.view === 'resources' || state.view === 'leaflets' || state.view === 'about')) {
     renderView();
   }
 });
@@ -1451,6 +1467,18 @@ function renderAbout(): string {
         </div>
         <p class="mt-6 text-base leading-7 text-cloud-200 ${classForLanguage()}" data-tts-source="about-partnerships">${text(content.about.partnerships)}</p>
         <p class="mt-4 text-base leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.futureUpdates)}</p>
+      </section>
+
+      <section class="glass-panel flex flex-wrap items-center justify-between gap-6 p-8 md:p-10">
+        <div class="max-w-xl">
+          <h3 class="text-2xl font-semibold text-white ${classForLanguage()}">${text(content.about.mobileApp.title)}</h3>
+          <p class="mt-3 text-sm leading-7 text-cloud-200 ${classForLanguage()}">${text(content.about.mobileApp.description)}</p>
+          <a href="${MOBILE_APP_APK_URL}" data-ripple class="cta-glow relative mt-5 inline-flex items-center gap-2 overflow-hidden rounded-full bg-gold-400 px-5 py-3 text-sm font-semibold text-night-950 transition active:scale-[0.98] ${classForLanguage()}">${text(content.about.mobileApp.cta)}</a>
+        </div>
+        <div class="qr-badge">
+          ${qrDataUrls['mobile-app'] ? `<img src="${qrDataUrls['mobile-app']}" alt="QR code to download the Android app" class="qr-badge__img" width="80" height="80" />` : ''}
+          <p class="qr-badge__hint">${text(content.ui.labels.scanToVisit)}</p>
+        </div>
       </section>
 
       <section class="grid gap-6 md:grid-cols-3">
