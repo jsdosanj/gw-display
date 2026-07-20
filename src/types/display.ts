@@ -293,6 +293,11 @@ export interface DisplayContent {
     contributors: string[];
     partnerships: LocalizedText;
     futureUpdates: LocalizedText;
+    mobileApp: {
+      title: LocalizedText;
+      description: LocalizedText;
+      cta: LocalizedText;
+    };
     principles: PrincipleCard[];
   };
   resources: {

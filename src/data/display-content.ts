@@ -231,6 +231,14 @@ const displayContent: DisplayContent = {
       en: 'This experience will continue receiving updates, expanded content, and improved visuals.',
       pa: 'ਇਸ ਅਨੁਭਵ ਵਿੱਚ ਆਉਣ ਵਾਲੇ ਸਮੇਂ ਵਿੱਚ ਨਵੇਂ ਅੱਪਡੇਟ, ਵਧੀਕ ਸਮੱਗਰੀ ਅਤੇ ਸੁਧਰੇ ਦ੍ਰਿਸ਼ ਜੋੜੇ ਜਾਣਗੇ।',
     },
+    mobileApp: {
+      title: { en: 'Take it with you', pa: 'ਆਪਣੇ ਨਾਲ ਲੈ ਜਾਓ' },
+      description: {
+        en: 'The same bilingual experience is also available as a free Android app — scan the code or download it directly to your phone or tablet.',
+        pa: 'ਇਹੀ ਦੋਭਾਸ਼ੀ ਅਨੁਭਵ ਇੱਕ ਮੁਫ਼ਤ ਐਂਡਰਾਇਡ ਐਪ ਵਜੋਂ ਵੀ ਉਪਲਬਧ ਹੈ — ਕੋਡ ਸਕੈਨ ਕਰੋ ਜਾਂ ਸਿੱਧਾ ਆਪਣੇ ਫ਼ੋਨ ਜਾਂ ਟੈਬਲੈੱਟ ਤੇ ਡਾਊਨਲੋਡ ਕਰੋ।',
+      },
+      cta: { en: 'Download the Android app', pa: 'ਐਂਡਰਾਇਡ ਐਪ ਡਾਊਨਲੋਡ ਕਰੋ' },
+    },
     principles: [
       {
         title: { en: 'Bilingual by design', pa: 'ਡਿਜ਼ਾਇਨ ਤੋਂ ਦੋਭਾਸ਼ੀ' },
