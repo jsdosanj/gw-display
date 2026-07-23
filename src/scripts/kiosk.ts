@@ -1065,14 +1065,16 @@ function renderPyare(): string {
 
       ${renderPyareMap(selected)}
 
-      <div class="silhouette-strip">
+      <div class="pyare-gallery" data-reveal-group>
         ${content.panjPyare
           .map(
             (item, index) => `
-              <button type="button" data-pyara="${item.id}" data-ripple class="silhouette-avatar" data-active="${item.id === selected.id}" aria-label="${text(item.name)}">
-                <img src="${asset(item.silhouettePath)}" alt="${text(item.name)}" class="silhouette-avatar__img" />
-                <span class="silhouette-avatar__number">${index + 1}</span>
-                <span class="silhouette-avatar__name ${classForLanguage()}">${text(item.name).replace(/Bhai /g, '').replace(/ Ji$/, '')}</span>
+              <button type="button" data-pyara="${item.id}" data-ripple class="pyare-gallery__item" data-active="${item.id === selected.id}" aria-label="${text(item.name)}" data-reveal>
+                <span class="pyare-gallery__frame">
+                  <img src="${asset(item.imagePath)}" alt="Commemorative portrait of ${text(item.name, 'en')}" class="pyare-gallery__img" loading="lazy" decoding="async" />
+                </span>
+                <span class="pyare-gallery__number">${index + 1}</span>
+                <span class="pyare-gallery__name ${classForLanguage()}">${text(item.name).replace(/Bhai /g, '').replace(/ Ji$/, '')}</span>
               </button>
             `,
           )
@@ -1080,7 +1082,7 @@ function renderPyare(): string {
       </div>
 
       <section class="glass-panel overflow-hidden p-8 md:p-10 slide-up">
-        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title), `Commemorative portrait artwork of ${text(selected.name, 'en')}, one of the Panj Pyare`, 'portrait', 'profile-art')}
+        ${renderArtworkPanel(selected.imagePath, text(selected.name), text(content.sections.pyare.title), `Commemorative portrait artwork of ${text(selected.name, 'en')}, one of the Panj Pyare`, 'full-photo', 'profile-art')}
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.24em] text-gold-300 ${classForLanguage()}">${text(selected.representing)}</p>

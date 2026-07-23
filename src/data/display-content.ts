@@ -165,7 +165,7 @@ const displayContent: DisplayContent = {
     differentiationCards: [
       {
         id: 'pyare',
-        imagePath: '/assets/images/IMG_3268.jpeg',
+        imagePath: '/assets/images/panj-pyare-daya-singh.jpg',
         title: { en: 'Panj Pyare', pa: 'ਪੰਜ ਪਿਆਰੇ' },
         description: { en: 'Five historic individuals who offered their heads to Guru Gobind Singh Ji and became the founding exemplars of the Khalsa.', pa: 'ਪੰਜ ਇਤਿਹਾਸਕ ਵਿਅਕਤੀ ਜਿਨ੍ਹਾਂ ਨੇ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਅੱਗੇ ਸਿਰ ਭੇਟ ਕੀਤਾ ਅਤੇ ਖ਼ਾਲਸੇ ਦੇ ਪ੍ਰਥਮ ਮਿਸਾਲ ਬਣੇ।' },
       },
@@ -301,7 +301,7 @@ const displayContent: DisplayContent = {
   panjPyare: [
     {
       id: 1,
-      imagePath: '/assets/images/IMG_3268.jpeg',
+      imagePath: '/assets/images/panj-pyare-daya-singh.jpg',
       silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '23.0%', y: '19.1%' },
       name: { en: 'Bhai Daya Singh Ji', pa: 'ਭਾਈ ਦਯਾ ਸਿੰਘ ਜੀ' },
@@ -346,7 +346,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 2,
-      imagePath: '/assets/images/IMG_3269.jpeg',
+      imagePath: '/assets/images/panj-pyare-dharam-singh.jpg',
       silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '39.1%', y: '28.1%' },
       name: { en: 'Bhai Dharam Singh Ji', pa: 'ਭਾਈ ਧਰਮ ਸਿੰਘ ਜੀ' },
@@ -391,7 +391,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 3,
-      imagePath: '/assets/images/IMG_3270.jpeg',
+      imagePath: '/assets/images/panj-pyare-himmat-singh.jpg',
       silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '45.7%', y: '43.4%' },
       name: { en: 'Bhai Himmat Singh Ji', pa: 'ਭਾਈ ਹਿੰਮਤ ਸਿੰਘ ਜੀ' },
@@ -436,7 +436,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 4,
-      imagePath: '/assets/images/IMG_3271.jpeg',
+      imagePath: '/assets/images/panj-pyare-mohkam-singh.jpg',
       silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '14.3%', y: '36.7%' },
       name: { en: 'Bhai Mohkam Singh Ji', pa: 'ਭਾਈ ਮੋਹਕਮ ਸਿੰਘ ਜੀ' },
@@ -481,7 +481,7 @@ const displayContent: DisplayContent = {
     },
     {
       id: 5,
-      imagePath: '/assets/images/IMG_3272.jpeg',
+      imagePath: '/assets/images/panj-pyare-sahib-singh.jpg',
       silhouettePath: '/assets/images/singh-silhouette.svg',
       mapPoint: { x: '22.7%', y: '54.5%' },
       name: { en: 'Bhai Sahib Singh Ji', pa: 'ਭਾਈ ਸਾਹਿਬ ਸਿੰਘ ਜੀ' },
