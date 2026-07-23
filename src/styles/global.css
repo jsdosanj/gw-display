@@ -1465,6 +1465,111 @@ button {
   color: #f7d989;
 }
 
+/* Panj Pyare portrait gallery — replaces the generic silhouette strip now
+   that real commemorative portraits (1875 hand-coloured woodblock print,
+   Bhai Buta Singh) are available. Two columns on phones, growing to five
+   (all Panj Pyare visible in a single row) on desktop, so visitors can
+   compare all five at a glance rather than paging through one at a time. */
+.pyare-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .pyare-gallery {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pyare-gallery {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.pyare-gallery__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.pyare-gallery__item:active {
+  transform: scale(0.97);
+}
+
+.pyare-gallery__item[data-active='true'] {
+  border-color: rgba(228, 187, 94, 0.45);
+  background: rgba(228, 187, 94, 0.08);
+  box-shadow: 0 0 0 3px rgba(228, 187, 94, 0.12), 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.pyare-gallery__frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(5, 11, 20, 0.6);
+}
+
+.pyare-gallery__img {
+  /* object-fit:contain (not cover) — show each painting in full, uncropped,
+     rather than slicing an arbitrary portion to fill the frame. */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.82;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.pyare-gallery__item[data-active='true'] .pyare-gallery__img {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+.pyare-gallery__number {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(217, 228, 239, 0.85);
+  letter-spacing: 0.05em;
+  background: rgba(5, 11, 20, 0.55);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+}
+
+.pyare-gallery__item[data-active='true'] .pyare-gallery__number {
+  color: #050b14;
+  background: #f7d989;
+}
+
+.pyare-gallery__name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #93a6bc;
+  text-align: center;
+  line-height: 1.3;
+  transition: color 0.2s ease;
+}
+
+.pyare-gallery__item[data-active='true'] .pyare-gallery__name {
+  color: #f7d989;
+}
+
 /* ==========================================
    RESOURCES — QR codes + live previews
    ========================================== */
